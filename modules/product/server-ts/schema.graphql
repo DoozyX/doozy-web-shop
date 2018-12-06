@@ -1,0 +1,13 @@
+# Entity
+type Product {
+  id: Int!
+  name: String!
+  rating: Int!
+  size: String!
+  type: String!
+}
+
+extend type Query {
+  product(id: Int!): Product
+  products(limit: Int, after: Int): [Product] # TODO: refactor with pagination
+}
