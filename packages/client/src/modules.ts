@@ -4,6 +4,7 @@ import i18n from '@module/i18n-client-react';
 import counter from '@module/counter-client-react';
 import chat from '@module/chat-client-react';
 import contact from '@module/contact-client-react';
+import product from '@module/product-client-react';
 import validation from '@module/validation-common-react';
 import ClientModule from '@module/module-client-react';
 import defaultRouter from '@module/router-client-react';
@@ -24,6 +25,7 @@ const modules = new ClientModule(
   post,
   upload,
   contact,
+  product,
   pagination,
   chat,
   payments,
