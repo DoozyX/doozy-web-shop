@@ -1,18 +1,38 @@
-import { Identifier } from './sql';
+import { BrandType, CategoryType, Identifier, ProductType } from './sql';
 import { ProductContext } from './index';
-
-interface ProductsParams {
-  limit: number;
-  after: number;
-}
+// import { createBatchResolver } from 'graphql-resolve-batch'; TODO: refactor subtypes with batch resolver
 
 export default () => ({
   Query: {
-    product(obj: any, { id }: Identifier, context: any) {
-      return context.Post.post(id);
+    product(obj: any, { id }: Identifier, context: ProductContext) {
+      return context.Product.get(id);
     },
-    products(obj: any, { limit, after }: ProductsParams, context: ProductContext) {
+    products(obj: any, args: any, context: ProductContext) {
       return context.Product.getAll();
+    },
+    categories(obj: any, args: any, context: ProductContext) {
+      return context.Category.getAll();
+    },
+    brands(obj: any, args: any, context: ProductContext) {
+      return context.Brand.getAll();
+    }
+  },
+  Product: {
+    brand(obj: ProductType, args: any, context: ProductContext) {
+      return context.Brand.get(obj.brandId);
+    },
+    category(obj: ProductType, args: any, context: ProductContext) {
+      return context.Category.get(obj.categoryId);
+    }
+  },
+  Brand: {
+    products(obj: BrandType, args: any, context: ProductContext) {
+      return context.Product.getAllForBrand(obj.id);
+    }
+  },
+  Category: {
+    products(obj: CategoryType, args: any, context: ProductContext) {
+      return context.Product.getAllForCategory(obj.id);
     }
   }
 });
