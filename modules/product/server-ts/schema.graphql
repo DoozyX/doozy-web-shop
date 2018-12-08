@@ -5,9 +5,25 @@ type Product {
   rating: Int!
   size: String!
   type: String!
+  brand: Brand!
+  category: Category!
+}
+
+type Brand {
+  id: Int!
+  name: String!
+  products: [Product]
+}
+
+type Category {
+  id: Int!
+  name: String!
+  products: [Product]
 }
 
 extend type Query {
   product(id: Int!): Product
-  products(limit: Int, after: Int): [Product] # TODO: refactor with pagination
+  products: [Product] # TODO: refactor with pagination
+  categories: [Category]
+  brands: [Brand]
 }
