@@ -5,20 +5,41 @@ import { translate, TranslateFunction } from '@module/i18n-client-react';
 
 import { Route, NavLink } from 'react-router-dom';
 import { MenuItem } from '../../../packages/client/src/modules/common/components/web';
-import Product from './containers/Product';
+import Home from './Home';
+import Brands from './Brands';
+import Products from './Products';
 import resources from './locales';
 
-const NavLinkWithI18n = translate('product')(({ t }: { t: TranslateFunction }) => (
-  <NavLink to="/product" className="nav-link" activeClassName="active">
-    {t('product:navLink')}
+interface NavLinkProps {
+  to: string;
+  text: string;
+  exact: boolean;
+}
+
+const NavLinkWithI18n = translate('product')(({ t, ...rest }: { t: TranslateFunction; rest: NavLinkProps }) => (
+  // @ts-ignore
+  <NavLink exact={rest.exact} to={rest.to} className="nav-link" activeClassName="active">
+    {//
+    // @ts-ignore
+    t(rest.text)}
   </NavLink>
 ));
 
 export default new ClientModule({
-  route: [<Route exact path="/product" component={Product} />],
+  route: [
+    <Route exact path="/" component={Home} />,
+    <Route exact path="/brands" component={Brands} />,
+    <Route exact path="/products" component={Products} />
+  ],
   navItem: [
-    <MenuItem key="/product">
-      <NavLinkWithI18n />
+    <MenuItem key="/">
+      <NavLinkWithI18n to="/" text={'navLinkHome'} exact={true} />
+    </MenuItem>,
+    <MenuItem key="/brands">
+      <NavLinkWithI18n to="/brands" text={'navLinkBrands'} />
+    </MenuItem>,
+    <MenuItem key="/products">
+      <NavLinkWithI18n to="/products" text={'navLinkProducts'} />
     </MenuItem>
   ],
   localization: [{ ns: 'product', resources }]
