@@ -1,0 +1,5 @@
+query brandsQuery {
+  brands {
+    name
+  }
+}

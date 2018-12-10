@@ -1,5 +1,7 @@
 {
-  "navLink": "Products",
+  "navLinkHome": "Home",
+  "navLinkBrands": "Brands",
+  "navLinkProducts": "Products",
   "title": "Product module",
   "meta": "Product example",
   "welcomeText": "Hello, This is the Product module"
