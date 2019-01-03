@@ -1,4 +1,4 @@
-import { truncateTables } from '../../sql/helpers';
+import { truncateTables } from '@module/database-server-ts';
 
 export async function seed(knex, Promise) {
   await truncateTables(knex, Promise, ['product']);

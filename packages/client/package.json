@@ -52,7 +52,6 @@
     "@module/module-client-react": "^1.0.0",
     "@module/payments-client-react": "^1.0.0",
     "@module/product-client-react": "^1.0.0",
-    "@module/payments-client-react": "^1.0.0",
     "@module/validation-common-react": "^1.0.0",
     "@types/reactstrap": "^6.4.3",
     "antd": "^3.10.0",
