@@ -1,3 +1,5 @@
+import article from '@module/article-server-ts';
+import product from '@module/product-server-ts';
 import core from '@module/core-server-ts';
 import i18n from '@module/i18n-server-ts';
 import validation from '@module/validation-common-react';
@@ -17,6 +19,8 @@ import ServerModule from '@module/module-server-ts';
 const user = require('@module/user-server-ts').default;
 
 const modules: ServerModule = new ServerModule(
+  article,
+  product,
   cookies,
   i18n,
   validation,
