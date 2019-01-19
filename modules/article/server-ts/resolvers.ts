@@ -1,4 +1,4 @@
-export default (wpubsub: any) => ({
+export default (pubsub: any) => ({
   Query: {},
   Mutation: {},
   Subscription: {}

@@ -4,7 +4,7 @@ import ClientModule from '@module/module-client-react';
 import { translate, TranslateFunction } from '@module/i18n-client-react';
 
 import { Route, NavLink } from 'react-router-dom';
-import { MenuItem } from '../../../packages/client/src/modules/common/components/web';
+import { MenuItem } from '@module/look-client-react';
 import Home from './Home';
 import Brands from './Brands';
 import Products from './Products';
