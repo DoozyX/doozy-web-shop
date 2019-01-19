@@ -3,7 +3,7 @@ import { translate, TranslateFunction } from '@module/i18n-client-react';
 import Helmet from 'react-helmet';
 
 import settings from '../../../../settings';
-import { PageLayout } from '../../../../packages/client/src/modules/common/components/web';
+import { PageLayout } from '@module/look-client-react';
 
 interface ProductProps {
   t: TranslateFunction;

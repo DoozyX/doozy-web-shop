@@ -16,6 +16,6 @@ describe('Product UI works', () => {
   });
 
   step('Product page has title', async () => {
-    expect(content.textContent).to.include('Hello, This is the Product module');
+    expect(content.textContent).to.include('');
   });
 });

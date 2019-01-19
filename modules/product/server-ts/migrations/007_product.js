@@ -13,10 +13,10 @@ export async function up(knex) {
       })
       .createTable('product', table => {
         table.increments();
-        table.string('name').notNull();
-        table.string('type').notNull();
-        table.string('size').notNull();
-        table.integer('rating').notNull();
+        table.string('name');
+        table.string('type');
+        table.string('size');
+        table.integer('rating');
         table
           .integer('categoryId')
           .unsigned()

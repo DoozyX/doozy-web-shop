@@ -7,7 +7,7 @@ import { Query } from 'react-apollo';
 
 import settings from '../../../../settings';
 
-import { PageLayout } from '../../../../packages/client/src/modules/common/components/web';
+import { PageLayout } from '@module/look-client-react';
 import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
 import BRANDS_QUERY from '../graphql/BrandsQuery.graphql';
 
@@ -27,13 +27,15 @@ const items = [
     header: 'Slide 1 Header'
   },
   {
-    src: 'https://www.ecoseibsrl.it/wp-content/uploads/2016/09/wallpaper-natura-2.jpg',
+    src:
+      'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
     altText: 'Slide 2',
     caption: 'Slide 2',
     header: 'Slide 2 Header'
   },
   {
-    src: 'https://www.ecoseibsrl.it/wp-content/uploads/2016/09/wallpaper-natura-2.jpg',
+    src:
+      'https://images.pexels.com/photos/814499/pexels-photo-814499.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
     altText: 'Slide 3',
     caption: 'Slide 3',
     header: 'Slide 3 Header'

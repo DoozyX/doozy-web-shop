@@ -1,8 +1,0 @@
-{
-  "name": "@module/counter-client-react",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "@module/counter-common": "^1.0.0"
-  }
-}

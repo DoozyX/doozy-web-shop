@@ -1,4 +1,4 @@
-import knex from '../../../packages/server/src/sql/connector';
+import { knex } from '@module/database-server-ts';
 
 export interface ProductType {
   id: number;
