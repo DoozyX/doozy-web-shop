@@ -71,7 +71,6 @@
     "packages/*",
     "modules/**/client-react",
     "modules/**/client-react-native",
-    "modules/**/client-angular",
     "modules/**/common",
     "modules/**/common-react",
     "modules/**/server-ts"

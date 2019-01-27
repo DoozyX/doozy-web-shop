@@ -1,9 +1,9 @@
 import React from 'react';
-import { translate, TranslateFunction } from '@module/i18n-client-react';
+import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 
 import settings from '../../../../settings';
-import { PageLayout } from '@module/look-client-react';
+import { PageLayout } from '@gqlapp/look-client-react';
 
 interface ProductProps {
   t: TranslateFunction;

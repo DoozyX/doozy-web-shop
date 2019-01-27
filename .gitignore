@@ -13,4 +13,5 @@ build
 jsconfig.json
 public
 *.iml
+.npmrc
 .directory

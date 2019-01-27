@@ -1,29 +1,25 @@
+import core from '@gqlapp/core-client-react';
+import look from '@gqlapp/look-client-react';
+import i18n from '@gqlapp/i18n-client-react';
+import chat from '@gqlapp/chat-client-react';
+import contact from '@gqlapp/contact-client-react';
+import validation from '@gqlapp/validation-common-react';
+import ClientModule from '@gqlapp/module-client-react';
+import defaultRouter from '@gqlapp/router-client-react';
+import payments from '@gqlapp/payments-client-react';
+import '@gqlapp/favicon-common';
 import article from '@module/article-client-react';
-import core from '@module/core-client-react';
-import look from '@module/look-client-react';
-import i18n from '@module/i18n-client-react';
-import chat from '@module/chat-client-react';
-import contact from '@module/contact-client-react';
 import product from '@module/product-client-react';
-import validation from '@module/validation-common-react';
-import ClientModule from '@module/module-client-react';
-import defaultRouter from '@module/router-client-react';
-import payments from '@module/payments-client-react';
-import '@module/favicon-common';
 
-const pageNotFound = require('@module/page-not-found-client-react').default;
-// const upload = require('@module/upload-client-react').default;
-// const pagination = require('@module/pagination-client-react').default;
-const user = require('@module/user-client-react').default;
+const pageNotFound = require('@gqlapp/page-not-found-client-react').default;
+const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
   look,
   validation,
   defaultRouter,
-  // upload,
   product,
   contact,
-  // pagination,
   chat,
   article,
   payments,
