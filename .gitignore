@@ -15,3 +15,7 @@ public
 *.iml
 .npmrc
 .directory
+
+*client-angular*
+*server-scala*
+*client-vue*
