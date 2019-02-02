@@ -174,7 +174,7 @@
   },
   "resolutions": {
     "immutability-helper": "2.8.1",
-    "react": "16.5.0",
+    "react": "16.8.0-alpha.1",
     "graphql": "0.13.2",
     "iterall": "^1.2.2",
     "upath": "^1.1.0",
