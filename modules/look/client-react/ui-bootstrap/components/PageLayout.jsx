@@ -20,14 +20,14 @@ const Footer = styled.footer`
 
 class PageLayout extends React.Component {
   render() {
-    const { children, navBar } = this.props;
+    const { children, hideNavBar } = this.props;
     return (
       <section className="d-flex flex-column flex-grow-1">
         <Header>
           <h1>{settings.app.name}</h1>
         </Header>
         <section className="d-flex flex-column flex-grow-1 flex-shrink-0">
-          <section className="d-flex flex-column">{navBar !== false && <NavBar />}</section>
+          <section className="d-flex flex-column">{!hideNavBar && <NavBar />}</section>
           <Container id="content">{children}</Container>
         </section>
         <Footer className="d-flex flex-shrink-0 justify-content-center">
@@ -42,7 +42,11 @@ class PageLayout extends React.Component {
 
 PageLayout.propTypes = {
   children: PropTypes.node,
-  navBar: PropTypes.bool
+  hideNavBar: PropTypes.bool
+};
+
+PageLayout.defaultProps = {
+  hideNavBar: false
 };
 
 export default PageLayout;

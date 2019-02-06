@@ -14,7 +14,6 @@ import { isApiExternal, apiUrl } from '@gqlapp/core-common';
 import ServerModule from '@gqlapp/module-server-ts';
 import ClientModule from '@gqlapp/module-client-react';
 import { createApolloClient, createReduxStore } from '@gqlapp/core-common';
-import { styles } from '@gqlapp/look-client-react';
 
 let assetMap: { [key: string]: string };
 
@@ -49,13 +48,14 @@ const Html = ({ content, state, css, helmet }: HtmlProps) => (
       <link rel="manifest" href={`${assetMap['manifest.xjson']}`} />
       <link rel="mask-icon" href={`${assetMap['safari-pinned-tab.svg']}`} color="#5bbad5" />
       <link rel="shortcut icon" href={`${assetMap['favicon.ico']}`} />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
       <meta name="msapplication-config" content={`${assetMap['browserconfig.xml']}`} />
       <meta name="theme-color" content="#ffffff" />
       {!__DEV__ && <link rel="stylesheet" type="text/css" href={`${assetMap['index.css']}`} />}
       {!!__DEV__ && (
         <style
           dangerouslySetInnerHTML={{
-            __html: styles._getCss() + clientModules.stylesInserts.map((style: any) => style._getCss()).join('')
+            __html: clientModules.stylesInserts.map((style: any) => style()).join('')
           }}
         />
       )}
@@ -96,6 +96,7 @@ const renderServerSide = async (req: any, res: any, schema: GraphQLSchema, modul
   });
   const store = createReduxStore(clientModules.reducers, {}, client);
   const context: any = {};
+
   const App = clientModules.getWrappedRoot(
     <Provider store={store}>
       <ApolloProvider client={client}>

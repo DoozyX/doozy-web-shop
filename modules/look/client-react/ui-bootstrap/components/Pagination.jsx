@@ -15,10 +15,15 @@ export default class Pagination extends React.Component {
     pagination: PropTypes.string,
     total: PropTypes.number,
     loadMoreText: PropTypes.string,
-    defaultPageSize: PropTypes.number
+    defaultPageSize: PropTypes.number,
+    currentPage: PropTypes.number
   };
 
-  state = { pageNumber: 1, pagination: this.props.pagination };
+  static defaultProps = {
+    currentPage: 0
+  };
+
+  state = { pageNumber: this.props.currentPage + 1, pagination: this.props.pagination };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return nextProps.pagination !== prevState.pagination ? { pageNumber: 1, pagination: nextProps.pagination } : null;
