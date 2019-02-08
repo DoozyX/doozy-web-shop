@@ -7,7 +7,6 @@ import cookies from '@gqlapp/cookies-server-ts';
 import subscription from '@gqlapp/payments-server-ts';
 import mailer from '@gqlapp/mailer-server-ts';
 import graphqlTypes from '@gqlapp/graphql-types-server-ts';
-import reports from '@gqlapp/reports-server-ts';
 import '@gqlapp/debug-server-ts';
 import article from '@module/article-server-ts';
 import product from '@module/product-server-ts';
@@ -27,7 +26,6 @@ const modules: ServerModule = new ServerModule(
   contact,
   mailer,
   chat,
-  reports,
   graphqlTypes,
   core
 );

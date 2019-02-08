@@ -12,7 +12,6 @@ import article from '@module/article-client-react';
 import product from '@module/product-client-react';
 
 const pageNotFound = require('@gqlapp/page-not-found-client-react').default;
-const reports = require('@gqlapp/reports-client-react').default;
 const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
@@ -26,7 +25,6 @@ const modules = new ClientModule(
   payments,
   user,
   i18n,
-  reports,
   pageNotFound,
   core
 );
