@@ -109,6 +109,7 @@
     "babel-preset-minify": "^0.5.0-alpha.5a128fd5",
     "babel-preset-vue": "^2.0.2",
     "cache-loader": "^1.2.2",
+    "clean-webpack-plugin": "^1.0.1",
     "css-loader": "^1.0.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-webpack": "^0.9.0",
@@ -141,6 +142,7 @@
     "sass-loader": "^7.1.0",
     "shelljs": "^0.8.1",
     "source-list-map": "^2.0.0",
+    "spinjs": "^0.4.190",
     "style-loader": "^0.23.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
@@ -165,13 +167,9 @@
     "webpack-virtual-modules": "^0.1.10",
     "whatwg-fetch": "^2.0.4"
   },
-  "optionalDependencies": {
-    "dotenv": "^6.0.0",
-    "lodash": "^4.17.4"
-  },
   "dependencies": {
-    "opencollective": "^1.0.3",
-    "spinjs": "^0.4.187"
+    "lodash": "^4.17.11",
+    "opencollective": "^1.0.3"
   },
   "resolutions": {
     "immutability-helper": "2.8.1",
