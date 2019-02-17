@@ -28,7 +28,6 @@ const renderMetaData = (t: TranslateFunction) => (
 
 const ArticlesView = ({ t, match }: ArticleViewProps) => {
   const { data } = useQuery(GET_POST, { variables: { id: parseInt(match.params.id, 10) } });
-  console.log(data);
   return (
     <PageLayout>
       {renderMetaData(t)}

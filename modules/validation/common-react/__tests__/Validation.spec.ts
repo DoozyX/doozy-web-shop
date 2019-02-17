@@ -1,7 +1,6 @@
 // tslint:disable:no-unused-expression
 import { expect } from 'chai';
 import { step } from 'mocha-steps';
-import i18next from 'i18next';
 import CommonModule from '@gqlapp/module-common';
 import i18n from '@gqlapp/i18n-common-react';
 import validation from '..';
@@ -142,13 +141,5 @@ describe('Check if validation works', () => {
       .to.be.an('object')
       .to.haveOwnProperty('firstName')
       .to.be.a('string');
-  });
-
-  step('Should change the language of the validation message from English to Russian and vice versa', () => {
-    expect(required('')).to.match(/[a-zA-Z]/g);
-    i18next.changeLanguage('ru-RU');
-    expect(required('')).to.match(/[а-яА-Я]/g);
-    i18next.changeLanguage('en-US');
-    expect(required('')).to.match(/[a-zA-Z]/g);
   });
 });

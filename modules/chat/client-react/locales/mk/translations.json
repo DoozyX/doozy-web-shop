@@ -1,0 +1,26 @@
+{
+  "navLink": "Чат",
+  "loading": "Loading...",
+
+  "msg": {
+    "btn": {
+      "copy": "Copy",
+      "reply": "Reply",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+
+  "input": {
+    "text": "Внесете порака...",
+    "btn": "Прати"
+  },
+
+  "attachment": {
+    "errorMsg": "Грешка: Датотекате е поголема од лимитот"
+  },
+
+  "permission": {
+    "errorMsg": "Немате дозвола!"
+  }
+}
