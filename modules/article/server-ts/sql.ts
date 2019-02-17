@@ -45,7 +45,7 @@ export default class ArticleDAO {
 
   public post(id: number) {
     return knex
-      .select('id', 'title', 'content')
+      .select('*')
       .from('post')
       .where('id', '=', id)
       .first();

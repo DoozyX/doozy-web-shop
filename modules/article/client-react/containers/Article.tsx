@@ -1,9 +1,13 @@
 import React from 'react';
-
+import { RouteComponentProps } from 'react-router-dom';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
-import ArticleView from '../components/ArticlesView';
+import ArticleView from '../components/ArticleView';
 
-interface ArticleProps {
+interface MatchParams {
+  id: string;
+}
+
+interface ArticleProps extends RouteComponentProps<MatchParams> {
   t: TranslateFunction;
 }
 

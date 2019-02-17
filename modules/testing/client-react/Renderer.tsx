@@ -14,6 +14,7 @@ import { ApolloClient } from 'apollo-client';
 
 import { createApolloClient } from '@gqlapp/core-common';
 import ClientModule from '@gqlapp/module-client-react';
+import { Spinner } from 'reactstrap';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></html>');
 (global as any).document = dom.window.document;
@@ -180,7 +181,7 @@ export class Renderer {
       <Provider store={this.store}>
         <ApolloProvider client={this.client}>
           <ApolloHooksProvier client={this.client}>
-            <Suspense fallback={<div>Main Loading...</div>}>{component}</Suspense>
+            <Suspense fallback={<Spinner />}>{component}</Suspense>
           </ApolloHooksProvier>
         </ApolloProvider>
       </Provider>

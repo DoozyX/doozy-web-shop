@@ -1,0 +1,10 @@
+# GraphQL queries
+query getPost($id: Int!) {
+  post(id: $id) {
+    id
+    title
+    content
+    imageSource
+    created_at
+  }
+}

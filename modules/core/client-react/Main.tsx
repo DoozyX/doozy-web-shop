@@ -15,6 +15,7 @@ import createApolloClient from '../../../packages/common/createApolloClient';
 import createReduxStore, { getStoreReducer } from '../../../packages/common/createReduxStore';
 import log from '../../../packages/common/log';
 import settings from '../../../settings';
+import { Spinner } from 'reactstrap';
 
 log.info(`Connecting to GraphQL backend at: ${apiUrl}`);
 
@@ -93,7 +94,7 @@ export class Main extends React.Component<any, MainState> {
         <Provider store={ref.store}>
           <ApolloHooksProvider client={ref.client}>
             <ApolloProvider client={ref.client}>
-              <Suspense fallback={<div>Main Loading...</div>}>
+              <Suspense fallback={<Spinner />}>
                 {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
               </Suspense>
             </ApolloProvider>

@@ -1,8 +1,7 @@
 import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { Card, CardBody, CardTitle, CardText, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Card, CardBody, CardTitle, CardText, Button, Spinner } from 'reactstrap';
 
 import { PageLayout } from '@gqlapp/look-client-react';
 import { TranslateFunction } from '@gqlapp/i18n-client-react';
@@ -10,8 +9,9 @@ import settings from '../../../../settings';
 import { useQuery } from 'react-apollo-hooks';
 
 import GET_ALL_POSTS from '../graphql/GetAllPosts.graphql';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface ArticleViewProps {
+interface ArticleViewProps extends RouteComponentProps {
   t: TranslateFunction;
 }
 
@@ -23,17 +23,17 @@ const renderMetaData = (t: TranslateFunction) => (
 );
 
 const ArticleCard = ({
-  postId,
   title,
   description,
   createdAt,
-  imageSource
+  imageSource,
+  handleClick
 }: {
-  postId: number;
   title: string;
   description: string;
   createdAt: any;
   imageSource: string;
+  handleClick: () => void;
 }) => {
   return (
     <Card className="card flex-sm-row mb-gutter">
@@ -50,41 +50,31 @@ const ArticleCard = ({
           {description}
         </CardText>
         <CardText>
-          <small className="text-muted">{moment(createdAt).fromNow()}</small>
+          <small className="text-muted">{moment(parseInt(createdAt, 10)).fromNow()}</small>
         </CardText>
-        <Button>
-          <Link className="post-link" to={`/article/${postId}`}>
-            View Article
-          </Link>
-        </Button>
+        <Button onClick={handleClick}> View Article </Button>
       </CardBody>
-      <img
-        className="card-img-sm-right"
-        width="20%!important"
-        src={imageSource}
-        alt="description"
-        height="20%!important"
-      />
+      <img className="card-img-sm-right" width="20%!important" src={imageSource} alt="description" />
     </Card>
   );
 };
 
-const ArticlesView = ({ t }: ArticleViewProps) => {
-  const { data } = useQuery(GET_ALL_POSTS);
+const ArticlesView = ({ t, history }: ArticleViewProps) => {
+  const { data } = useQuery(GET_ALL_POSTS, { suspend: true });
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner />}>
         <div>
           {data.allPosts.map(
             (x: { id: number; title: string; content: string; created_at: number; imageSource: string }) => (
               <ArticleCard
                 key={x.id}
-                postId={x.id}
                 title={x.title}
                 description={x.content}
                 createdAt={x.created_at}
                 imageSource={x.imageSource}
+                handleClick={() => history.push(`/article/${x.id}`)}
               />
             )
           )}
