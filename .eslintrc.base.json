@@ -27,8 +27,7 @@
         "singleQuote": true,
         "parser": "babel"
       }
-    ],
-    "react-hooks/rules-of-hooks": "error"
+    ]
   },
   "env": {
     "mocha": true
@@ -48,7 +47,7 @@
     "__FRONTEND_BUILD_DIR__": true,
     "__DLL_BUILD_DIR__": true
   },
-  "plugins": ["react", "json", "import", "prettier", "react-hooks"],
+  "plugins": ["react", "json", "import", "prettier"],
   "settings": {
     "react": {
       "version": "16.3"

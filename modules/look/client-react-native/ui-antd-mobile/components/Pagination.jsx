@@ -9,15 +9,10 @@ export default class Pagination extends React.Component {
     handlePageChange: PropTypes.func,
     pagination: PropTypes.string,
     loadMoreText: PropTypes.string,
-    hasNextPage: PropTypes.bool,
-    currentPage: PropTypes.number
+    hasNextPage: PropTypes.bool
   };
 
-  static defaultProps = {
-    currentPage: 0
-  };
-
-  state = { pageNumber: this.props.currentPage + 1, pagination: this.props.pagination };
+  state = { pageNumber: 1, pagination: this.props.pagination };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return nextProps.pagination !== prevState.pagination ? { pageNumber: 1, pagination: nextProps.pagination } : null;

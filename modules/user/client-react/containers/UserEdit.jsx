@@ -12,8 +12,8 @@ import settings from '../../../../settings';
 import UserFormatter from '../helpers/UserFormatter';
 
 class UserEdit extends React.Component {
-  static propTypes = {
-    user: PropTypes.object,
+  propTypes = {
+    user: PropTypes.object.isRequired,
     editUser: PropTypes.func.isRequired,
     t: PropTypes.func.isRequired,
     navigation: PropTypes.object,

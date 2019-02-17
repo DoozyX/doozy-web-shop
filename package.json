@@ -16,8 +16,8 @@
     "watch": "spin watch",
     "watch:vue": "spin -d client -e vue watch",
     "watch:angular": "spin -d client -e angular watch",
-    "android": "spin -e android -d web -d ios watch",
-    "ios": "spin -e ios -d web -d android watch",
+    "watch:android": "spin -e android -d react -d ios watch",
+    "watch:ios": "spin -e ios -d react -d android watch",
     "watch-client": "cross-env DISABLE_SSR=true lerna run --scope=client watch --stream",
     "cli": "node tools/cli",
     "stripe:setup": "lerna run --scope=server stripe:setup",
@@ -151,6 +151,7 @@
     "tslint-config-prettier": "^1.5.0",
     "tslint-plugin-prettier": "^2.0.0",
     "typescript": "^3.2.4",
+    "uglifyjs-webpack-plugin": "^1.3.0",
     "url-loader": "^1.0.1",
     "vue-loader": "^15.5.1",
     "vue-style-loader": "^4.1.2",
@@ -173,8 +174,7 @@
   },
   "resolutions": {
     "immutability-helper": "2.8.1",
-    "react": "16.8.1",
-    "graphql": "0.13.2",
+    "graphql": "14.1.1",
     "iterall": "^1.2.2",
     "upath": "^1.1.0",
     "watchpack": "https://github.com/Globegitter/watchpack"

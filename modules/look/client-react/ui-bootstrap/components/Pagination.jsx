@@ -15,15 +15,10 @@ export default class Pagination extends React.Component {
     pagination: PropTypes.string,
     total: PropTypes.number,
     loadMoreText: PropTypes.string,
-    defaultPageSize: PropTypes.number,
-    currentPage: PropTypes.number
+    defaultPageSize: PropTypes.number
   };
 
-  static defaultProps = {
-    currentPage: 1
-  };
-
-  state = { pageNumber: this.props.currentPage, pagination: this.props.pagination };
+  state = { pageNumber: 1, pagination: this.props.pagination };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return nextProps.pagination !== prevState.pagination ? { pageNumber: 1, pagination: nextProps.pagination } : null;
@@ -31,7 +26,7 @@ export default class Pagination extends React.Component {
 
   onItemClick = pageNumber => {
     const { handlePageChange, pagination } = this.props;
-    this.setState({ pageNumber: pageNumber }, handlePageChange(pagination, pageNumber - 1));
+    this.setState({ pageNumber: pageNumber }, handlePageChange(pagination, pageNumber));
   };
 
   showPreviousPage = e => {
@@ -41,7 +36,7 @@ export default class Pagination extends React.Component {
     if (pageNumber > 1) {
       this.setState(prevState => {
         const newPageNumber = prevState.pageNumber - 1;
-        handlePageChange(pagination, newPageNumber - 1);
+        handlePageChange(pagination, newPageNumber);
         return {
           pageNumber: newPageNumber
         };
@@ -56,7 +51,7 @@ export default class Pagination extends React.Component {
     if (pageNumber < pagesArray.length) {
       this.setState(prevState => {
         const newPageNumber = prevState.pageNumber + 1;
-        handlePageChange(pagination, newPageNumber - 1);
+        handlePageChange(pagination, newPageNumber);
         return {
           pageNumber: newPageNumber
         };

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import url from 'url';
@@ -35,7 +36,7 @@ export default class Main extends React.Component<MainProps> {
     const client = createApolloClient({
       apiUrl,
       createNetLink: modules.createNetLink,
-      links: modules.link,
+      createLink: modules.createLink,
       connectionParams: modules.connectionParams,
       clientResolvers: modules.resolvers
     });
@@ -44,7 +45,11 @@ export default class Main extends React.Component<MainProps> {
 
     return modules.getWrappedRoot(
       <Provider store={store}>
-        <ApolloProvider client={client}>{modules.getDataRoot(modules.router)}</ApolloProvider>
+        <ApolloProvider client={client}>
+          <ApolloHooksProvider client={client}>
+            <Suspense fallback={<div>Main Loading...</div>}>{modules.getDataRoot(modules.router)} </Suspense>
+          </ApolloHooksProvider>
+        </ApolloProvider>
       </Provider>
     );
   }

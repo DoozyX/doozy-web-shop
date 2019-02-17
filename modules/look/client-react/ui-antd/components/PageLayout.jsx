@@ -9,19 +9,19 @@ const { Header, Content, Footer } = Layout;
 
 class PageLayout extends React.Component {
   render() {
-    const { children, hideNavBar } = this.props;
+    const { children, navBar } = this.props;
 
     return (
       <Layout>
-        {!hideNavBar && (
-          <Header>
+        {navBar !== false && (
+          <Header className="no-print">
             <NavBar />
           </Header>
         )}
         <Content id="content" style={{ background: '#fff', padding: 24 }}>
           {children}
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer className="no-print" style={{ textAlign: 'center' }}>
           &copy; {new Date().getFullYear()}. {settings.app.name}.
         </Footer>
       </Layout>
@@ -31,11 +31,7 @@ class PageLayout extends React.Component {
 
 PageLayout.propTypes = {
   children: PropTypes.node,
-  hideNavBar: PropTypes.bool
-};
-
-PageLayout.defaultProps = {
-  hideNavBar: false
+  navBar: PropTypes.bool
 };
 
 export default PageLayout;

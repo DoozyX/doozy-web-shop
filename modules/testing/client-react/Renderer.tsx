@@ -1,5 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, Suspense } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvier } from 'react-apollo-hooks';
 import { ApolloLink, Observable, Operation } from 'apollo-link';
 import { addTypenameToDocument } from 'apollo-utilities';
 import { Router, Switch } from 'react-router-dom';
@@ -155,7 +156,7 @@ export class Renderer {
 
     const client = createApolloClient({
       createNetLink: () => schemaLink,
-      links: ref.clientModules.link,
+      createLink: ref.clientModules.createLink,
       clientResolvers: resolvers || ref.clientModules.resolvers
     });
 
@@ -177,7 +178,11 @@ export class Renderer {
   public withApollo(component: ReactElement<any>) {
     return ref.clientModules.getWrappedRoot(
       <Provider store={this.store}>
-        <ApolloProvider client={this.client}>{component}</ApolloProvider>
+        <ApolloProvider client={this.client}>
+          <ApolloHooksProvier client={this.client}>
+            <Suspense fallback={<div>Main Loading...</div>}>{component}</Suspense>
+          </ApolloHooksProvier>
+        </ApolloProvider>
       </Provider>
     );
   }

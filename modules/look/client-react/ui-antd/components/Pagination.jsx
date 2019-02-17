@@ -13,8 +13,7 @@ const Pagination = ({
   pagination,
   total,
   loadMoreText,
-  defaultPageSize,
-  currentPage
+  defaultPageSize
 }) => {
   if (pagination === 'relay') {
     return hasNextPage ? (
@@ -32,10 +31,10 @@ const Pagination = ({
   } else {
     return (
       <ADPagination
-        current={currentPage}
+        defaultCurrent={1}
         defaultPageSize={defaultPageSize}
         total={total}
-        onChange={pageNumber => handlePageChange(pagination, pageNumber - 1)}
+        onChange={pageNumber => handlePageChange(pagination, pageNumber)}
       />
     );
   }
@@ -48,12 +47,7 @@ Pagination.propTypes = {
   pagination: PropTypes.string,
   total: PropTypes.number,
   loadMoreText: PropTypes.string,
-  defaultPageSize: PropTypes.number,
-  currentPage: PropTypes.number
-};
-
-Pagination.defaultProps = {
-  currentPage: 1
+  defaultPageSize: PropTypes.number
 };
 
 export default Pagination;

@@ -8,7 +8,7 @@ import UPLOAD_FILES from '../graphql/UploadFiles.graphql';
 import REMOVE_FILE from '../graphql/RemoveFile.graphql';
 
 class Upload extends React.Component {
-  static propTypes = {
+  propTypes = {
     uploadFiles: PropTypes.func,
     removeFile: PropTypes.func
   };
