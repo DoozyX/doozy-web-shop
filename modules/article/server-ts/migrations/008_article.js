@@ -10,7 +10,8 @@ exports.up = function(knex, Promise) {
           .inTable('user')
           .onDelete('CASCADE');
         table.string('title');
-        table.string('content');
+        table.text('content');
+        table.string('imageSource');
         table.timestamps(false, true);
       })
       .createTable('comment', table => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
-import ArticleView from '../components/ArticleView';
+import ArticleView from '../components/ArticlesView';
 
 interface ArticleProps {
   t: TranslateFunction;

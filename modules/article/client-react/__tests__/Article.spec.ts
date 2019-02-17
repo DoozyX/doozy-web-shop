@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import { step } from 'mocha-steps';
 
-import Renderer from '../../../../packages/client/src/testHelpers/Renderer';
-import { updateContent } from '../../../../packages/client/src/testHelpers/testUtils';
+import { updateContent, Renderer } from '@gqlapp/testing-client-react';
 
 describe('Article UI works', () => {
   const renderer = new Renderer({});
@@ -16,6 +15,6 @@ describe('Article UI works', () => {
   });
 
   step('Article page has title', async () => {
-    expect(content.textContent).to.include('Hello, This is the Article module');
+    expect(content.textContent).to.include('doozy');
   });
 });

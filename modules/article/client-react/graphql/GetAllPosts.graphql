@@ -1,0 +1,10 @@
+# GraphQL queries
+query getAllPosts {
+  allPosts {
+    id
+    title
+    content
+    imageSource
+    created_at
+  }
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloClient } from 'apollo-client';
@@ -91,11 +91,13 @@ export class Main extends React.Component<any, MainState> {
     ) : (
       ref.modules.getWrappedRoot(
         <Provider store={ref.store}>
-          <ApolloProvider client={ref.client}>
-            <ApolloHooksProvider client={ref.client}>
-              {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
-            </ApolloHooksProvider>
-          </ApolloProvider>
+          <ApolloHooksProvider client={ref.client}>
+            <ApolloProvider client={ref.client}>
+              <Suspense fallback={<div>Main Loading...</div>}>
+                {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
+              </Suspense>
+            </ApolloProvider>
+          </ApolloHooksProvider>
         </Provider>
       )
     );

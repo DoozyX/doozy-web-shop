@@ -6,18 +6,22 @@ import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import { Route, NavLink } from 'react-router-dom';
 import { MenuItem } from '@gqlapp/look-client-react';
 import Article from './containers/Article';
+import Articles from './containers/Articles';
 import resources from './locales';
 
 const NavLinkWithI18n = translate('article')(({ t }: { t: TranslateFunction }) => (
-  <NavLink to="/article" className="nav-link" activeClassName="active">
+  <NavLink to="/articles" className="nav-link" activeClassName="active">
     {t('article:navLink')}
   </NavLink>
 ));
 
 export default new ClientModule({
-  route: [<Route exact path="/article" component={Article} />],
+  route: [
+    <Route exact path="/articles" component={Articles} />,
+    <Route exact path="/article/:id" component={Article} />
+  ],
   navItem: [
-    <MenuItem key="/article">
+    <MenuItem key="/articles">
       <NavLinkWithI18n />
     </MenuItem>
   ],
