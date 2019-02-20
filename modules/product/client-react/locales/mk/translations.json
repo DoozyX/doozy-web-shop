@@ -4,5 +4,8 @@
   "navLinkProducts": "Продукти",
   "title": "Продукти",
   "meta": "Продукти",
-  "welcomeText": "Продукти"
+  "welcomeText": "Продукти",
+  "sortByPriceAscending": "Сортирај по цена (Растечки)",
+  "sortByPriceDescending": "Сортирај по цена (Опаѓачки)",
+  "products": "Продукти"
 }

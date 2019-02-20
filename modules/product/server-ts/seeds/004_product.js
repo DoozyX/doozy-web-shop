@@ -22,6 +22,8 @@ export async function seed(knex, Promise) {
           name: `Product ${i + 1}`,
           type: `Type ${i % 5}`,
           size: `${i % 3}`,
+          price: `${(i % 10) * 100}`,
+          imageSource: 'http://www.seedtech.eu/wp-content/uploads/2016/04/The-Seed.jpg',
           rating: 0,
           categoryId: (i % 5) + 1,
           brandId: (i % 5) + 1

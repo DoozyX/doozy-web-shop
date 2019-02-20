@@ -16,6 +16,8 @@ export async function up(knex) {
         table.string('name');
         table.string('type');
         table.string('size');
+        table.integer('price');
+        table.string('imageSource');
         table.integer('rating');
         table
           .integer('categoryId')

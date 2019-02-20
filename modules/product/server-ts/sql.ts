@@ -27,7 +27,7 @@ export interface Identifier {
 export class Product {
   public get(id: number) {
     return knex
-      .select('p.id', 'p.name', 'p.rating', 'p.size', 'p.type', 'p.brandId', 'p.categoryId')
+      .select('*')
       .from('product as p')
       .where('p.id', '=', id)
       .first();
@@ -35,22 +35,20 @@ export class Product {
 
   public getAllForBrand(id: number) {
     return knex
-      .select('p.id', 'p.name', 'p.rating', 'p.size', 'p.type', 'p.brandId', 'p.categoryId')
+      .select('*')
       .from('product as p')
       .where('p.brandId', '=', id);
   }
 
   public getAllForCategory(id: number) {
     return knex
-      .select('p.id', 'p.name', 'p.rating', 'p.size', 'p.type', 'p.brandId', 'p.categoryId')
+      .select('*')
       .from('product as p')
       .where('p.categoryId', '=', id);
   }
 
   public getAll() {
-    return knex
-      .select('p.id', 'p.name', 'p.rating', 'p.size', 'p.type', 'p.brandId', 'p.categoryId')
-      .from('product as p');
+    return knex.select('*').from('product as p');
   }
 }
 
