@@ -1,3 +1,4 @@
+import cart from '@gqlapp/cart-client-react';
 import core from '@gqlapp/core-client-react';
 import look from '@gqlapp/look-client-react';
 import i18n from '@gqlapp/i18n-client-react';
@@ -15,6 +16,7 @@ const pageNotFound = require('@gqlapp/page-not-found-client-react').default;
 const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
+  cart,
   look,
   validation,
   defaultRouter,
