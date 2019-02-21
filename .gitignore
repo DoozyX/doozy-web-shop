@@ -16,3 +16,5 @@ public
 .npmrc
 swagger.yml
 .directory
+
+packages/server/\.env
