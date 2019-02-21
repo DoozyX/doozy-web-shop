@@ -10,12 +10,13 @@ import settings from '../../../../settings';
 import { PageLayout } from '@gqlapp/look-client-react';
 import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
 import BRANDS_QUERY from '../graphql/BrandsQuery.graphql';
+import { RouteComponentProps } from 'react-router-dom';
 
 const H1 = styled.h1`
   text-align: center;
 `;
 
-interface ProductProps {
+interface ProductProps extends RouteComponentProps {
   t: TranslateFunction;
 }
 
@@ -52,6 +53,7 @@ const renderMetaData = (t: TranslateFunction) => (
 class Home extends React.Component<ProductProps> {
   public render() {
     const t = this.props.t;
+    const history = this.props.history;
     return (
       <PageLayout>
         {renderMetaData(t)}
@@ -72,7 +74,13 @@ class Home extends React.Component<ProductProps> {
                     <Card key={i}>
                       <CardBody>
                         <CardTitle>{category.name}</CardTitle>
-                        <Button>View Products</Button>
+                        <Button
+                          onClick={() => {
+                            history.push('/products');
+                          }}
+                        >
+                          View Products
+                        </Button>
                       </CardBody>
                     </Card>
                   ))}
@@ -96,7 +104,13 @@ class Home extends React.Component<ProductProps> {
                     <Card key={i}>
                       <CardBody>
                         <CardTitle>{brand.name}</CardTitle>
-                        <Button>View Products</Button>
+                        <Button
+                          onClick={() => {
+                            history.push('/products');
+                          }}
+                        >
+                          View Products
+                        </Button>
                       </CardBody>
                     </Card>
                   ))}
