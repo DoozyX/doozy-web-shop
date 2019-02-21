@@ -27,7 +27,7 @@ export default {
       enabled: false
     },
     facebook: {
-      enabled: false,
+      enabled: true,
       clientID: process.env.FACEBOOK_CLIENTID,
       clientSecret: process.env.FACEBOOK_CLIENTSECRET,
       callbackURL: '/auth/facebook/callback',
@@ -49,7 +49,7 @@ export default {
       scope: ['r_emailaddress', 'r_basicprofile']
     },
     google: {
-      enabled: false,
+      enabled: true,
       clientID: process.env.GOOGLE_CLIENTID,
       clientSecret: process.env.GOOGLE_CLIENTSECRET,
       callbackURL: '/auth/google/callback',
