@@ -38,6 +38,10 @@
   margin-bottom: 20px;
 }
 
+.carousel-item {
+  height: 500px;
+}
+
 @media print {
   .no-print {
     display: none;
