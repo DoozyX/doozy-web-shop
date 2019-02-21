@@ -23,8 +23,9 @@ import {
   Container,
   CardDeck
 } from 'reactstrap';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface ProductProps {
+interface ProductProps extends RouteComponentProps {
   t: TranslateFunction;
 }
 
@@ -37,6 +38,10 @@ interface ProductType {
   price: number;
 }
 
+interface ProductCardProps extends ProductType {
+  onView: () => void;
+  // onBuy: () => void;
+}
 const renderMetaData = (t: TranslateFunction) => (
   <Helmet
     title={`${settings.app.name} - ${t('title')}`}
@@ -44,14 +49,14 @@ const renderMetaData = (t: TranslateFunction) => (
   />
 );
 
-const ProductCard = ({ name, size, price, imageSource }: ProductType) => (
+const ProductCard = ({ name, size, price, imageSource, onView }: ProductCardProps) => (
   <Card style={{ minWidth: '200px' }}>
     <CardImg top width="100%" src={imageSource} alt="Card image cap" />
     <CardBody>
       <CardTitle>{name}</CardTitle>
       <CardSubtitle>{price} MKD</CardSubtitle>
       <CardText>{size} kg</CardText>
-      <Button>View</Button>
+      <Button onClick={onView}>View</Button>
       <Button>Buy</Button>
     </CardBody>
   </Card>
@@ -62,11 +67,9 @@ const SortTypes = {
   PRICE_DESCENDING: 'sortByPriceDescending'
 };
 
-const Products = (props: ProductProps) => {
+const Products = ({ t, history }: ProductProps) => {
   const [sortBy, setSortBy] = useState(SortTypes.PRICE_ASCENDING);
   const { data } = useQuery(GET_ALL_PRODUCTS, { suspend: true });
-
-  const t = props.t;
 
   return (
     <PageLayout>
@@ -100,15 +103,16 @@ const Products = (props: ProductProps) => {
               .sort((a: { price: number }, b: { price: number }) =>
                 sortBy === SortTypes.PRICE_ASCENDING ? a.price - b.price : b.price - a.price
               )
-              .map((product: ProductType) => (
+              .map(({ id, name, rating, size, price, imageSource }: ProductType) => (
                 <ProductCard
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  rating={product.rating}
-                  size={product.size}
-                  price={product.price}
-                  imageSource={product.imageSource}
+                  key={id}
+                  id={id}
+                  name={name}
+                  rating={rating}
+                  size={size}
+                  price={price}
+                  imageSource={imageSource}
+                  onView={() => history.push(`/product/${id}`)}
                 />
               ))}
           </CardDeck>

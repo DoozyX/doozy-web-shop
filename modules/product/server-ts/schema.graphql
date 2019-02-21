@@ -2,6 +2,7 @@
 type Product {
   id: Int!
   name: String!
+  description: String!
   rating: Int!
   size: String!
   type: String!

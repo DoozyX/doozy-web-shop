@@ -7,5 +7,6 @@
   "welcomeText": "Hello, This is the Product module",
   "sortByPriceAscending": "Sort by Price (Ascending)",
   "sortByPriceDescending": "Sort by Price (Descending)",
-  "products": "Products"
+  "products": "Products",
+  "description": "Description"
 }

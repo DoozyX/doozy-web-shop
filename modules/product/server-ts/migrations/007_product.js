@@ -18,6 +18,7 @@ export async function up(knex) {
         table.string('size');
         table.integer('price');
         table.string('imageSource');
+        table.text('description');
         table.integer('rating');
         table
           .integer('categoryId')

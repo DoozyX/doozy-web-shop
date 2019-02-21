@@ -8,6 +8,7 @@ import { MenuItem } from '@gqlapp/look-client-react';
 import Home from './Home';
 import Brands from './Brands';
 import Products from './Products';
+import Product from './Product';
 import resources from './locales';
 
 interface NavLinkProps {
@@ -29,7 +30,8 @@ export default new ClientModule({
   route: [
     <Route exact path="/" component={Home} />,
     <Route exact path="/brands" component={Brands} />,
-    <Route exact path="/products" component={Products} />
+    <Route exact path="/products" component={Products} />,
+    <Route exact path="/product/:id" component={Product} />
   ],
   navItem: [
     <MenuItem key="/">
