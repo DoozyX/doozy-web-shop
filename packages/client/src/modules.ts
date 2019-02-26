@@ -8,6 +8,7 @@ import validation from '@gqlapp/validation-common-react';
 import ClientModule from '@gqlapp/module-client-react';
 import defaultRouter from '@gqlapp/router-client-react';
 import payments from '@gqlapp/payments-client-react';
+import authentication from '@gqlapp/authentication-client-react';
 import '@gqlapp/favicon-common';
 import article from '@module/article-client-react';
 import product from '@module/product-client-react';
@@ -20,15 +21,16 @@ const modules = new ClientModule(
   validation,
   defaultRouter,
   chat,
-  payments,
   user,
   i18n,
   product,
   contact,
   article,
+  payments,
   cart,
   pageNotFound,
-  core
+  core,
+  authentication
 );
 
 export default modules;
