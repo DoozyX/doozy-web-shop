@@ -28,12 +28,14 @@ const ArticleCard = ({
   description,
   createdAt,
   imageSource,
+  fullName,
   handleClick
 }: {
   title: string;
   description: string;
   createdAt: any;
   imageSource: string;
+  fullName: string;
   handleClick: () => void;
 }) => {
   return (
@@ -51,7 +53,9 @@ const ArticleCard = ({
           {description}
         </CardText>
         <CardText>
-          <small className="text-muted">{moment(parseInt(createdAt, 10)).fromNow()}</small>
+          <small className="text-muted">
+            {moment(parseInt(createdAt, 10)).fromNow()} by {fullName}
+          </small>
         </CardText>
         <Button onClick={handleClick}> View Article </Button>
       </CardBody>
@@ -68,14 +72,29 @@ const Articles = ({ t, history }: ArticleViewProps) => {
       <Suspense fallback={<Spinner />}>
         <div>
           {data.allPosts.map(
-            (x: { id: number; title: string; content: string; created_at: number; imageSource: string }) => (
+            ({
+              id,
+              title,
+              content,
+              created_at,
+              imageSource,
+              user
+            }: {
+              id: number;
+              title: string;
+              content: string;
+              created_at: number;
+              imageSource: string;
+              user: { fullName: string };
+            }) => (
               <ArticleCard
-                key={x.id}
-                title={x.title}
-                description={x.content}
-                createdAt={x.created_at}
-                imageSource={x.imageSource}
-                handleClick={() => history.push(`/article/${x.id}`)}
+                key={id}
+                title={title}
+                description={content}
+                createdAt={created_at}
+                imageSource={imageSource}
+                fullName={user.fullName}
+                handleClick={() => history.push(`/article/${id}`)}
               />
             )
           )}

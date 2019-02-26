@@ -17,9 +17,6 @@ import ServerModule from '@gqlapp/module-server-ts';
 const user = require('@gqlapp/user-server-ts').default;
 
 const modules: ServerModule = new ServerModule(
-  cart,
-  article,
-  product,
   cookies,
   i18n,
   validation,
@@ -29,6 +26,9 @@ const modules: ServerModule = new ServerModule(
   mailer,
   chat,
   graphqlTypes,
+  article,
+  product,
+  cart,
   core
 );
 

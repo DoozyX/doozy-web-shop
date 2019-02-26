@@ -365,6 +365,16 @@ class User {
         .first()
     );
   }
+  async getUserPublicInfoById(id) {
+    return camelizeKeys(
+      await knex
+        .select('u.id', 'u.username', 'up.first_name', 'up.last_name')
+        .from('user AS u')
+        .where('u.id', '=', id)
+        .leftJoin('user_profile AS up', 'up.user_id', 'u.id')
+        .first()
+    );
+  }
 }
 const userDAO = new User();
 

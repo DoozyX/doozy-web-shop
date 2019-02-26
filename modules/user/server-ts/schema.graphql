@@ -9,6 +9,7 @@ type User {
 }
 
 type UserProfile {
+  username: String
   firstName: String
   lastName: String
   fullName: String

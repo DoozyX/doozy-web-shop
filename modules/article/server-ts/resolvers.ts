@@ -68,7 +68,10 @@ export default (pubsub: PubSub) => ({
   Post: {
     comments: createBatchResolver((sources, args, context) => {
       return context.Post.getCommentsForPostIds(sources.map(({ id }) => id));
-    })
+    }),
+    user(obj: any, args: any, context: any) {
+      return context.User.getUserPublicInfoById(obj.user_id);
+    }
   },
   Mutation: {
     async addPost(obj: any, { input }: PostInput, context: any) {

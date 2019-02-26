@@ -16,17 +16,17 @@ const pageNotFound = require('@gqlapp/page-not-found-client-react').default;
 const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
-  cart,
   look,
   validation,
   defaultRouter,
-  product,
-  contact,
   chat,
-  article,
   payments,
   user,
   i18n,
+  product,
+  contact,
+  article,
+  cart,
   pageNotFound,
   core
 );
