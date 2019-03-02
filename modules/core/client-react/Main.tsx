@@ -9,6 +9,7 @@ import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import ReactGA from 'react-ga';
 import { apiUrl } from '@gqlapp/core-common';
 import ClientModule from '@gqlapp/module-client-react';
+import 'semantic-ui-css/semantic.min.css'
 
 import RedBox from './RedBox';
 import createApolloClient from '../../../packages/common/createApolloClient';

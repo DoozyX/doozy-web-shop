@@ -15,6 +15,7 @@ import { ApolloClient } from 'apollo-client';
 import { createApolloClient } from '@gqlapp/core-common';
 import ClientModule from '@gqlapp/module-client-react';
 import { Spinner } from 'reactstrap';
+import 'semantic-ui-css/semantic.min.css'
 
 const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></html>');
 (global as any).document = dom.window.document;
