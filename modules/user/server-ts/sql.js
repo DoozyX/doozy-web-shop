@@ -16,6 +16,7 @@ class User {
         'u.email as email',
         'up.first_name as first_name',
         'up.last_name as last_name',
+        'up.avatar',
         'ca.serial',
         'fa.fb_id',
         'fa.display_name AS fbDisplayName',
@@ -83,6 +84,7 @@ class User {
           'u.email',
           'up.first_name',
           'up.last_name',
+          'up.avatar',
           'ca.serial',
           'fa.fb_id',
           'fa.display_name AS fbDisplayName',
@@ -116,7 +118,8 @@ class User {
           'u.is_active',
           'u.email',
           'up.first_name',
-          'up.last_name'
+          'up.last_name',
+          'up.avatar'
         )
         .from('user AS u')
         .where('u.id', '=', id)
@@ -128,7 +131,16 @@ class User {
   async getUserWithSerial(serial) {
     return camelizeKeys(
       await knex
-        .select('u.id', 'u.username', 'u.role', 'u.is_active', 'ca.serial', 'up.first_name', 'up.last_name')
+        .select(
+          'u.id',
+          'u.username',
+          'u.role',
+          'u.is_active',
+          'ca.serial',
+          'up.first_name',
+          'up.last_name',
+          'up.avatar'
+        )
         .from('user AS u')
         .leftJoin('auth_certificate AS ca', 'ca.user_id', 'u.id')
         .leftJoin('user_profile AS up', 'up.user_id', 'u.id')
@@ -233,7 +245,8 @@ class User {
           'u.is_active',
           'u.email',
           'up.first_name',
-          'up.last_name'
+          'up.last_name',
+          'up.avatar'
         )
         .from('user AS u')
         .leftJoin('user_profile AS up', 'up.user_id', 'u.id')
@@ -254,7 +267,8 @@ class User {
           'u.email',
           'u.password_hash',
           'up.first_name',
-          'up.last_name'
+          'up.last_name',
+          'up.avatar'
         )
         .from('user AS u')
         .leftJoin('auth_facebook AS fa', 'fa.user_id', 'u.id')
@@ -277,7 +291,8 @@ class User {
           'u.email',
           'u.password_hash',
           'up.first_name',
-          'up.last_name'
+          'up.last_name',
+          'up.avatar'
         )
         .from('user AS u')
         .leftJoin('auth_linkedin AS lna', 'lna.user_id', 'u.id')
@@ -300,7 +315,8 @@ class User {
           'u.email',
           'u.password_hash',
           'up.first_name',
-          'up.last_name'
+          'up.last_name',
+          'up.avatar'
         )
         .from('user AS u')
         .leftJoin('auth_github AS gha', 'gha.user_id', 'u.id')
@@ -323,7 +339,8 @@ class User {
           'u.email',
           'u.password_hash',
           'up.first_name',
-          'up.last_name'
+          'up.last_name',
+          'up.avatar'
         )
         .from('user AS u')
         .leftJoin('auth_google AS ga', 'ga.user_id', 'u.id')
@@ -337,7 +354,7 @@ class User {
   async getUserByUsername(username) {
     return camelizeKeys(
       await knex
-        .select('u.id', 'u.username', 'u.role', 'u.is_active', 'u.email', 'up.first_name', 'up.last_name')
+        .select('u.id', 'u.username', 'u.role', 'u.is_active', 'u.email', 'up.first_name', 'up.last_name', 'up.avatar')
         .from('user AS u')
         .where('u.username', '=', username)
         .leftJoin('user_profile AS up', 'up.user_id', 'u.id')
@@ -356,7 +373,8 @@ class User {
           'u.is_active',
           'u.email',
           'up.first_name',
-          'up.last_name'
+          'up.last_name',
+          'up.avatar'
         )
         .from('user AS u')
         .where('u.username', '=', usernameOrEmail)
@@ -368,7 +386,7 @@ class User {
   async getUserPublicInfoById(id) {
     return camelizeKeys(
       await knex
-        .select('u.id', 'u.username', 'up.first_name', 'up.last_name')
+        .select('u.id', 'u.username', 'up.first_name', 'up.last_name', 'up.avatar')
         .from('user AS u')
         .where('u.id', '=', id)
         .leftJoin('user_profile AS up', 'up.user_id', 'u.id')

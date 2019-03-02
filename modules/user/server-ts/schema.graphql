@@ -13,6 +13,7 @@ type UserProfile {
   firstName: String
   lastName: String
   fullName: String
+  avatar: String
 }
 
 # Additional authentication service info
