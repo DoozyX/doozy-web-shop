@@ -45,9 +45,9 @@ const ArticleCard = ({
         <CardText
           style={{
             height: '160px',
-            'text-overflow': 'ellipsis',
+            textOverflow: 'ellipsis',
             overflow: 'hidden',
-            'white-space': 'pre-wrap;'
+            whiteSpace: 'pre-wrap'
           }}
         >
           {description}

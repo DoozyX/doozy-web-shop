@@ -7,8 +7,18 @@ query getPost($id: Int!) {
     imageSource
     created_at
     user {
-      firstName
       fullName
+      username
+      avatar
+    }
+    comments {
+      content
+      created_at
+      user {
+        username
+        fullName
+        avatar
+      }
     }
   }
 }

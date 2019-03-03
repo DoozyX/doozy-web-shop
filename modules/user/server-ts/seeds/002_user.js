@@ -19,6 +19,13 @@ export async function seed(knex, Promise) {
     is_active: true
   });
 
+  await returnId(knex('user_profile')).insert({
+    first_name: 'Doozy',
+    last_name: 'Admin',
+    avatar: 'https://i.imgur.com/6XN24Lg.png',
+    user_id: id
+  });
+
   await returnId(
     knex('auth_certificate').insert({
       serial: 'admin-123',

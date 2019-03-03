@@ -25,7 +25,8 @@ Cras volutpat odio ac eleifend interdum. Praesent ut tristique turpis, sed imper
         [...Array(2).keys()].map(async jj => {
           return returnId(knex('comment')).insert({
             post_id: post[0],
-            content: `Comment title ${jj + 1} for post ${post[0]}`
+            content: `Comment title ${jj + 1} for post ${post[0]}`,
+            user_id: '1'
           });
         })
       );

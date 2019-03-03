@@ -6,6 +6,7 @@ export interface Post {
 }
 
 export interface Comment {
+  userId: number;
   postId: number;
   content: string;
 }
@@ -21,7 +22,7 @@ export default class ArticleDAO {
 
   public postsPagination(limit: number, after: number) {
     return knex
-      .select('id', 'title', 'content')
+      .select('*')
       .from('post')
       .orderBy('id', 'desc')
       .limit(limit)
@@ -30,11 +31,18 @@ export default class ArticleDAO {
 
   public async getCommentsForPostIds(postIds: number[]) {
     const res = await knex
-      .select('id', 'content', 'post_id AS postId')
+      .select('*')
       .from('comment')
       .whereIn('post_id', postIds);
 
     return orderedFor(res, postIds, 'postId', false);
+  }
+
+  public async getCommentsForPost(postId: number) {
+    return knex
+      .select('*')
+      .from('comment')
+      .where('post_id', '=', postId);
   }
 
   public getTotal() {
@@ -67,13 +75,13 @@ export default class ArticleDAO {
       .update({ title, content });
   }
 
-  public addComment({ content, postId }: Comment) {
-    return returnId(knex('comment')).insert({ content, post_id: postId });
+  public addComment({ content, postId, userId }: Comment) {
+    return returnId(knex('comment')).insert({ content, post_id: postId, user_id: userId });
   }
 
   public getComment(id: number) {
     return knex
-      .select('id', 'content')
+      .select('*')
       .from('comment')
       .where('id', '=', id)
       .first();

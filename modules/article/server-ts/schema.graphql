@@ -13,6 +13,7 @@ type Post {
 type Comment {
   id: Int!
   content: String!
+  created_at: String!
   user: UserProfile!
 }
 

@@ -1,7 +1,8 @@
 import { PubSub, withFilter } from 'graphql-subscriptions';
-import { createBatchResolver } from 'graphql-resolve-batch';
+import withAuth from 'graphql-auth';
 // interfaces
 import { Post, Comment, Identifier } from './sql';
+import { log } from '@gqlapp/core-common';
 
 interface Edges {
   cursor: number;
@@ -66,10 +67,17 @@ export default (pubsub: PubSub) => ({
     }
   },
   Post: {
-    comments: createBatchResolver((sources, args, context) => {
-      return context.Post.getCommentsForPostIds(sources.map(({ id }) => id));
-    }),
+    comments(obj: any, args: any, context: any) {
+      return context.Post.getCommentsForPost(obj.id);
+    },
     user(obj: any, args: any, context: any) {
+      return context.User.getUserPublicInfoById(obj.user_id);
+    }
+  },
+  Comment: {
+    user(obj: any, args: any, context: any) {
+      log.error(obj.user_id);
+
       return context.User.getUserPublicInfoById(obj.user_id);
     }
   },
@@ -133,7 +141,8 @@ export default (pubsub: PubSub) => ({
       });
       return post;
     },
-    async addComment(obj: any, { input }: CommentInput, context: any) {
+    addComment: withAuth(async (obj: any, { input }: CommentInput, context: any) => {
+      input.userId = context.identity.id;
       const [id] = await context.Post.addComment(input);
       const comment = await context.Post.getComment(id);
       // publish for edit post page
@@ -146,7 +155,7 @@ export default (pubsub: PubSub) => ({
         }
       });
       return comment;
-    },
+    }),
     async deleteComment(obj: any, { input: { id, postId } }: CommentInputWithId, context: any) {
       await context.Post.deleteComment(id);
       // publish for edit post page
