@@ -2,7 +2,6 @@ import { PubSub, withFilter } from 'graphql-subscriptions';
 import withAuth from 'graphql-auth';
 // interfaces
 import { Post, Comment, Identifier } from './sql';
-import { log } from '@gqlapp/core-common';
 
 interface Edges {
   cursor: number;
@@ -76,8 +75,6 @@ export default (pubsub: PubSub) => ({
   },
   Comment: {
     user(obj: any, args: any, context: any) {
-      log.error(obj.user_id);
-
       return context.User.getUserPublicInfoById(obj.user_id);
     }
   },

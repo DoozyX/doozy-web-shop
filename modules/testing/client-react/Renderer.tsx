@@ -15,7 +15,7 @@ import { ApolloClient } from 'apollo-client';
 import { createApolloClient } from '@gqlapp/core-common';
 import ClientModule from '@gqlapp/module-client-react';
 import { Spinner } from 'reactstrap';
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></html>');
 (global as any).document = dom.window.document;
@@ -23,6 +23,7 @@ const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></h
 // Needed by Formik >= 1.x
 (global as any).HTMLButtonElement = dom.window.HTMLButtonElement;
 (global as any).navigator = dom.window.navigator;
+(global as any).HTMLElement = typeof window === 'undefined' ? Object : (window as any).HTMLElement;
 
 // tslint:disable-next-line
 const { render } = require('./testUtils');
