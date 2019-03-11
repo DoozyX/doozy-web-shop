@@ -4,9 +4,11 @@ import Helmet from 'react-helmet';
 import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery, useMutation } from 'react-apollo-hooks';
 
 import GET_PRODUCT from '../graphql/GetProductQuery.graphql';
+import ADD_PRODUCT_TO_CART from '../graphql/AddProductToCart.graphql';
+import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
 import { RouteComponentProps } from 'react-router-dom';
 import { Spinner, Label, Button, Input } from 'reactstrap';
 import StarRatingComponent from 'react-star-rating-component';
@@ -28,8 +30,15 @@ const renderMetaData = (t: TranslateFunction) => (
 );
 
 const Product = ({ t, match }: ProductProps) => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const { data } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) } });
+  const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
+    refetchQueries: [{ query: GET_CART_ITEMS }],
+    variables: {
+      productId: data.product.id,
+      quantity
+    }
+  });
   const { imageSource, name, price, rating, description } = data.product;
   return (
     <PageLayout>
@@ -49,11 +58,11 @@ const Product = ({ t, match }: ProductProps) => {
                 type="number"
                 name="quantity"
                 id="quantity"
+                min={1}
                 value={quantity}
                 onChange={e => setQuantity(parseInt(e.target.value, 10))}
               />
-              <Button>Add to cart</Button>
-              <Button>Buy now</Button>
+              <Button onClick={() => addToCart()}>Add to cart</Button>
             </div>
           </div>
           <h2>{t('description')}</h2>

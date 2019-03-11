@@ -1,16 +1,104 @@
-import React from 'react';
-
+import React, { Suspense } from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
-import CartView from '../components/CartView';
+import Helmet from 'react-helmet';
+import { PageLayout } from '@gqlapp/look-client-react';
+import settings from '../../../../settings';
+import { useQuery, useMutation } from 'react-apollo-hooks';
+import { Item, Button, Input, Header, Divider, Loader } from 'semantic-ui-react';
+
+import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
+import REMOVE_CART_ITEM from '../graphql/RemoveCartItem.graphql';
+import CHANGE_CART_ITEM_QUANTITY from '../graphql/ChangeCartItemQuantity.graphql';
 
 interface CartProps {
   t: TranslateFunction;
 }
 
-class Cart extends React.Component<CartProps> {
-  public render() {
-    return <CartView {...this.props} />;
-  }
-}
+const renderMetaData = (t: TranslateFunction) => (
+  <Helmet
+    title={`${settings.app.name} - ${t('title')}`}
+    meta={[{ name: 'description', content: `${settings.app.name} - ${t('meta')}` }]}
+  />
+);
+
+const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }: any) => {
+  const removeItem = useMutation(REMOVE_CART_ITEM, {
+    refetchQueries: [{ query: GET_CART_ITEMS }],
+    variables: {
+      productId: id
+    }
+  });
+  const changeItemQuantity = useMutation(CHANGE_CART_ITEM_QUANTITY, {
+    refetchQueries: [{ query: GET_CART_ITEMS }]
+  });
+
+  return (
+    <Item>
+      <Item.Image size="small" src={imageSource} />
+
+      <Item.Content verticalAlign="middle">
+        <Item.Header>{name}</Item.Header>
+        <Item.Description />
+        <Item.Meta>
+          <span className="price">{price} MKD</span>
+          <div style={{ float: 'right' }}>
+            Quantity{' '}
+            <Input
+              type="number"
+              style={{ width: '100px' }}
+              value={quantity}
+              onChange={e => {
+                changeItemQuantity({
+                  variables: {
+                    productId: id,
+                    quantity: parseInt(e.target.value, 10)
+                  }
+                });
+              }}
+            />
+          </div>
+        </Item.Meta>
+        <Item.Description>{size} kg</Item.Description>
+        <Item.Extra>
+          <Button floated="right" onClick={() => removeItem()}>
+            Remove
+          </Button>
+        </Item.Extra>
+      </Item.Content>
+    </Item>
+  );
+};
+
+const Cart = ({ t }: CartProps) => {
+  const { data } = useQuery(GET_CART_ITEMS, { suspend: true });
+
+  return (
+    <PageLayout>
+      {renderMetaData(t)}
+      <Divider />
+      <Header as="h1">{t('cartTitle')} </Header>
+      <Divider />
+      <Suspense fallback={<Loader />}>
+        <Item.Group relaxed divided>
+          {data.getCartItems.map(({ product, quantity }: any) => (
+            <CartItem product={product} quantity={quantity} />
+          ))}
+        </Item.Group>
+        <Divider />
+        <div>
+          <Button floated="right">Buy All</Button>
+          <span style={{ float: 'right' }}>
+            <Header as="h2">
+              Total:
+              {data.getCartItems.reduce((total: any, { product, quantity }: any) => {
+                return (total += product.price * quantity);
+              }, 0)}
+            </Header>
+          </span>
+        </div>
+      </Suspense>
+    </PageLayout>
+  );
+};
 
 export default translate('cart')(Cart);

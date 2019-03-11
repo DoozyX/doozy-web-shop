@@ -1,16 +1,15 @@
 # Entity
-type TypeName {
-  typeName: String!
+type CartItem {
+  product: Product!
+  quantity: Int!
 }
 
 extend type Query {
-  queryName: TypeName
+  getCartItems: [CartItem]
 }
 
 extend type Mutation {
-  mutationName(varName: Int!): TypeName
-}
-
-extend type Subscription {
-  subscriptionName: TypeName
+  addProductToCart(productId: Int!, quantity: Int!): Boolean
+  changeCartItemQuantity(productId: Int!, quantity: Int!): Boolean
+  removeCartItem(productId: Int!): Boolean
 }

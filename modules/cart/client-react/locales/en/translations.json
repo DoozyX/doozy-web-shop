@@ -2,5 +2,6 @@
   "navLink": "Cart",
   "title": "Cart",
   "meta": "Cart",
-  "welcomeText": "Cart"
+  "welcomeText": "Cart",
+  "cartTitle": "Your Cart Items"
 }

@@ -1,6 +1,6 @@
 import React, { ReactElement, Suspense } from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvier } from 'react-apollo-hooks';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloLink, Observable, Operation } from 'apollo-link';
 import { addTypenameToDocument } from 'apollo-utilities';
 import { Router, Switch } from 'react-router-dom';
@@ -182,9 +182,9 @@ export class Renderer {
     return ref.clientModules.getWrappedRoot(
       <Provider store={this.store}>
         <ApolloProvider client={this.client}>
-          <ApolloHooksProvier client={this.client}>
+          <ApolloHooksProvider client={this.client}>
             <Suspense fallback={<Spinner />}>{component}</Suspense>
-          </ApolloHooksProvier>
+          </ApolloHooksProvider>
         </ApolloProvider>
       </Provider>
     );

@@ -1,0 +1,3 @@
+mutation changeCartItemQuantity($productId: Int!, $quantity: Int!) {
+	changeCartItemQuantity(productId: $productId, quantity: $quantity)
+}

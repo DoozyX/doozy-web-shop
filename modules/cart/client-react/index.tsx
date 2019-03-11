@@ -5,14 +5,17 @@ import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 
 import { Route, NavLink } from 'react-router-dom';
 import { MenuItem } from '@gqlapp/look-client-react';
+
 import Cart from './containers/Cart';
 import resources from './locales';
 
-const NavLinkWithI18n = translate('cart')(({ t }: { t: TranslateFunction }) => (
-  <NavLink to="/cart" className="nav-link" activeClassName="active">
-    {t('cart:navLink')}
-  </NavLink>
-));
+const NavLinkWithI18n = translate('cart')(({ t }: { t: TranslateFunction }) => {
+  return (
+    <NavLink to="/cart" className="nav-link" activeClassName="active">
+      {t('cart:navLink')}
+    </NavLink>
+  );
+});
 
 export default new ClientModule({
   route: [<Route exact path="/cart" component={Cart} />],

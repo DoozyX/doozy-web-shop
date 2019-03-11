@@ -21,8 +21,8 @@ export async function seed(knex, Promise) {
         await knex('product').insert({
           name: `Product ${i + 1}`,
           type: `Type ${i % 5}`,
-          size: `${i % 3}`,
-          price: `${(i % 10) * 100}`,
+          size: `${(i % 3) + 1}`,
+          price: `${(i % 10) * 100 + 1}`,
           imageSource: 'http://www.seedtech.eu/wp-content/uploads/2016/04/The-Seed.jpg',
           rating: i % 6,
           categoryId: (i % 5) + 1,
