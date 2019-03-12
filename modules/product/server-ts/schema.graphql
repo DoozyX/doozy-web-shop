@@ -10,6 +10,14 @@ type Product {
   price: Int!
   imageSource: String!
   category: Category!
+  reviews: [Review]
+}
+
+type Review {
+  id: Int!
+  content: String!
+  user: UserProfile!
+  created_at: String!
 }
 
 type Brand {
@@ -29,4 +37,7 @@ extend type Query {
   products: [Product] # TODO: refactor with pagination
   categories: [Category]
   brands: [Brand]
+}
+extend type Mutation {
+  addReviewToProduct(productId: Int!, content: String!): Boolean!
 }

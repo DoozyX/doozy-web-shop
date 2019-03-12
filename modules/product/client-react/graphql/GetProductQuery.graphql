@@ -14,5 +14,15 @@ query GetProduct($id: Int!) {
     category {
       name
     }
+    reviews {
+      id
+      content
+      user {
+        avatar
+        username
+        fullName
+      }
+      created_at
+    }
   }
 }

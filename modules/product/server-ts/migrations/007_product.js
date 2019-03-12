@@ -34,12 +34,30 @@ export async function up(knex) {
           .onDelete('CASCADE');
         table.timestamps(false, true);
       })
+      .createTable('review', table => {
+        table.increments();
+        table.string('content');
+        table
+          .integer('productId')
+          .unsigned()
+          .references('id')
+          .inTable('product')
+          .onDelete('CASCADE');
+        table
+          .integer('userId')
+          .unsigned()
+          .references('id')
+          .inTable('user')
+          .onDelete('CASCADE');
+        table.timestamps(false, true);
+      })
   ]);
 }
 
 export async function down(knex) {
   return Promise.all([
     knex.schema
+      .dropTable('review')
       .dropTable('product')
       .dropTable('brand')
       .dropTable('category')

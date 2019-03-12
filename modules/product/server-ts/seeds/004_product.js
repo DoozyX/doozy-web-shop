@@ -34,6 +34,15 @@ Proin id volutpat nulla. Nullam bibendum convallis enim, et consequat magna temp
 Sed non accumsan dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vehicula at libero fringilla cursus. Mauris volutpat vel erat viverra tristique. Integer porta tellus eu metus congue, vitae laoreet velit dapibus. Cras et massa imperdiet, lobortis quam vel, hendrerit nisl. Nam sed aliquet diam, et accumsan leo. Aliquam pulvinar vitae dolor at volutpat. Quisque non dolor vestibulum augue molestie placerat. Nulla sit amet tristique nisi. Maecenas vulputate orci dui, vel sollicitudin mauris scelerisque a. Ut eget risus ut lorem ornare laoreet nec vitae enim. Etiam pellentesque porttitor lobortis. Etiam maximus eros elit, vel ornare nisl egestas sed. Pellentesque sed neque lacus.`
         });
       })
+    ),
+    await Promise.all(
+      [...Array(100).keys()].map(async i => {
+        await knex('review').insert({
+          content: `Review content ${i}`,
+          userId: 1,
+          productId: (i % 20) + 1
+        });
+      })
     )
   );
 }

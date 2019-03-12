@@ -1,4 +1,4 @@
-import { knex } from '@gqlapp/database-server-ts';
+import { knex, returnId } from '@gqlapp/database-server-ts';
 
 export interface ProductType {
   id: number;
@@ -8,6 +8,12 @@ export interface ProductType {
   type: string;
   categoryId: number;
   brandId: number;
+}
+
+export interface Review {
+  userId: number;
+  productId: number;
+  content: string;
 }
 
 export interface BrandType {
@@ -77,5 +83,18 @@ export class Category {
 
   public getAll() {
     return knex.select('c.id', 'c.name').from('category as c');
+  }
+}
+
+export class Review {
+  public insert(content: any, productId: any, userId: any) {
+    return returnId(knex('review')).insert({ content, productId, userId });
+  }
+
+  public async getForProduct(productId: number) {
+    return knex
+      .select('*')
+      .from('review')
+      .where('productId', productId);
   }
 }
