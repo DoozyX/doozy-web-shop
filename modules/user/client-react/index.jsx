@@ -44,11 +44,11 @@ const LogoutLink = withRouter(
 export * from './containers/Auth';
 export { default as LOGIN } from './graphql/Login.graphql';
 
-const NavLinkUsersWithI18n = translate('user')(({ t }) => (
+/* const NavLinkUsersWithI18n = translate('user')(({ t }) => (
   <NavLink to="/users" className="nav-link" activeClassName="active">
     {t('navLink.users')}
   </NavLink>
-));
+)); */
 const NavLinkLoginWithI18n = translate('user')(({ t }) => (
   <NavLink to="/login" className="nav-link" activeClassName="active">
     {t('navLink.signIn')}
@@ -74,13 +74,13 @@ export default new ClientModule({
     <AuthRoute exact path="/forgot-password" redirectOnLoggedIn redirect="/profile" component={ForgotPassword} />,
     <AuthRoute exact path="/reset-password/:token" redirectOnLoggedIn redirect="/profile" component={ResetPassword} />
   ],
-  navItem: [
-    <IfLoggedIn key="/users" role="admin">
-      <MenuItem>
-        <NavLinkUsersWithI18n />
-      </MenuItem>
-    </IfLoggedIn>
-  ],
+  /*   navItem: [
+      <IfLoggedIn key="/users" role="admin">
+        <MenuItem>
+          <NavLinkUsersWithI18n />
+        </MenuItem>
+      </IfLoggedIn>
+    ], */
   navItemRight: [
     <IfLoggedIn key="/profile">
       <MenuItem>
