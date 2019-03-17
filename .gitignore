@@ -15,6 +15,6 @@ public
 *.iml
 .npmrc
 swagger.yml
-.directory
 
+.directory
 packages/server/\.env

@@ -11,6 +11,20 @@ import ClientModule from '@gqlapp/module-client-react-native';
 
 const user = require('@gqlapp/user-client-react').default;
 
-const modules = new ClientModule(validation, defaultRouter, contact, chat, payments, user, i18n, core, authentication);
+const modules = new ClientModule(
+  validation,
+  defaultRouter,
+  counter,
+  post,
+  upload,
+  contact,
+  pagination,
+  chat,
+  payments,
+  user,
+  i18n,
+  core,
+  authentication
+);
 
 export default modules;

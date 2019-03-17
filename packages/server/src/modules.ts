@@ -9,10 +9,10 @@ import upload from '@gqlapp/upload-server-ts';
 import subscription from '@gqlapp/payments-server-ts';
 import mailer from '@gqlapp/mailer-server-ts';
 import graphqlTypes from '@gqlapp/graphql-types-server-ts';
-import '@gqlapp/debug-server-ts';
 import authentication from '@gqlapp/authentication-server-ts';
 import article from '@module/article-server-ts';
 import product from '@module/product-server-ts';
+import '@gqlapp/debug-server-ts';
 
 import ServerModule from '@gqlapp/module-server-ts';
 
@@ -23,9 +23,9 @@ const modules: ServerModule = new ServerModule(
   cookies,
   i18n,
   validation,
+  subscription,
   user,
   upload,
-  subscription,
   contact,
   mailer,
   chat,

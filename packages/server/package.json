@@ -8,11 +8,11 @@
     "yarn": ">= 1.0.0"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production spin build",
+    "build": "cross-env NODE_ENV=production zen build",
     "clean": "rimraf build .tmp",
     "start": "node --harmony build",
-    "tests": "cross-env NODE_ENV=test PORT=7070 spin test -t 10000 --include src/__tests__/entry.ts --full-trace \"src/**/*.spec.*\" \"../../modules/**/server-ts/**/*.spec.*\"",
-    "tests:watch": "cross-env NODE_ENV=test PORT=7070 spin test -t 10000 --include src/__tests__/entry.ts --full-trace --watch \"src/**/*.spec.*\" \"../../modules/**/server-ts/**/*.spec.*\"",
+    "tests": "cross-env NODE_ENV=test PORT=7070 zen test -t 10000 --include src/__tests__/entry.ts --full-trace \"src/**/*.spec.*\" \"../../modules/**/server-ts/**/*.spec.*\"",
+    "tests:watch": "cross-env NODE_ENV=test PORT=7070 zen test -t 10000 --include src/__tests__/entry.ts --full-trace --watch \"src/**/*.spec.*\" \"../../modules/**/server-ts/**/*.spec.*\"",
     "test": "yarn tests && yarn lint",
     "eslint": "eslint --fix --ext js --ext jsx --ext json src",
     "tslint": "tslint --fix -p tsconfig.json -c ../../tslint.json",
@@ -20,7 +20,7 @@
     "seed": "yarn migrate && knex seed:run",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
-    "watch": "spin watch",
+    "watch": "zen watch",
     "heroku-postbuild": "yarn build && yarn seed && yarn stripe:setup",
     "cli": "node ../../tools/cli",
     "stripe:setup": "node ../../modules/payments/server-ts/stripe/subscription/cli/stripeSetup"
@@ -112,12 +112,12 @@
     "performance-now": "^2.1.0",
     "pg": "^7.4.0",
     "prop-types": "^15.6.0",
-    "react": "16.8.1",
+    "react": "^16.8.1",
     "react-apollo": "^2.3.1",
     "react-art": "^16.8.1",
     "react-cookie": "^2.2.0",
     "react-debounce-input": "^3.1.0",
-    "react-dom": "16.8.1",
+    "react-dom": "^16.8.1",
     "react-helmet": "^5.2.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
@@ -176,6 +176,6 @@
     "ws": "^5.1.1"
   },
   "peerDependencies": {
-    "spinjs": "^0.4.0"
+    "@larix/zen": "^0.1.0"
   }
 }

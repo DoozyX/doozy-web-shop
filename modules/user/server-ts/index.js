@@ -8,6 +8,7 @@ import settings from '../../../settings';
 import User from './sql';
 import resources from './locales';
 import social from './social';
+import password from './password';
 
 const getIdentity = (id, serial = '') => {
   if (!id && serial) {
@@ -33,12 +34,12 @@ const appContext = {
 };
 
 const middleware = app => {
-  if (settings.auth.password.sendConfirmationEmail) {
+  if (settings.auth.password.requireEmailConfirmation) {
     app.get('/confirmation/:token', confirmMiddleware);
   }
 };
 
-export default new ServerModule(social, {
+export default new ServerModule(social, password, {
   schema: [schema],
   appContext,
   createResolversFunc: [resolvers],
