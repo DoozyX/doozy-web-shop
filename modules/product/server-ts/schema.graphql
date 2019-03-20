@@ -32,11 +32,17 @@ type Category {
   products: [Product]
 }
 
+type ProductSearchWithCategory {
+  name: String!
+  results: [Product]
+}
+
 extend type Query {
   product(id: Int!): Product
   products: [Product] # TODO: refactor with pagination
   categories: [Category]
   brands: [Brand]
+  searchProductsWithCategory(search: String!): [ProductSearchWithCategory]
 }
 extend type Mutation {
   addReviewToProduct(productId: Int!, content: String!): Boolean!

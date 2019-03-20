@@ -84,6 +84,14 @@ export class Category {
   public getAll() {
     return knex.select('c.id', 'c.name').from('category as c');
   }
+
+  public searchForProduct(search: string) {
+    return knex
+      .select('c.id', 'c.name')
+      .from('category as c')
+      .join('product as p', 'c.id', '=', 'p.categoryId')
+      .where('p.name', 'like', '%' + search + '%');
+  }
 }
 
 export class Review {

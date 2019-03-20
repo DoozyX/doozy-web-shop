@@ -17,6 +17,14 @@ export default () => ({
     },
     brands(_obj: any, _args: any, context: ProductContext) {
       return context.Brand.getAll();
+    },
+    searchProductsWithCategory(_obj: any, { search }: any, context: ProductContext) {
+      return context.Category.searchForProduct(search);
+    }
+  },
+  ProductSearchWithCategory: {
+    results(obj: BrandType, _args: any, { Product }: ProductContext, info: any) {
+      return Product.getAllForBrand(obj.id);
     }
   },
   Product: {

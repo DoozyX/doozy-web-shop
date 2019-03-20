@@ -1,88 +1,62 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Search, Button } from 'semantic-ui-react';
 
-const getResults = () =>
-  _.times(5, () => ({
-    title: 'abc',
-    description: 'abc',
-    image: 'abc',
-    price: 'abc'
-  }));
+import SEARCH_PRODUCT_WITH_CATEGORY from '../../graphql/SearchProductsWithCategory.graphql';
+import { Query } from 'react-apollo';
 
-const source = _.range(0, 3).reduce(memo => {
-  const name = 'abc';
+const SearchBar = (props: any) => {
+  const [{ value }, setState] = useState({ value: '' });
 
-  // eslint-disable-next-line no-param-reassign
-  memo[name] = {
-    name,
-    results: getResults()
-  };
+  return (
+    <Query query={SEARCH_PRODUCT_WITH_CATEGORY} variables={{ search: value }}>
+      {({ loading, data, refetch }) => {
+        const handleResultSelect = (e: any, { result }: any) => setState({ value: result.title });
 
-  return memo;
-}, {});
+        const handleSearchChange = (e: any, { value: val }: any) => {
+          setState({ value: val });
 
-class SearchBar extends Component<any, any> {
-  public componentWillMount() {
-    this.resetComponent();
-  }
+          setTimeout(() => {
+            refetch();
+          }, 300);
+        };
 
-  public resetComponent = () => this.setState({ isLoading: false, results: [], value: '' });
-
-  public handleResultSelect = (e: any, { result }: any) => this.setState({ value: result.title });
-
-  public handleSearchChange = (e: any, { value }: any) => {
-    this.setState({ isLoading: true, value });
-
-    setTimeout(() => {
-      if (this.state.value.length < 1) {
-        return this.resetComponent();
-      }
-
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-      const isMatch = (result: any) => re.test(result.title);
-
-      const filteredResults = _.reduce(
-        source,
-        (memo, data: any, name) => {
-          const results = _.filter(data.results, isMatch);
-          if (results.length) {
-            memo[name] = { name, results };
-          }
-
-          return memo;
-        },
-        {}
-      );
-
-      this.setState({
-        isLoading: false,
-        results: filteredResults
-      });
-    }, 300);
-  };
-
-  public render() {
-    const { isLoading, value, results } = this.state as any;
-
-    return (
-      <div style={{ display: 'flex', width: '100%' }}>
-        <Search
-          category
-          loading={isLoading}
-          onResultSelect={this.handleResultSelect}
-          onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
-          results={results}
-          value={value}
-          input={{ fluid: true }}
-          style={{ width: '100%' }}
-          placeholder={'Search'}
-          {...this.props}
-        />
-        <Button style={{ marginLeft: '10px' }}>Search</Button>
-      </div>
-    );
-  }
-}
+        let filteredResults: any = {};
+        if (!loading) {
+          filteredResults = data.searchProductsWithCategory.map(({ name, results }: any) => {
+            const newCategory: any = { name };
+            newCategory.results = results.map(({ name: productName, imageSource, price, brand }: any) => {
+              const product: any = {};
+              product.title = productName;
+              product.image = imageSource;
+              product.price = price + 'MKD';
+              product.description = brand.name;
+              return product;
+            });
+            return newCategory;
+          });
+        }
+        return (
+          <div style={{ display: 'flex', width: '100%' }}>
+            <Search
+              category
+              loading={loading}
+              onResultSelect={handleResultSelect}
+              onSearchChange={_.debounce(handleSearchChange, 500, { leading: true })}
+              results={filteredResults}
+              value={value}
+              input={{ fluid: true }}
+              style={{ width: '100%' }}
+              placeholder={'Search'}
+              fluid={true}
+              {...props}
+            />
+            <Button style={{ marginLeft: '10px' }}>Search</Button>
+          </div>
+        );
+      }}
+    </Query>
+  );
+};
 
 export default SearchBar;

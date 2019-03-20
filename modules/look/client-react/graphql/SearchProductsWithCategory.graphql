@@ -1,0 +1,13 @@
+query searchProductsWithCategory($search: String!) {
+    searchProductsWithCategory(search: $search) {
+        name
+        results {
+            name
+            price
+            imageSource
+            brand {
+                name
+            }
+        }
+    }
+}
