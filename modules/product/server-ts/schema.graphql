@@ -23,12 +23,14 @@ type Review {
 type Brand {
   id: Int!
   name: String!
+  image: String!
   products: [Product]
 }
 
 type Category {
   id: Int!
   name: String!
+  image: String!
   products: [Product]
 }
 
@@ -40,6 +42,8 @@ type ProductSearchWithCategory {
 extend type Query {
   product(id: Int!): Product
   products: [Product] # TODO: refactor with pagination
+  topProducts: [Product]
+  newProducts: [Product]
   categories: [Category]
   brands: [Brand]
   searchProductsWithCategory(search: String!): [ProductSearchWithCategory]

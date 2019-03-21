@@ -1,20 +1,19 @@
 import React from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
-import { Button, Card, CardBody, CardGroup, CardTitle, UncontrolledCarousel } from 'reactstrap';
-import styled from 'styled-components';
+import { UncontrolledCarousel } from 'reactstrap';
 import { Query } from 'react-apollo';
 
 import settings from '../../../../settings';
 
 import { PageLayout } from '@gqlapp/look-client-react';
+import { RouteComponentProps } from 'react-router-dom';
+import { Header, Icon, Divider, Loader, Card, Image, Rating } from 'semantic-ui-react';
+
 import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
 import BRANDS_QUERY from '../graphql/BrandsQuery.graphql';
-import { RouteComponentProps } from 'react-router-dom';
-
-const H1 = styled.h1`
-  text-align: center;
-`;
+import GET_TOP_PRODUCTS_QUERY from '../graphql/GetTopProducts.graphql';
+import GET_NEW_PRODUCTS_QUERY from '../graphql/GetNewProducts.graphql';
 
 interface ProductProps extends RouteComponentProps {
   t: TranslateFunction;
@@ -25,21 +24,21 @@ const items = [
     src: 'https://www.ecoseibsrl.it/wp-content/uploads/2016/09/wallpaper-natura-2.jpg',
     altText: 'Slide 1',
     caption: 'Slide 1',
-    header: 'Slide 1 Header'
+    header: 'PROMOTION 1'
   },
   {
     src:
       'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
     altText: 'Slide 2',
     caption: 'Slide 2',
-    header: 'Slide 2 Header'
+    header: 'PROMOTION 2'
   },
   {
     src:
       'https://images.pexels.com/photos/814499/pexels-photo-814499.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
     altText: 'Slide 3',
     caption: 'Slide 3',
-    header: 'Slide 3 Header'
+    header: 'PROMOTION 3'
   }
 ];
 
@@ -58,8 +57,25 @@ class Home extends React.Component<ProductProps> {
       <PageLayout>
         {renderMetaData(t)}
 
-        <UncontrolledCarousel items={items} />
-        <H1>Categories</H1>
+        <UncontrolledCarousel
+          style={{
+            position: 'absolute',
+            width: '100%',
+            left: '0'
+          }}
+          items={items}
+        />
+        <Divider
+          horizontal
+          style={{
+            marginTop: '520px'
+          }}
+        >
+          <Header as="h4">
+            <Icon name="th" />
+            Categories
+          </Header>
+        </Divider>
         <div>
           <Query query={CATEGORIES_QUERY}>
             {({ loading, error, data: { categories } }) => {
@@ -67,29 +83,28 @@ class Home extends React.Component<ProductProps> {
                 throw new Error(String(error));
               }
               return loading ? (
-                'Loading...'
+                <Loader />
               ) : (
-                <CardGroup>
+                <Card.Group itemsPerRow={5}>
                   {categories.map((category: any, i: any) => (
-                    <Card key={i}>
-                      <CardBody>
-                        <CardTitle>{category.name}</CardTitle>
-                        <Button
-                          onClick={() => {
-                            history.push('/products');
-                          }}
-                        >
-                          View Products
-                        </Button>
-                      </CardBody>
-                    </Card>
+                    <Card
+                      key={i}
+                      image={category.image}
+                      header={category.name}
+                      onClick={() => history.push('/products')}
+                    />
                   ))}
-                </CardGroup>
+                </Card.Group>
               );
             }}
           </Query>
         </div>
-        <H1>Brands</H1>
+        <Divider horizontal>
+          <Header as="h4">
+            <Icon name="tag" />
+            Brands
+          </Header>
+        </Divider>
         <div>
           <Query query={BRANDS_QUERY}>
             {({ loading, error, data: { brands } }) => {
@@ -97,24 +112,89 @@ class Home extends React.Component<ProductProps> {
                 throw new Error(String(error));
               }
               return loading ? (
-                'Loading...'
+                <Loader />
               ) : (
-                <CardGroup>
+                <Card.Group itemsPerRow={5}>
                   {brands.map((brand: any, i: any) => (
-                    <Card key={i}>
-                      <CardBody>
-                        <CardTitle>{brand.name}</CardTitle>
-                        <Button
-                          onClick={() => {
-                            history.push('/products');
-                          }}
-                        >
-                          View Products
-                        </Button>
-                      </CardBody>
+                    <Card key={i} image={brand.image} header={brand.name} onClick={() => history.push('/products')} />
+                  ))}
+                </Card.Group>
+              );
+            }}
+          </Query>
+        </div>
+        <Divider horizontal>
+          <Header as="h4">
+            <Icon name="fire" />
+            Top Products
+          </Header>
+        </Divider>
+        <div>
+          <Query query={GET_TOP_PRODUCTS_QUERY}>
+            {({ loading, error, data: { topProducts } }) => {
+              if (error) {
+                throw new Error(String(error));
+              }
+              return loading ? (
+                <Loader />
+              ) : (
+                <Card.Group itemsPerRow={5}>
+                  {topProducts.map((product: any, i: any) => (
+                    <Card key={i} onClick={() => history.push(`/product/${product.id}`)}>
+                      <Image src={product.imageSource} />
+                      <Card.Content textAlign="center">
+                        <Card.Header>{product.name}</Card.Header>
+                        <Card.Meta>
+                          <span className="price">
+                            <b>{product.price} MKD</b>
+                          </span>
+                        </Card.Meta>
+                        <Card.Description>{product.size} kg</Card.Description>
+                      </Card.Content>
+                      <Card.Content extra textAlign="center">
+                        <Rating icon="star" defaultRating={product.rating} maxRating={5} />
+                      </Card.Content>
                     </Card>
                   ))}
-                </CardGroup>
+                </Card.Group>
+              );
+            }}
+          </Query>
+        </div>
+        <Divider horizontal>
+          <Header as="h4">
+            <Icon name="newspaper" />
+            New Products
+          </Header>
+        </Divider>
+        <div>
+          <Query query={GET_NEW_PRODUCTS_QUERY}>
+            {({ loading, error, data: { newProducts } }) => {
+              if (error) {
+                throw new Error(String(error));
+              }
+              return loading ? (
+                <Loader />
+              ) : (
+                <Card.Group itemsPerRow={5}>
+                  {newProducts.map((product: any, i: any) => (
+                    <Card key={i} onClick={() => history.push(`/product/${product.id}`)}>
+                      <Image src={product.imageSource} />
+                      <Card.Content textAlign="center">
+                        <Card.Header>{product.name}</Card.Header>
+                        <Card.Meta>
+                          <span className="price">
+                            <b>{product.price} MKD</b>
+                          </span>
+                        </Card.Meta>
+                        <Card.Description>{product.size} kg</Card.Description>
+                      </Card.Content>
+                      <Card.Content extra textAlign="center">
+                        <Rating icon="star" defaultRating={product.rating} maxRating={5} />
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </Card.Group>
               );
             }}
           </Query>

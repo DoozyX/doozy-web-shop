@@ -42,6 +42,12 @@
   height: 500px;
 }
 
+.carousel {
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
 @media print {
   .no-print {
     display: none;

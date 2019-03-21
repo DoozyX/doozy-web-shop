@@ -1,0 +1,10 @@
+query GetNewProducts {
+  newProducts {
+    id
+    name
+    rating
+    size
+    imageSource
+    price
+  }
+}

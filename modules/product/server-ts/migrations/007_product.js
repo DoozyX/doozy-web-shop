@@ -4,11 +4,13 @@ export async function up(knex) {
       .createTable('category', table => {
         table.increments();
         table.string('name');
+        table.string('image');
         table.timestamps(false, true);
       })
       .createTable('brand', table => {
         table.increments();
         table.string('name');
+        table.string('image');
         table.timestamps(false, true);
       })
       .createTable('product', table => {

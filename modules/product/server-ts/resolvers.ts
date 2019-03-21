@@ -12,6 +12,12 @@ export default () => ({
     products(_obj: any, _args: any, context: ProductContext) {
       return context.Product.getAll();
     },
+    topProducts(_obj: any, _args: any, context: ProductContext) {
+      return context.Product.getTop();
+    },
+    newProducts(_obj: any, _args: any, context: ProductContext) {
+      return context.Product.getNew();
+    },
     categories(_obj: any, _args: any, context: ProductContext) {
       return context.Category.getAll();
     },

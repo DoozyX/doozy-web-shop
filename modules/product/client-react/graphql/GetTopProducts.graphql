@@ -1,0 +1,10 @@
+query GetTopProducts {
+  topProducts {
+    id
+    name
+    rating
+    size
+    imageSource
+    price
+  }
+}

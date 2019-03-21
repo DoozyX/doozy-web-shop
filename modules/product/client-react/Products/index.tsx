@@ -86,7 +86,7 @@ const Products = ({ t, history }: ProductProps) => {
     <PageLayout>
       {renderMetaData(t)}
       <Suspense fallback={<Spinner />}>
-        <div style={{ width: '100%', display: 'flex', 'justify-content': 'space-between' }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
           <h1>{t('products')}</h1>
           <UncontrolledDropdown>
             <DropdownToggle caret>{t(sortBy)}</DropdownToggle>

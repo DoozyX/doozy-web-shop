@@ -56,38 +56,54 @@ export class Product {
   public getAll() {
     return knex.select('*').from('product as p');
   }
+
+  public getTop() {
+    return knex
+      .select('*')
+      .from('product as p')
+      .orderBy('p.id')
+      .limit(5);
+  }
+
+  public getNew() {
+    return knex
+      .select('*')
+      .from('product as p')
+      .orderBy('p.id', 'desc')
+      .limit(5);
+  }
 }
 
 export class Brand {
   public get(id: number) {
     return knex
-      .select('b.id', 'b.name')
+      .select('*')
       .from('brand as b')
       .where('b.id', '=', id)
       .first();
   }
 
   public getAll() {
-    return knex.select('b.id', 'b.name').from('brand as b');
+    return knex.select('*').from('brand as b');
   }
 }
 
 export class Category {
   public get(id: number) {
     return knex
-      .select('c.id', 'c.name')
+      .select('*')
       .from('category as c')
       .where('c.id', '=', id)
       .first();
   }
 
   public getAll() {
-    return knex.select('c.id', 'c.name').from('category as c');
+    return knex.select('*').from('category as c');
   }
 
   public searchForProduct(search: string) {
     return knex
-      .distinct('c.id', 'c.name')
+      .distinct('c.*')
       .select()
       .from('category as c')
       .join('product as p', 'c.id', '=', 'p.categoryId')

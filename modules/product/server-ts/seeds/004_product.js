@@ -6,13 +6,16 @@ export async function seed(knex, Promise) {
   await Promise.all(
     await [...Array(5).keys()].map(async i => {
       await knex('category').insert({
-        name: `Category ${i + 1}`
+        name: `Category ${i + 1}`,
+        image: 'https://cdn.shopify.com/s/files/1/0722/2059/collections/Field-Crops_medium.png?v=1496300806'
       });
     }),
     await Promise.all(
       [...Array(5).keys()].map(async i => {
         await knex('brand').insert({
-          name: `Brand ${i + 1}`
+          name: `Brand ${i + 1}`,
+          image:
+            'https://99designs-blog.imgix.net/blog/wp-content/uploads/2016/07/logo-2.png?auto=format&q=60&fit=max&w=930'
         });
       })
     ),
