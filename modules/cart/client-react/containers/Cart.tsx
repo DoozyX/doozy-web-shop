@@ -89,7 +89,14 @@ const Cart = ({ t, history }: CartProps) => {
                 <Icon name="cart" />
                 No Cart Items
               </Header>
-              <Button primary>Go shopping</Button>
+              <Button
+                primary
+                onClick={() => {
+                  history.push('/products');
+                }}
+              >
+                Go shopping
+              </Button>
             </Segment>
           )}
         </Item.Group>
