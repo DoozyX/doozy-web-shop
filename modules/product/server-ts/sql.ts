@@ -87,7 +87,8 @@ export class Category {
 
   public searchForProduct(search: string) {
     return knex
-      .select('c.id', 'c.name')
+      .distinct('c.id', 'c.name')
+      .select()
       .from('category as c')
       .join('product as p', 'c.id', '=', 'p.categoryId')
       .where('p.name', 'like', '%' + search + '%');
