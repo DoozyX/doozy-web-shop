@@ -6,7 +6,6 @@ import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import { Route, NavLink } from 'react-router-dom';
 import { MenuItem } from '@gqlapp/look-client-react';
 import Home from './Home';
-import Brands from './Brands';
 import Products from './Products';
 import Product from './Product';
 import resources from './locales';
