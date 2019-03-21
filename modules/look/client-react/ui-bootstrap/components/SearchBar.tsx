@@ -4,14 +4,18 @@ import { Search, Button } from 'semantic-ui-react';
 
 import SEARCH_PRODUCT_WITH_CATEGORY from '../../graphql/SearchProductsWithCategory.graphql';
 import { Query } from 'react-apollo';
+import { withRouter } from 'react-router';
 
-const SearchBar = (props: any) => {
+const SearchBar = ({ history }: any) => {
   const [{ value }, setState] = useState({ value: '' });
 
   return (
     <Query query={SEARCH_PRODUCT_WITH_CATEGORY} variables={{ search: value }}>
       {({ loading, data, refetch }) => {
-        const handleResultSelect = (e: any, { result }: any) => setState({ value: result.title });
+        const handleResultSelect = (e: any, { result }: any) => {
+          setState({ value: result.title });
+          history.push(`/product/${result.id}`);
+        };
 
         const handleSearchChange = (e: any, { value: val }: any) => {
           setState({ value: val });
@@ -25,8 +29,9 @@ const SearchBar = (props: any) => {
         if (!loading) {
           filteredResults = data.searchProductsWithCategory.map(({ name, results }: any) => {
             const newCategory: any = { name };
-            newCategory.results = results.map(({ name: productName, imageSource, price, brand }: any) => {
+            newCategory.results = results.map(({ name: productName, imageSource, price, brand, id }: any) => {
               const product: any = {};
+              product.id = id;
               product.title = productName;
               product.image = imageSource;
               product.price = price + 'MKD';
@@ -49,7 +54,6 @@ const SearchBar = (props: any) => {
               style={{ width: '100%' }}
               placeholder={'Search'}
               fluid={true}
-              {...props}
             />
             <Button style={{ marginLeft: '10px' }}>Search</Button>
           </div>
@@ -59,4 +63,4 @@ const SearchBar = (props: any) => {
   );
 };
 
-export default SearchBar;
+export default withRouter(SearchBar);
