@@ -29,7 +29,8 @@ const NavLinkWithI18n = translate('product')(({ t, ...rest }: { t: TranslateFunc
 export default new ClientModule({
   route: [
     <Route exact path="/" component={Home} />,
-    <Route exact path="/brands" component={Brands} />,
+    <Route exact path="/brands" component={Products} />,
+    <Route exact path="/seeds" component={Products} />,
     <Route exact path="/products" component={Products} />,
     <Route exact path="/product/:id" component={Product} />
   ],
@@ -42,6 +43,9 @@ export default new ClientModule({
     </MenuItem>,
     <MenuItem key="/products">
       <NavLinkWithI18n to="/products" text={'navLinkProducts'} />
+    </MenuItem>,
+    <MenuItem key="/seeds">
+      <NavLinkWithI18n to="/seeds" text={'navLinkSeeds'} />
     </MenuItem>
   ],
   localization: [{ ns: 'product', resources }]
