@@ -1,31 +1,18 @@
 import React, { Suspense, useState } from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
-import { useQuery, useMutation } from 'react-apollo-hooks';
+import { useQuery } from 'react-apollo-hooks';
 
 import settings from '../../../../settings';
 import { PageLayout } from '@gqlapp/look-client-react';
 
 import GET_ALL_PRODUCTS from '../graphql/GetAllProducts.graphql';
-import ADD_PRODUCT_TO_CART from '../graphql/AddProductToCart.graphql';
-import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
-import {
-  Card,
-  Spinner,
-  CardImg,
-  CardTitle,
-  CardBody,
-  CardText,
-  Button,
-  CardSubtitle,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Container,
-  CardDeck
-} from 'reactstrap';
+import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
+import BRANDS_QUERY from '../graphql/BrandsQuery.graphql';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+
 import { RouteComponentProps } from 'react-router-dom';
+import { Card, Image, Rating, Loader, List, Checkbox, Header } from 'semantic-ui-react';
 
 interface ProductProps extends RouteComponentProps {
   t: TranslateFunction;
@@ -50,25 +37,22 @@ const renderMetaData = (t: TranslateFunction) => (
   />
 );
 
-const ProductCard = ({ id, name, size, price, imageSource, onView }: ProductCardProps) => {
-  const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
-    refetchQueries: [{ query: GET_CART_ITEMS }],
-    variables: {
-      productId: id,
-      quantity: 1
-    }
-  });
-
+const ProductCard = ({ id, name, size, price, imageSource, rating, onView }: ProductCardProps) => {
   return (
-    <Card style={{ minWidth: '200px' }}>
-      <CardImg top width="100%" src={imageSource} alt="Card image cap" />
-      <CardBody>
-        <CardTitle>{name}</CardTitle>
-        <CardSubtitle>{price} MKD</CardSubtitle>
-        <CardText>{size} kg</CardText>
-        <Button onClick={onView}>View</Button>
-        <Button onClick={() => addToCart()}>Add to cart</Button>
-      </CardBody>
+    <Card onClick={onView}>
+      <Image src={imageSource} />
+      <Card.Content textAlign="center">
+        <Card.Header>{name}</Card.Header>
+        <Card.Meta>
+          <span className="price">
+            <b>{price} MKD</b>
+          </span>
+        </Card.Meta>
+        <Card.Description>{size} kg</Card.Description>
+      </Card.Content>
+      <Card.Content extra textAlign="center">
+        <Rating icon="star" defaultRating={rating} maxRating={5} />
+      </Card.Content>
     </Card>
   );
 };
@@ -80,14 +64,26 @@ const SortTypes = {
 
 const Products = ({ t, history }: ProductProps) => {
   const [sortBy, setSortBy] = useState(SortTypes.PRICE_ASCENDING);
-  const { data } = useQuery(GET_ALL_PRODUCTS, { suspend: true });
+  const [categoryFilters, setCategoryFilters] = useState([]);
+  const [brandFilters, setBrandFilters] = useState([]);
+  const {
+    data: { products }
+  } = useQuery(GET_ALL_PRODUCTS, { suspend: true });
+  const {
+    data: { brands }
+  } = useQuery(BRANDS_QUERY, { suspend: true });
+  const {
+    data: { categories }
+  } = useQuery(CATEGORIES_QUERY, { suspend: true });
 
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<Loader />}>
         <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-          <h1>{t('products')}</h1>
+          <Header as="h1" dividing>
+            {t('products')}
+          </Header>
           <UncontrolledDropdown>
             <DropdownToggle caret>{t(sortBy)}</DropdownToggle>
             <DropdownMenu>
@@ -108,9 +104,84 @@ const Products = ({ t, history }: ProductProps) => {
             </DropdownMenu>
           </UncontrolledDropdown>
         </div>
-        <Container>
-          <CardDeck>
-            {data.products
+
+        <div
+          style={{
+            width: '15%',
+            display: 'inline-table'
+          }}
+        >
+          <Header as="h3" dividing>
+            Categories filter
+          </Header>
+          <List>
+            {categories.map((category: any) => (
+              <List.Item key={'c' + category.id}>
+                <Checkbox
+                  label={category.name}
+                  id={category.id}
+                  onChange={(_e, data) => {
+                    if (data.checked) {
+                      let filters = categoryFilters;
+                      filters = filters.concat(data.id);
+                      setCategoryFilters(filters);
+                    } else {
+                      let filters = categoryFilters;
+                      filters = filters.filter(item => item !== data.id);
+                      setCategoryFilters(filters);
+                    }
+                  }}
+                />
+              </List.Item>
+            ))}
+          </List>
+
+          <Header as="h3" dividing>
+            Brands filter
+          </Header>
+          <List>
+            {brands.map((brand: any) => (
+              <List.Item key={'b' + brand.id}>
+                <Checkbox
+                  label={brand.name}
+                  id={brand.id}
+                  onChange={(_e, data) => {
+                    if (data.checked) {
+                      let filters = brandFilters;
+                      filters = filters.concat(data.id);
+                      setBrandFilters(filters);
+                    } else {
+                      let filters = brandFilters;
+                      filters = filters.filter(item => item !== data.id);
+                      setBrandFilters(filters);
+                    }
+                  }}
+                />
+              </List.Item>
+            ))}
+          </List>
+        </div>
+        <div
+          style={{
+            width: '85%',
+            display: 'inline-block',
+            paddingLeft: '2em'
+          }}
+        >
+          <Card.Group itemsPerRow={5}>
+            {products
+              .filter(({ category, brand }: any) => {
+                let valid = true;
+                if (categoryFilters.length > 0) {
+                  const categoryIndex = categoryFilters.indexOf(category.id);
+                  valid = categoryIndex > -1;
+                }
+                if (brandFilters.length > 0) {
+                  const brandIndex = brandFilters.indexOf(brand.id);
+                  valid = brandIndex > -1;
+                }
+                return valid;
+              })
               .sort((a: { price: number }, b: { price: number }) =>
                 sortBy === SortTypes.PRICE_ASCENDING ? a.price - b.price : b.price - a.price
               )
@@ -126,8 +197,8 @@ const Products = ({ t, history }: ProductProps) => {
                   onView={() => history.push(`/product/${id}`)}
                 />
               ))}
-          </CardDeck>
-        </Container>
+          </Card.Group>
+        </div>
       </Suspense>
     </PageLayout>
   );

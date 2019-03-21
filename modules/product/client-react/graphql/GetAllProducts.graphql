@@ -6,5 +6,11 @@ query GetAllProducts {
     size
     imageSource
     price
+    brand {
+      id
+    }
+    category {
+      id
+    }
   }
 }

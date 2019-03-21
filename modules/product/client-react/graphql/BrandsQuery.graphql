@@ -1,5 +1,6 @@
 query brandsQuery {
   brands {
+    id
     name
     image
   }
