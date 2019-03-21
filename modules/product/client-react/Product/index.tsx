@@ -5,7 +5,7 @@ import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Button, Comment, Form, Header } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Loader } from 'semantic-ui-react';
 import moment from 'moment';
 
 import GET_PRODUCT from '../graphql/GetProductQuery.graphql';
@@ -13,7 +13,7 @@ import ADD_PRODUCT_TO_CART from '../graphql/AddProductToCart.graphql';
 import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
 import ADD_PRODUCT_REVIEW from '../graphql/AddProductReview.graphql';
 import { RouteComponentProps } from 'react-router-dom';
-import { Spinner, Label, Input } from 'reactstrap';
+import { Label, Input } from 'reactstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import ReactMarkdown from 'react-markdown';
 
@@ -54,7 +54,7 @@ const ProductReview = ({ user, content, created_at }: any) => {
 const Product = ({ t, match }: ProductProps) => {
   const [quantity, setQuantity] = useState(1);
   const [reviewMessage, setReviewMessage] = useState('');
-  const { data } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) } });
+  const { data } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) }, suspend: true });
   const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
@@ -68,15 +68,16 @@ const Product = ({ t, match }: ProductProps) => {
       setReviewMessage('');
     },
     variables: {
-      productId: data.product.id,
+      productId: parseInt(match.params.id, 10),
       content: reviewMessage
     }
   });
+
   const { imageSource, name, price, rating, description, reviews } = data.product;
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<Loader />}>
         <div style={{ padding: '5%' }}>
           <div>
             <img width={'50%'} src={imageSource} style={{ verticalAlign: 'top' }} />

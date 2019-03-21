@@ -7,11 +7,13 @@ query GetProduct($id: Int!) {
     type
     rating
     brand {
+      id
       name
     }
     price
     imageSource
     category {
+      id
       name
     }
     reviews {
