@@ -58,7 +58,7 @@ const Product = ({ t, match }: ProductProps) => {
   const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
-      productId: data.product.id,
+      productId: parseInt(match.params.id, 10),
       quantity
     }
   });

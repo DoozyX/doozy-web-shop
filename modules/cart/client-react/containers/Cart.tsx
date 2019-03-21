@@ -4,13 +4,14 @@ import Helmet from 'react-helmet';
 import { PageLayout } from '@gqlapp/look-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Item, Button, Input, Header, Divider, Loader } from 'semantic-ui-react';
+import { Item, Button, Input, Header, Divider, Loader, Segment, Icon } from 'semantic-ui-react';
 
 import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
 import REMOVE_CART_ITEM from '../graphql/RemoveCartItem.graphql';
 import CHANGE_CART_ITEM_QUANTITY from '../graphql/ChangeCartItemQuantity.graphql';
+import { RouteComponentProps } from 'react-router';
 
-interface CartProps {
+interface CartProps extends RouteComponentProps {
   t: TranslateFunction;
 }
 
@@ -69,7 +70,7 @@ const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }:
   );
 };
 
-const Cart = ({ t }: CartProps) => {
+const Cart = ({ t, history }: CartProps) => {
   const { data } = useQuery(GET_CART_ITEMS, { suspend: true });
 
   return (
@@ -80,13 +81,29 @@ const Cart = ({ t }: CartProps) => {
       <Divider />
       <Suspense fallback={<Loader />}>
         <Item.Group relaxed divided>
-          {data.getCartItems.map(({ product, quantity }: any) => (
-            <CartItem product={product} quantity={quantity} />
-          ))}
+          {!!data.getCartItems && data.getCartItems.length > 0 ? (
+            data.getCartItems.map(({ product, quantity }: any) => <CartItem product={product} quantity={quantity} />)
+          ) : (
+            <Segment placeholder>
+              <Header icon>
+                <Icon name="cart" />
+                No Cart Items
+              </Header>
+              <Button primary>Go shopping</Button>
+            </Segment>
+          )}
         </Item.Group>
         <Divider />
         <div>
-          <Button floated="right">Buy All</Button>
+          <Button
+            floated="right"
+            disabled={!(!!data.getCartItems && data.getCartItems.length > 0)}
+            onClick={() => {
+              history.push('/shipping');
+            }}
+          >
+            Buy All
+          </Button>
           <span style={{ float: 'right' }}>
             <Header as="h2">
               Total:
