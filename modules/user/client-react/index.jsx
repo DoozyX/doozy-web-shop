@@ -25,7 +25,8 @@ const ProfileName = withLoadedUser(({ currentUser }) =>
 
 const LogoutLink = withRouter(
   withLogout(({ logout, history }) => (
-    <a
+    <MenuItem
+      name="Logout"
       href="javascript:void(0)"
       onClick={e => {
         e.preventDefault();
@@ -35,9 +36,7 @@ const LogoutLink = withRouter(
         })();
       }}
       className="nav-link"
-    >
-      Logout
-    </a>
+    />
   ))
 );
 
@@ -49,10 +48,9 @@ export { default as LOGIN } from './graphql/Login.graphql';
     {t('navLink.users')}
   </NavLink>
 )); */
-const NavLinkLoginWithI18n = translate('user')(({ t }) => (
-  <NavLink to="/login" className="nav-link" activeClassName="active">
-    {t('navLink.signIn')}
-  </NavLink>
+
+const MenuItemWithI18n = translate('user')(({ t, text, ...rest }) => (
+  <MenuItem name={t(text)} as={NavLink} {...rest} />
 ));
 
 export default new ClientModule({
@@ -75,21 +73,15 @@ export default new ClientModule({
     ], */
   navItemRight: [
     <IfLoggedIn key="/profile">
-      <MenuItem>
-        <NavLink to="/profile" className="nav-link" activeClassName="active">
-          <ProfileName />
-        </NavLink>
+      <MenuItem as={NavLink} to="/profile">
+        <ProfileName />
       </MenuItem>
     </IfLoggedIn>,
     <IfLoggedIn key="/logout">
-      <MenuItem>
-        <LogoutLink />
-      </MenuItem>
+      <LogoutLink />
     </IfLoggedIn>,
     <IfNotLoggedIn key="/login">
-      <MenuItem>
-        <NavLinkLoginWithI18n />
-      </MenuItem>
+      <MenuItemWithI18n text={'navLink.signIn'} exact to="/login" />
     </IfNotLoggedIn>
   ],
   resolver: [resolvers],

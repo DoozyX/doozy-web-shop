@@ -55,7 +55,9 @@ const SearchBar = ({ history }: any) => {
               placeholder={'Search'}
               fluid={true}
             />
-            <Button style={{ marginLeft: '10px' }}>Search</Button>
+            <Button style={{ marginLeft: '10px' }} color="green">
+              Search
+            </Button>
           </div>
         );
       }}

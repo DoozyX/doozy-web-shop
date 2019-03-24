@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
+import { translate } from '@gqlapp/i18n-client-react';
 import { MenuItem } from '@gqlapp/look-client-react';
 import ClientModule from '@gqlapp/module-client-react';
 
@@ -14,10 +14,8 @@ import UpdateCreditCard from './containers/UpdateCreditCard';
 
 const { AuthRoute, IfLoggedIn } = require('@gqlapp/user-client-react');
 
-const NavLinkWithI18n = translate('stripeSubscription')(({ t }: { t: TranslateFunction }) => (
-  <NavLink to="/subscriber-page" className="nav-link" activeClassName="active">
-    {t('navLink')}
-  </NavLink>
+const MenuItemWithI18n = translate('product')(({ t, text, ...rest }: any) => (
+  <MenuItem name={t(text)} as={NavLink} {...rest} />
 ));
 
 export default (settings.stripe.subscription.enabled && settings.stripe.subscription.publicKey
@@ -39,9 +37,7 @@ export default (settings.stripe.subscription.enabled && settings.stripe.subscrip
       ],
       navItem: [
         <IfLoggedIn role="user">
-          <MenuItem key="/subscriber-page">
-            <NavLinkWithI18n />
-          </MenuItem>
+          <MenuItemWithI18n key="/subscriber-page" text={'navLink'} exact to="/subscriber-page" />
         </IfLoggedIn>
       ],
       scriptsInsert: ['https://js.stripe.com/v3/'],

@@ -11,18 +11,12 @@ import Product from './Product';
 import resources from './locales';
 
 interface NavLinkProps {
-  to: string;
   text: string;
-  exact: boolean;
+  t: TranslateFunction;
 }
 
-const NavLinkWithI18n = translate('product')(({ t, ...rest }: { t: TranslateFunction; rest: NavLinkProps }) => (
-  // @ts-ignore
-  <NavLink exact={rest.exact} to={rest.to} className="nav-link" activeClassName="active">
-    {//
-    // @ts-ignore
-    t(rest.text)}
-  </NavLink>
+const MenuItemWithI18n = translate('product')(({ t, text, ...rest }: NavLinkProps) => (
+  <MenuItem name={t(text)} as={NavLink} {...rest} />
 ));
 
 export default new ClientModule({
@@ -34,18 +28,10 @@ export default new ClientModule({
     <Route exact path="/product/:id" component={Product} />
   ],
   navItem: [
-    <MenuItem key="/">
-      <NavLinkWithI18n to="/" text={'navLinkHome'} exact={true} />
-    </MenuItem>,
-    <MenuItem key="/brands">
-      <NavLinkWithI18n to="/brands" text={'navLinkBrands'} />
-    </MenuItem>,
-    <MenuItem key="/products">
-      <NavLinkWithI18n to="/products" text={'navLinkProducts'} />
-    </MenuItem>,
-    <MenuItem key="/seeds">
-      <NavLinkWithI18n to="/seeds" text={'navLinkSeeds'} />
-    </MenuItem>
+    <MenuItemWithI18n key="/" text={'navLinkHome'} exact to="/" />,
+    <MenuItemWithI18n key="/brands" text={'navLinkBrands'} exact to="/brands" />,
+    <MenuItemWithI18n key="/products" text={'navLinkProducts'} exact to="/products" />,
+    <MenuItemWithI18n key="/seeds" text={'navLinkSeeds'} exact to="/seeds" />
   ],
   localization: [{ ns: 'product', resources }]
 });

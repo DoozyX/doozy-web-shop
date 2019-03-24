@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ClientModule from '@gqlapp/module-client-react';
-import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
+import { translate } from '@gqlapp/i18n-client-react';
 
 import { NavLink } from 'react-router-dom';
 import { MenuItem } from '@gqlapp/look-client-react';
@@ -12,14 +12,11 @@ import Shipping from './containers/Shipping';
 import resources from './locales';
 import { Icon } from 'semantic-ui-react';
 
-const NavLinkWithI18n = translate('cart')(({ t }: { t: TranslateFunction }) => {
-  return (
-    <NavLink to="/cart" className="nav-link" activeClassName="active">
-      {t('cart:navLink') + ' '}
-      <Icon name="cart" />
-    </NavLink>
-  );
-});
+const MenuItemWithI18n = translate('cart')(({ t, text, children, ...rest }: any) => (
+  <MenuItem name={t(text)} as={NavLink} {...rest}>
+    {!!children ? children : children + t(text)}
+  </MenuItem>
+));
 
 export default new ClientModule({
   route: [
@@ -28,9 +25,9 @@ export default new ClientModule({
   ],
   navItemRight: [
     <IfLoggedIn>
-      <MenuItem key="/cart">
-        <NavLinkWithI18n />
-      </MenuItem>
+      <MenuItemWithI18n key="/cart" text={'navLink'} exact to="/cart">
+        <Icon name="cart" />
+      </MenuItemWithI18n>
     </IfLoggedIn>
   ],
   localization: [{ ns: 'cart', resources }]
