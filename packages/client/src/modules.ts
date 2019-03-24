@@ -1,4 +1,5 @@
 import core from '@gqlapp/core-client-react';
+import splashScreen from '@gqlapp/splash-screen-client-react';
 import look from '@gqlapp/look-client-react';
 import i18n from '@gqlapp/i18n-client-react';
 import chat from '@gqlapp/chat-client-react';
@@ -17,6 +18,7 @@ const pageNotFound = require('@gqlapp/page-not-found-client-react').default;
 const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
+  splashScreen,
   look,
   validation,
   defaultRouter,
