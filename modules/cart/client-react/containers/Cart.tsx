@@ -116,7 +116,8 @@ const Cart = ({ t, history }: CartProps) => {
               Total:
               {data.getCartItems.reduce((total: any, { product, quantity }: any) => {
                 return (total += product.price * quantity);
-              }, 0)}
+              }, 0)}{' '}
+              MKD
             </Header>
           </span>
         </div>

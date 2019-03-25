@@ -9,7 +9,9 @@ import Home from './Home';
 import Products from './Products';
 import Product from './Product';
 import resources from './locales';
+import AddProduct from './Product/AddProduct'
 import { RootContext } from '@gqlapp/splash-screen-client-react';
+const { AuthRoute, IfLoggedIn } = require('@gqlapp/user-client-react');
 
 const MenuItemWithI18n = translate('product')(({ t, text, farmerOnly = false, customerOnly = false, ...rest }: any) => {
   const { farmer } = useContext(RootContext);
@@ -27,7 +29,7 @@ export default new ClientModule({
     <Route exact path="/" component={Home} />,
     <Route exact path="/seeds" component={Products} />,
     <Route exact path="/products" component={Products} />,
-    <Route exact path="/product/new" component={Home} />,
+    <AuthRoute exact path="/product/new" component={AddProduct} />,
     <Route exact path="/product/:id" component={Product} />,
     <Route exact path="/tools" component={Products} />,
     <Route exact path="/fruits" component={Products} />,
@@ -44,7 +46,9 @@ export default new ClientModule({
     <MenuItemWithI18n key="/dairy" text={'navLink.dairyProducts'} exact customerOnly to="/dairy" />
   ],
   navItemRight: [
-    <MenuItemWithI18n key="/product/new" text={'navLink.addProduct'} exact farmerOnly to="/product/new" />
+    <IfLoggedIn>
+      <MenuItemWithI18n key="/product/new" text={'navLink.addProduct'} exact farmerOnly to="/product/new" />
+    </IfLoggedIn>
   ],
   localization: [{ ns: 'product', resources }]
 });
