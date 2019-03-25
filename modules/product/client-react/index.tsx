@@ -43,6 +43,8 @@ export default new ClientModule({
     <MenuItemWithI18n key="/vegetables" text={'navLink.vegetables'} exact customerOnly to="/vegetables" />,
     <MenuItemWithI18n key="/dairy" text={'navLink.dairyProducts'} exact customerOnly to="/dairy" />
   ],
-  navItemRight: [<MenuItemWithI18n key="/product/new" text={'navLink.addProduct'} exact to="/product/new" />],
+  navItemRight: [
+    <MenuItemWithI18n key="/product/new" text={'navLink.addProduct'} exact farmerOnly to="/product/new" />
+  ],
   localization: [{ ns: 'product', resources }]
 });

@@ -6,6 +6,7 @@ import { RootContext } from '../RootContext';
 import { default as i18next } from 'i18next';
 
 const SplashScreen = () => {
+  const [cookieRead, setCookieRead] = useState(false);
   const { farmer, updateProperty } = useContext(RootContext);
   const [lang, setLang] = useState(i18next.language);
   const [cookies, setCookie] = useCookies(['farmer', 'lang']);
@@ -15,6 +16,11 @@ const SplashScreen = () => {
     enter: { opacity: 1 },
     leave: { opacity: 0 }
   });
+
+  if (!loading && !cookieRead) {
+    updateProperty('farmer', cookies.farmer);
+    setCookieRead(true);
+  }
 
   const languages = Object.keys((i18next as any).store.data);
 

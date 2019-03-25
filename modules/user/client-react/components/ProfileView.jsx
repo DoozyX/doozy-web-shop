@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import { StripeSubscriptionProfile } from '@gqlapp/payments-client-react';
 import { translate } from '@gqlapp/i18n-client-react';
 import { LayoutCenter, Card, CardGroup, CardTitle, CardText, PageLayout } from '@gqlapp/look-client-react';
+import { RootContext } from '@gqlapp/splash-screen-client-react';
+import { Header, Button } from 'semantic-ui-react';
 
 import settings from '../../../../settings';
 
@@ -23,6 +26,11 @@ const renderMetaData = t => {
 };
 
 const ProfileView = ({ currentUserLoading, currentUser, t }) => {
+  const { farmer, updateProperty } = useContext(RootContext);
+  const [, setCookie] = useCookies(['farmer']);
+
+  console.log({ farmer });
+
   if (currentUserLoading && !currentUser) {
     return (
       <PageLayout>
@@ -35,6 +43,28 @@ const ProfileView = ({ currentUserLoading, currentUser, t }) => {
       <PageLayout>
         {renderMetaData(t)}
         <LayoutCenter>
+          <Header as="h3">I am a </Header>
+          <Button.Group size="medium" toggle>
+            <Button
+              active={farmer}
+              onClick={() => {
+                updateProperty('farmer', true);
+                setCookie('farmer', true, { maxAge: 90000000 });
+              }}
+            >
+              Farmer
+            </Button>
+            <Button.Or />
+            <Button
+              active={!farmer}
+              onClick={() => {
+                updateProperty('farmer', false);
+                setCookie('farmer', false, { maxAge: 90000000 });
+              }}
+            >
+              Customer
+            </Button>
+          </Button.Group>
           <h1 className="text-center">{t('profile.card.title')}</h1>
           <Card>
             <CardGroup>
