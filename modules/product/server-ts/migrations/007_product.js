@@ -53,6 +53,17 @@ export async function up(knex) {
           .onDelete('CASCADE');
         table.timestamps(false, true);
       })
+      .createTable('product_images', table => {
+        table.increments();
+        table.string('source');
+        table
+          .integer('productId')
+          .unsigned()
+          .references('id')
+          .inTable('product')
+          .onDelete('CASCADE');
+        table.timestamps(false, true);
+      })
   ]);
 }
 

@@ -16,7 +16,7 @@ const SplashScreen = () => {
     leave: { opacity: 0 }
   });
 
-  const languages = Object.keys(i18next.store.data);
+  const languages = Object.keys((i18next as any).store.data);
 
   return (
     <div>
@@ -50,7 +50,7 @@ const SplashScreen = () => {
                 </Button>
                 <Button.Or />
                 <Button active={!farmer} onClick={() => updateProperty('farmer', false)}>
-                  Consumer
+                  Customer
                 </Button>
               </Button.Group>
               <Header as="h1">Language </Header>
@@ -90,7 +90,7 @@ const SplashScreen = () => {
                 size="massive"
                 color="green"
                 onClick={() => {
-                  setCookie('farmer', farmer);
+                  setCookie('farmer', farmer, { maxAge: 90000000 });
                   setLoading(false);
                 }}
               >

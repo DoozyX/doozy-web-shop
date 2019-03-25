@@ -14,7 +14,7 @@ import UpdateCreditCard from './containers/UpdateCreditCard';
 
 const { AuthRoute, IfLoggedIn } = require('@gqlapp/user-client-react');
 
-const MenuItemWithI18n = translate('product')(({ t, text, ...rest }: any) => (
+const MenuItemWithI18n = translate('stripeSubscription')(({ t, text, ...rest }: any) => (
   <MenuItem name={t(text)} as={NavLink} {...rest} />
 ));
 
