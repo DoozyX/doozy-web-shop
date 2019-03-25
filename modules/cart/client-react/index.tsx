@@ -10,12 +10,33 @@ const { AuthRoute, IfLoggedIn } = require('@gqlapp/user-client-react');
 import Cart from './containers/Cart';
 import Shipping from './containers/Shipping';
 import resources from './locales';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Loader } from 'semantic-ui-react';
+import { Query } from 'react-apollo';
+
+import GET_CART_ITEMS from './graphql/GetCartItems.graphql';
 
 const MenuItemWithI18n = translate('cart')(({ t, text, children, ...rest }: any) => (
-  <MenuItem name={t(text)} as={NavLink} {...rest}>
-    {!!children ? children : children + t(text)}
-  </MenuItem>
+  <Query query={GET_CART_ITEMS}>
+    {({ loading, error, data }) => {
+      if (loading) {
+        return (
+          <Icon name="cart">
+            <Loader />
+          </Icon>
+        );
+      }
+      if (error) {
+        return `Error! ${error.message}`;
+      }
+
+      return (
+        <MenuItem as={NavLink} {...rest}>
+          {t(text)}
+          <Icon name="cart" style={{ marginLeft: '5px' }} />({data.getCartItems.length}){' '}
+        </MenuItem>
+      );
+    }}
+  </Query>
 ));
 
 export default new ClientModule({
@@ -25,9 +46,7 @@ export default new ClientModule({
   ],
   navItemRight: [
     <IfLoggedIn>
-      <MenuItemWithI18n key="/cart" text={'navLink'} exact to="/cart">
-        <Icon name="cart" />
-      </MenuItemWithI18n>
+      <MenuItemWithI18n key="/cart" text={'navLink'} exact to="/cart" />
     </IfLoggedIn>
   ],
   localization: [{ ns: 'cart', resources }]
