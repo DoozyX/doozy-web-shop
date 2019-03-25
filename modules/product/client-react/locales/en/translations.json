@@ -1,8 +1,15 @@
 {
-  "navLinkHome": "Home",
-  "navLinkBrands": "Brands",
-  "navLinkProducts": "Products",
-  "navLinkSeeds": "Seeds",
+  "navLink": {
+    "home": "Home",
+    "brands": "Brands",
+    "products": "Products",
+    "seeds": "Seeds",
+    "tools": "Tools",
+    "fruits": "Fruits",
+    "vegetables": "Vegetables",
+    "dairyProducts": "Dairy Products",
+    "addProduct": "Add Product"
+  },
   "title": "Product",
   "meta": "Product",
   "welcomeText": "Hello, This is the Product module",
