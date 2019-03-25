@@ -10,7 +10,13 @@ export interface ProductType {
   brandId: number;
 }
 
-export interface Review {
+export interface ProductImageType {
+  id: number;
+  image: string;
+  productId: number;
+}
+
+export interface ReviewType {
   userId: number;
   productId: number;
   content: string;
@@ -120,6 +126,19 @@ export class Review {
     return knex
       .select('*')
       .from('review')
+      .where('productId', productId);
+  }
+}
+
+export class ProductImage {
+  public insert(image: string) {
+    return returnId(knex('product_image')).insert({ image });
+  }
+
+  public async getForProduct(productId: number) {
+    return knex
+      .select('*')
+      .from('product_image')
       .where('productId', productId);
   }
 }

@@ -46,6 +46,14 @@ Sed non accumsan dui. Interdum et malesuada fames ac ante ipsum primis in faucib
           productId: (i % 20) + 1
         });
       })
+    ),
+    await Promise.all(
+      [...Array(80).keys()].map(async i => {
+        await knex('product_image').insert({
+          image: 'http://www.aci-bd.com/assets/images/theme/seed.jpg',
+          productId: (i % 20) + 1
+        });
+      })
     )
   );
 }

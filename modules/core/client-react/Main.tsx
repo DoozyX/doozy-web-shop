@@ -10,6 +10,7 @@ import ReactGA from 'react-ga';
 import { apiUrl } from '@gqlapp/core-common';
 import ClientModule from '@gqlapp/module-client-react';
 import 'semantic-ui-css/semantic.min.css';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 import RedBox from './RedBox';
 import createApolloClient from '../../../packages/common/createApolloClient';

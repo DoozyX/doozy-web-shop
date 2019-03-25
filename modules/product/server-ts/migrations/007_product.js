@@ -53,9 +53,9 @@ export async function up(knex) {
           .onDelete('CASCADE');
         table.timestamps(false, true);
       })
-      .createTable('product_images', table => {
+      .createTable('product_image', table => {
         table.increments();
-        table.string('source');
+        table.string('image');
         table
           .integer('productId')
           .unsigned()
@@ -70,6 +70,7 @@ export async function up(knex) {
 export async function down(knex) {
   return Promise.all([
     knex.schema
+      .dropTable('product_images')
       .dropTable('review')
       .dropTable('product')
       .dropTable('brand')

@@ -5,8 +5,9 @@ import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Button, Comment, Form, Header, Loader } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Loader, Rating } from 'semantic-ui-react';
 import moment from 'moment';
+import ImageGallery from 'react-image-gallery';
 
 import GET_PRODUCT from '../graphql/GetProductQuery.graphql';
 import ADD_PRODUCT_TO_CART from '../graphql/AddProductToCart.graphql';
@@ -14,7 +15,6 @@ import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
 import ADD_PRODUCT_REVIEW from '../graphql/AddProductReview.graphql';
 import { RouteComponentProps } from 'react-router-dom';
 import { Label, Input } from 'reactstrap';
-import StarRatingComponent from 'react-star-rating-component';
 import ReactMarkdown from 'react-markdown';
 
 interface MatchParams {
@@ -73,19 +73,26 @@ const Product = ({ t, match }: ProductProps) => {
     }
   });
 
-  const { imageSource, name, price, rating, description, reviews } = data.product;
+  const { imageSource, name, price, rating, description, reviews, images } = data.product;
+  const imageItems = images.map(({ image }: any) => {
+    console.log(image);
+    return { original: image, thumbnail: image };
+  });
+  imageItems.push({ original: imageSource, thumbnail: imageSource });
   return (
     <PageLayout>
       {renderMetaData(t)}
       <Suspense fallback={<Loader />}>
         <div style={{ padding: '5%' }}>
           <div>
-            <img width={'50%'} src={imageSource} style={{ verticalAlign: 'top' }} />
-            <div style={{ display: 'inline-block', marginLeft: '5%', paddingTop: '5%' }}>
+            <div style={{ width: '50%', display: 'inline-block' }}>
+              <ImageGallery items={imageItems} />
+            </div>
+            <div style={{ display: 'inline-block', marginLeft: '5%', paddingTop: '5%', verticalAlign: 'top' }}>
               <h1>{name}</h1>
               <h2>{price} MKD</h2>
               <div>
-                <StarRatingComponent name="Rating" value={rating} />
+                <Rating icon="star" defaultRating={rating} maxRating={5} />
               </div>
               <Label for="quantity">Quantity: </Label>
               <Input

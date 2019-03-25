@@ -42,6 +42,9 @@ export default () => ({
     },
     reviews(obj: ProductType, _args: any, { Review }: ProductContext) {
       return Review.getForProduct(obj.id);
+    },
+    images(obj: ProductType, _args: any, { ProductImage }: ProductContext) {
+      return ProductImage.getForProduct(obj.id);
     }
   },
   Brand: {

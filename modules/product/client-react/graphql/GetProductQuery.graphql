@@ -26,5 +26,9 @@ query GetProduct($id: Int!) {
       }
       created_at
     }
+    images {
+      id
+      image
+    }
   }
 }
