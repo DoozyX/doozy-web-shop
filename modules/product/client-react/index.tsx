@@ -27,6 +27,7 @@ const MenuItemWithI18n = translate('product')(({ t, text, farmerOnly = false, cu
 export default new ClientModule({
   route: [
     <Route exact path="/" component={Home} />,
+    <Route exact path="/brands" component={Products} />,
     <Route exact path="/seeds" component={Products} />,
     <Route exact path="/products" component={Products} />,
     <AuthRoute exact path="/product/new" component={AddProduct} />,
@@ -38,6 +39,7 @@ export default new ClientModule({
   ],
   navItem: [
     <MenuItemWithI18n key="/" text={'navLink.home'} exact to="/" />,
+    <MenuItemWithI18n key="/brands" text={'navLink.brands'} exact farmerOnly to="/brands" />,
     <MenuItemWithI18n key="/products" text={'navLink.products'} exact to="/products" />,
     <MenuItemWithI18n key="/seeds" text={'navLink.seeds'} exact farmerOnly to="/seeds" />,
     <MenuItemWithI18n key="/tools" text={'navLink.tools'} exact farmerOnly to="/tools" />,

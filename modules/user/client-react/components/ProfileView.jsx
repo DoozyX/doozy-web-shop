@@ -42,9 +42,9 @@ const ProfileView = ({ currentUserLoading, currentUser, t }) => {
     return (
       <PageLayout>
         {renderMetaData(t)}
-        <LayoutCenter>
-          <Header as="h3">I am a </Header>
-          <Button.Group size="medium" toggle>
+        <LayoutCenter style={{ textAlign: 'center', marginTop: '10px' }}>
+          <Header as="h1">I am a </Header>
+          <Button.Group size="large" toggle>
             <Button
               active={farmer}
               onClick={() => {

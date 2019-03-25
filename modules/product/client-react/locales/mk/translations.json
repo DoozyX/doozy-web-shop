@@ -1,8 +1,15 @@
 {
-  "navLinkHome": "Дома",
-  "navLinkBrands": "Производители",
-  "navLinkProducts": "Продукти",
-  "navLinkSeeds": "Семиња",
+  "navLink": {
+    "home": "Дома",
+    "brands": "Производители",
+    "products": "Продукти",
+    "seeds": "Семиња",
+    "tools": "Алатки",
+    "fruits": "Овошје",
+    "vegetables": "Зеленчук",
+    "dairyProducts": "Млечни производи",
+    "addProduct": "Нов производ"
+  },
   "title": "Продукти",
   "meta": "Продукти",
   "welcomeText": "Продукти",
