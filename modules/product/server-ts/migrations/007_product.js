@@ -30,6 +30,7 @@ export async function up(knex) {
           .onDelete('CASCADE');
         table
           .integer('brandId')
+          .nullable()
           .unsigned()
           .references('id')
           .inTable('brand')

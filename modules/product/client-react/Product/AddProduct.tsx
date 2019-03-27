@@ -41,14 +41,14 @@ const renderMetaData = (t: TranslateFunction) => (
 
 const Product = ({ t, history }: any) => {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ accept: 'image/*' });
-  const [state, setState] = useState({ name: '', description: '' });
+  const [state, setState] = useState({ name: '', description: '', price: '', size: '' });
   const options = [{ key: 'm', text: 'Male', value: 'male' }, { key: 'f', text: 'Female', value: 'female' }];
 
   const handleChange = (e: any, { name, value }: { name: string; value: string }) => {
     (setState as any)({ ...state, [name]: value });
   };
 
-  const { name, description } = state;
+  const { name, description, price, size } = state;
   const handleSubmit = () => {
     history.push('/products');
   };
@@ -68,6 +68,8 @@ const Product = ({ t, history }: any) => {
               onChange={handleChange}
               fluid
             />
+            <Form.Input placeholder="Price" name="price" value={price} onChange={handleChange} fluid />
+            <Form.Input placeholder="Size" name="size" value={size} onChange={handleChange} fluid />
             <Form.Select label="Category" options={options} placeholder="Category" fluid />
             <Form.Select label="Brand" options={options} placeholder="Brand" fluid />
             <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>

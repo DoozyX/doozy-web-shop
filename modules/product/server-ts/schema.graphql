@@ -6,7 +6,7 @@ type Product {
   rating: Int!
   size: String!
   type: String!
-  brand: Brand!
+  brand: Brand
   price: Int!
   imageSource: String!
   category: Category!
