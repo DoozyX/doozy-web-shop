@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { useCookies } from 'react-cookie';
@@ -7,7 +7,7 @@ import { StripeSubscriptionProfile } from '@gqlapp/payments-client-react';
 import { translate } from '@gqlapp/i18n-client-react';
 import { LayoutCenter, Card, CardGroup, CardTitle, CardText, PageLayout } from '@gqlapp/look-client-react';
 import { RootContext } from '@gqlapp/splash-screen-client-react';
-import { Header, Button } from 'semantic-ui-react';
+import { Header, Button, Accordion, Icon, List } from 'semantic-ui-react';
 
 import settings from '../../../../settings';
 
@@ -26,6 +26,7 @@ const renderMetaData = t => {
 };
 
 const ProfileView = ({ currentUserLoading, currentUser, t, history }) => {
+  const [activeIndex, setActiveIndex] = useState(-1);
   const { farmer, updateProperty } = useContext(RootContext);
   const [, setCookie] = useCookies(['farmer']);
 
@@ -94,6 +95,26 @@ const ProfileView = ({ currentUserLoading, currentUser, t, history }) => {
           <Link className="mt-2 btn user-link" to={`/users/${currentUser.id}`}>
             {t('profile.editProfileText')}
           </Link>
+
+          <Accordion styled>
+            <Accordion.Title active={activeIndex === 0} index={0} onClick={() => setActiveIndex(0)}>
+              <Icon name="dropdown" />
+              My orders
+            </Accordion.Title>
+            <Accordion.Content active={activeIndex === 0}>
+              <div style={{ textAlign: 'left' }}>
+                <List divided>
+                  <List.Item>
+                    <List.Header as="a">Order Number 3488</List.Header>
+                    Less then one hour ago.
+                  </List.Item>
+                  <List.Item>
+                    <List.Header as="a">Order Number 3456</List.Header>2 days ago.
+                  </List.Item>
+                </List>
+              </div>
+            </Accordion.Content>
+          </Accordion>
         </LayoutCenter>
       </PageLayout>
     );
