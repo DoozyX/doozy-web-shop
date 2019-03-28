@@ -21,21 +21,19 @@ interface ProductProps extends RouteComponentProps {
 
 const items = [
   {
-    src: 'https://www.ecoseibsrl.it/wp-content/uploads/2016/09/wallpaper-natura-2.jpg',
+    src: 'http://b.webpurr.com/Z97J.webp',
     altText: 'Slide 1',
     caption: 'Slide 1',
     header: 'PROMOTION 1'
   },
   {
-    src:
-      'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+    src: 'http://b.webpurr.com/PN7m.webp',
     altText: 'Slide 2',
     caption: 'Slide 2',
     header: 'PROMOTION 2'
   },
   {
-    src:
-      'https://images.pexels.com/photos/814499/pexels-photo-814499.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+    src: 'http://b.webpurr.com/x2dx.webp',
     altText: 'Slide 3',
     caption: 'Slide 3',
     header: 'PROMOTION 3'

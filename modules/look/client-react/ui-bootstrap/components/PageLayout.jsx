@@ -15,7 +15,7 @@ class PageLayout extends React.Component {
         <section className="d-flex flex-column flex-grow-1 flex-shrink-0">
           <section className="d-flex flex-row no-print" style={{ marginTop: '10px' }}>
             <Container className="d-flex flex-row no-print">
-              <NavLink to="/" className="navbar-brand" style={{}}>
+              <NavLink to="/" className="navbar-brand" style={{ color: 'green' }}>
                 {settings.app.name}
               </NavLink>
               <SearchBar />
