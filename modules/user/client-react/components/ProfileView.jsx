@@ -25,7 +25,7 @@ const renderMetaData = t => {
   );
 };
 
-const ProfileView = ({ currentUserLoading, currentUser, t }) => {
+const ProfileView = ({ currentUserLoading, currentUser, t, history }) => {
   const { farmer, updateProperty } = useContext(RootContext);
   const [, setCookie] = useCookies(['farmer']);
 
@@ -85,6 +85,7 @@ const ProfileView = ({ currentUserLoading, currentUser, t }) => {
                 <CardText>{currentUser.profile.fullName}</CardText>
               </CardGroup>
             )}
+            <Button onClick={() => history.push('/subscriber-page')}>Subscribe</Button>
             {/* Credit card info (Stripe subscription module)*/}
             {settings.stripe.subscription.enabled &&
               settings.stripe.subscription.publicKey &&

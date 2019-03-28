@@ -1,7 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { translate } from '@gqlapp/i18n-client-react';
-import { MenuItem } from '@gqlapp/look-client-react';
 import ClientModule from '@gqlapp/module-client-react';
 
 import settings from '../../../../../settings';
@@ -12,11 +9,7 @@ import AddSubscription from './containers/AddSubscription';
 import SubscriberPage from './containers/SubscriberPage';
 import UpdateCreditCard from './containers/UpdateCreditCard';
 
-const { AuthRoute, IfLoggedIn } = require('@gqlapp/user-client-react');
-
-const MenuItemWithI18n = translate('stripeSubscription')(({ t, text, ...rest }: any) => (
-  <MenuItem name={t(text)} as={NavLink} {...rest} />
-));
+const { AuthRoute } = require('@gqlapp/user-client-react');
 
 export default (settings.stripe.subscription.enabled && settings.stripe.subscription.publicKey
   ? new ClientModule({
@@ -34,11 +27,6 @@ export default (settings.stripe.subscription.enabled && settings.stripe.subscrip
           path="/update-credit-card"
           component={(props: any) => <SubscriptionAuthRouter {...props} component={UpdateCreditCard} />}
         />
-      ],
-      navItem: [
-        <IfLoggedIn role="user">
-          <MenuItemWithI18n key="/subscriber-page" text={'navLink'} exact to="/subscriber-page" />
-        </IfLoggedIn>
       ],
       scriptsInsert: ['https://js.stripe.com/v3/'],
       localization: [{ ns: 'stripeSubscription', resources }]
