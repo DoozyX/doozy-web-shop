@@ -21,6 +21,9 @@ export default () => ({
     categories(_obj: any, _args: any, context: ProductContext) {
       return context.Category.getAll();
     },
+    topCategories(_obj: any, _args: any, context: ProductContext) {
+      return context.Category.getTop(5);
+    },
     brands(_obj: any, _args: any, context: ProductContext) {
       return context.Brand.getAll();
     },

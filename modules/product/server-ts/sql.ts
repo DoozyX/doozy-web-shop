@@ -103,6 +103,13 @@ export class Category {
       .first();
   }
 
+  public getTop(top: number) {
+    return knex
+      .select('*')
+      .from('category as c')
+      .limit(top);
+  }
+
   public getAll() {
     return knex.select('*').from('category as c');
   }

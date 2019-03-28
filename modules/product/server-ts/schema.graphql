@@ -51,6 +51,7 @@ extend type Query {
   topProducts: [Product]
   newProducts: [Product]
   categories: [Category]
+  topCategories: [Category]
   brands: [Brand]
   searchProductsWithCategory(search: String!): [ProductSearchWithCategory]
 }

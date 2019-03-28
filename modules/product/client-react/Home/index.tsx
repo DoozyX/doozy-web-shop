@@ -10,8 +10,8 @@ import { PageLayout } from '@gqlapp/look-client-react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Header, Icon, Divider, Loader, Card, Image, Rating } from 'semantic-ui-react';
 
-import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
 import BRANDS_QUERY from '../graphql/BrandsQuery.graphql';
+import GET_TOP_CATEGORIES_QUERY from '../graphql/GetTopCategoriesQuery.graphql';
 import GET_TOP_PRODUCTS_QUERY from '../graphql/GetTopProducts.graphql';
 import GET_NEW_PRODUCTS_QUERY from '../graphql/GetNewProducts.graphql';
 
@@ -77,8 +77,8 @@ class Home extends React.Component<ProductProps> {
           </Header>
         </Divider>
         <div>
-          <Query query={CATEGORIES_QUERY}>
-            {({ loading, error, data: { categories } }) => {
+          <Query query={GET_TOP_CATEGORIES_QUERY}>
+            {({ loading, error, data: { topCategories } }) => {
               if (error) {
                 throw new Error(String(error));
               }
@@ -86,7 +86,7 @@ class Home extends React.Component<ProductProps> {
                 <Loader />
               ) : (
                 <Card.Group itemsPerRow={5}>
-                  {categories.map((category: any, i: any) => (
+                  {topCategories.map((category: any, i: any) => (
                     <Card
                       key={i}
                       image={category.image}
