@@ -724,4 +724,86 @@ Sed non accumsan dui. Interdum et malesuada fames ac ante ipsum primis in faucib
       })
     );
   }
+  {
+    const categoryInsert = await returnId(knex('category')).insert({
+      name: 'Insecticide',
+      image: 'http://a.webpurr.com/y90l.webp'
+    });
+    let categoryID = categoryInsert[0];
+
+    const products = [
+      {
+        name: `Insecticide`,
+        type: '0',
+        size: '1 l',
+        price: 20,
+        imageSource: 'http://a.webpurr.com/av6W.webp',
+        rating: 4,
+        categoryId: categoryID,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pretium diam nec est sagittis rutrum. Nullam sed felis quis urna sodales placerat ut posuere tortor. Sed consectetur fringilla mi nec aliquam. In venenatis porta lorem, mollis rutrum felis accumsan semper. Duis condimentum metus id laoreet lacinia. Curabitur pulvinar condimentum libero vel luctus. Aenean lobortis nisl ut risus consequat, at blandit mauris molestie.
+
+Proin id volutpat nulla. Nullam bibendum convallis enim, et consequat magna tempus in. Proin tempor quam a velit ornare ultrices. Nam ex quam, hendrerit ut neque at, mollis tempus massa. Nulla vehicula vestibulum mauris eget varius. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque consectetur a elit sit amet ultrices. Maecenas sit amet velit gravida, aliquet ex eget, bibendum dolor. Vivamus vel ipsum lorem. Phasellus sit amet quam accumsan, venenatis nibh eu, volutpat ante. Praesent aliquam mi vel diam tempor condimentum. In commodo ex vel diam malesuada consequat. Fusce tempus, nibh at hendrerit lacinia, purus tellus mattis arcu, et efficitur eros nibh sit amet metus. Phasellus fermentum orci sit amet metus ultricies dictum. Nullam cursus nunc at lacus bibendum accumsan. Quisque venenatis est ac justo semper, ullamcorper mollis magna laoreet.
+
+Sed non accumsan dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vehicula at libero fringilla cursus. Mauris volutpat vel erat viverra tristique. Integer porta tellus eu metus congue, vitae laoreet velit dapibus. Cras et massa imperdiet, lobortis quam vel, hendrerit nisl. Nam sed aliquet diam, et accumsan leo. Aliquam pulvinar vitae dolor at volutpat. Quisque non dolor vestibulum augue molestie placerat. Nulla sit amet tristique nisi. Maecenas vulputate orci dui, vel sollicitudin mauris scelerisque a. Ut eget risus ut lorem ornare laoreet nec vitae enim. Etiam pellentesque porttitor lobortis. Etiam maximus eros elit, vel ornare nisl egestas sed. Pellentesque sed neque lacus.`
+      },
+      {
+        name: `Insecticide`,
+        type: '0',
+        size: '1 l',
+        price: 20,
+        imageSource: 'http://a.webpurr.com/dV57.webp',
+        rating: 4,
+        categoryId: categoryID,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pretium diam nec est sagittis rutrum. Nullam sed felis quis urna sodales placerat ut posuere tortor. Sed consectetur fringilla mi nec aliquam. In venenatis porta lorem, mollis rutrum felis accumsan semper. Duis condimentum metus id laoreet lacinia. Curabitur pulvinar condimentum libero vel luctus. Aenean lobortis nisl ut risus consequat, at blandit mauris molestie.
+
+Proin id volutpat nulla. Nullam bibendum convallis enim, et consequat magna tempus in. Proin tempor quam a velit ornare ultrices. Nam ex quam, hendrerit ut neque at, mollis tempus massa. Nulla vehicula vestibulum mauris eget varius. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque consectetur a elit sit amet ultrices. Maecenas sit amet velit gravida, aliquet ex eget, bibendum dolor. Vivamus vel ipsum lorem. Phasellus sit amet quam accumsan, venenatis nibh eu, volutpat ante. Praesent aliquam mi vel diam tempor condimentum. In commodo ex vel diam malesuada consequat. Fusce tempus, nibh at hendrerit lacinia, purus tellus mattis arcu, et efficitur eros nibh sit amet metus. Phasellus fermentum orci sit amet metus ultricies dictum. Nullam cursus nunc at lacus bibendum accumsan. Quisque venenatis est ac justo semper, ullamcorper mollis magna laoreet.
+
+Sed non accumsan dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vehicula at libero fringilla cursus. Mauris volutpat vel erat viverra tristique. Integer porta tellus eu metus congue, vitae laoreet velit dapibus. Cras et massa imperdiet, lobortis quam vel, hendrerit nisl. Nam sed aliquet diam, et accumsan leo. Aliquam pulvinar vitae dolor at volutpat. Quisque non dolor vestibulum augue molestie placerat. Nulla sit amet tristique nisi. Maecenas vulputate orci dui, vel sollicitudin mauris scelerisque a. Ut eget risus ut lorem ornare laoreet nec vitae enim. Etiam pellentesque porttitor lobortis. Etiam maximus eros elit, vel ornare nisl egestas sed. Pellentesque sed neque lacus.`
+      },
+      {
+        name: `Isecticede`,
+        type: '0',
+        size: '1 l',
+        price: 20,
+        imageSource: 'http://a.webpurr.com/nr42.webp',
+        rating: 4,
+        categoryId: categoryID,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pretium diam nec est sagittis rutrum. Nullam sed felis quis urna sodales placerat ut posuere tortor. Sed consectetur fringilla mi nec aliquam. In venenatis porta lorem, mollis rutrum felis accumsan semper. Duis condimentum metus id laoreet lacinia. Curabitur pulvinar condimentum libero vel luctus. Aenean lobortis nisl ut risus consequat, at blandit mauris molestie.
+
+Proin id volutpat nulla. Nullam bibendum convallis enim, et consequat magna tempus in. Proin tempor quam a velit ornare ultrices. Nam ex quam, hendrerit ut neque at, mollis tempus massa. Nulla vehicula vestibulum mauris eget varius. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque consectetur a elit sit amet ultrices. Maecenas sit amet velit gravida, aliquet ex eget, bibendum dolor. Vivamus vel ipsum lorem. Phasellus sit amet quam accumsan, venenatis nibh eu, volutpat ante. Praesent aliquam mi vel diam tempor condimentum. In commodo ex vel diam malesuada consequat. Fusce tempus, nibh at hendrerit lacinia, purus tellus mattis arcu, et efficitur eros nibh sit amet metus. Phasellus fermentum orci sit amet metus ultricies dictum. Nullam cursus nunc at lacus bibendum accumsan. Quisque venenatis est ac justo semper, ullamcorper mollis magna laoreet.
+
+Sed non accumsan dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vehicula at libero fringilla cursus. Mauris volutpat vel erat viverra tristique. Integer porta tellus eu metus congue, vitae laoreet velit dapibus. Cras et massa imperdiet, lobortis quam vel, hendrerit nisl. Nam sed aliquet diam, et accumsan leo. Aliquam pulvinar vitae dolor at volutpat. Quisque non dolor vestibulum augue molestie placerat. Nulla sit amet tristique nisi. Maecenas vulputate orci dui, vel sollicitudin mauris scelerisque a. Ut eget risus ut lorem ornare laoreet nec vitae enim. Etiam pellentesque porttitor lobortis. Etiam maximus eros elit, vel ornare nisl egestas sed. Pellentesque sed neque lacus.`
+      }
+    ];
+
+    await Promise.all(
+      products.map(async product => {
+        let images;
+        if (product.images) {
+          images = [...product.images];
+        }
+        delete product.images;
+        let productInsert = await returnId(knex('product')).insert(product);
+        let productID = productInsert[0];
+        if (images) {
+          images.map(async productImage => {
+            await knex('product_image').insert({
+              image: productImage,
+              productId: productID
+            });
+          });
+        }
+
+        await Promise.all(
+          [...Array(3).keys()].map(async i => {
+            await knex('review').insert({
+              content: `Review content ${i}`,
+              userId: 1,
+              productId: productID
+            });
+          })
+        );
+      })
+    );
+  }
 }

@@ -8,7 +8,8 @@
     "fruits": "Овошје",
     "vegetables": "Зеленчук",
     "dairyProducts": "Млечни производи",
-    "addProduct": "Нов производ"
+    "addProduct": "Нов производ",
+    "plantProtection": "Заштита на производи"
   },
   "title": "Продукти",
   "meta": "Продукти",

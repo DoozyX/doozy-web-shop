@@ -7,11 +7,10 @@ import settings from '../../../../settings';
 import { PageLayout } from '@gqlapp/look-client-react';
 
 import GET_ALL_PRODUCTS from '../graphql/GetAllProducts.graphql';
-import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 import { RouteComponentProps } from 'react-router-dom';
-import { Card, Image, Rating, Loader, List, Checkbox, Header } from 'semantic-ui-react';
+import { Card, Image, Rating, Loader, Header } from 'semantic-ui-react';
 
 interface ProductProps extends RouteComponentProps {
   t: TranslateFunction;
@@ -63,13 +62,9 @@ const SortTypes = {
 
 const Products = ({ t, history }: ProductProps) => {
   const [sortBy, setSortBy] = useState(SortTypes.PRICE_ASCENDING);
-  const [categoryFilters, setCategoryFilters] = useState([]);
   const {
     data: { products }
   } = useQuery(GET_ALL_PRODUCTS, { suspend: true });
-  const {
-    data: { categories }
-  } = useQuery(CATEGORIES_QUERY, { suspend: true });
 
   return (
     <PageLayout>
@@ -77,7 +72,7 @@ const Products = ({ t, history }: ProductProps) => {
       <Suspense fallback={<Loader />}>
         <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
           <Header as="h1" dividing>
-            {t('products')}
+            Seeds
           </Header>
           <UncontrolledDropdown>
             <DropdownToggle caret>{t(sortBy)}</DropdownToggle>
@@ -99,54 +94,11 @@ const Products = ({ t, history }: ProductProps) => {
             </DropdownMenu>
           </UncontrolledDropdown>
         </div>
-
-        <div
-          style={{
-            width: '15%',
-            display: 'inline-table'
-          }}
-        >
-          <Header as="h3" dividing>
-            Categories filter
-          </Header>
-          <List>
-            {categories.map((category: any) => (
-              <List.Item key={'c' + category.id}>
-                <Checkbox
-                  label={category.name}
-                  id={category.id}
-                  onChange={(_e, data) => {
-                    if (data.checked) {
-                      let filters = categoryFilters;
-                      filters = filters.concat(data.id);
-                      setCategoryFilters(filters);
-                    } else {
-                      let filters = categoryFilters;
-                      filters = filters.filter(item => item !== data.id);
-                      setCategoryFilters(filters);
-                    }
-                  }}
-                />
-              </List.Item>
-            ))}
-          </List>
-        </div>
-        <div
-          style={{
-            width: '85%',
-            display: 'inline-block',
-            paddingLeft: '2em'
-          }}
-        >
+        <div>
           <Card.Group itemsPerRow={5}>
             {products
-              .filter(({ category, brand }: any) => {
-                let valid = true;
-                if (categoryFilters.length > 0) {
-                  const categoryIndex = categoryFilters.indexOf(category.id);
-                  valid = categoryIndex > -1;
-                }
-                return valid;
+              .filter(({ category }: any) => {
+                return category.name === 'Diary Products';
               })
               .sort((a: { price: number }, b: { price: number }) =>
                 sortBy === SortTypes.PRICE_ASCENDING ? a.price - b.price : b.price - a.price

@@ -11,6 +11,7 @@ query GetAllProducts {
     }
     category {
       id
+      name
     }
   }
 }

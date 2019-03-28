@@ -7,7 +7,7 @@ import settings from '../../../../settings';
 import { PageLayout } from '@gqlapp/look-client-react';
 
 import GET_ALL_PRODUCTS from '../graphql/GetAllProducts.graphql';
-import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
+import BRANDS_QUERY from '../graphql/BrandsQuery.graphql';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 import { RouteComponentProps } from 'react-router-dom';
@@ -63,13 +63,13 @@ const SortTypes = {
 
 const Products = ({ t, history }: ProductProps) => {
   const [sortBy, setSortBy] = useState(SortTypes.PRICE_ASCENDING);
-  const [categoryFilters, setCategoryFilters] = useState([]);
+  const [brandFilters, setBrandFilters] = useState([]);
   const {
     data: { products }
   } = useQuery(GET_ALL_PRODUCTS, { suspend: true });
   const {
-    data: { categories }
-  } = useQuery(CATEGORIES_QUERY, { suspend: true });
+    data: { brands }
+  } = useQuery(BRANDS_QUERY, { suspend: true });
 
   return (
     <PageLayout>
@@ -107,23 +107,23 @@ const Products = ({ t, history }: ProductProps) => {
           }}
         >
           <Header as="h3" dividing>
-            Categories filter
+            Brands filter
           </Header>
           <List>
-            {categories.map((category: any) => (
-              <List.Item key={'c' + category.id}>
+            {brands.map((brand: any) => (
+              <List.Item key={'b' + brand.id}>
                 <Checkbox
-                  label={category.name}
-                  id={category.id}
+                  label={brand.name}
+                  id={brand.id}
                   onChange={(_e, data) => {
                     if (data.checked) {
-                      let filters = categoryFilters;
+                      let filters = brandFilters;
                       filters = filters.concat(data.id);
-                      setCategoryFilters(filters);
+                      setBrandFilters(filters);
                     } else {
-                      let filters = categoryFilters;
+                      let filters = brandFilters;
                       filters = filters.filter(item => item !== data.id);
-                      setCategoryFilters(filters);
+                      setBrandFilters(filters);
                     }
                   }}
                 />
@@ -140,11 +140,14 @@ const Products = ({ t, history }: ProductProps) => {
         >
           <Card.Group itemsPerRow={5}>
             {products
-              .filter(({ category, brand }: any) => {
+              .filter(({ brand }: any) => {
+                if (!brand) {
+                  return false;
+                }
                 let valid = true;
-                if (categoryFilters.length > 0) {
-                  const categoryIndex = categoryFilters.indexOf(category.id);
-                  valid = categoryIndex > -1;
+                if (brandFilters.length > 0) {
+                  const brandIndex = brandFilters.indexOf(brand.id);
+                  valid = brandIndex > -1;
                 }
                 return valid;
               })
