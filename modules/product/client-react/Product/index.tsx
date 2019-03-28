@@ -5,7 +5,7 @@ import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Button, Comment, Form, Header, Loader, Rating } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Loader, Rating, Modal, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import ImageGallery from 'react-image-gallery';
 
@@ -75,7 +75,6 @@ const Product = ({ t, match }: ProductProps) => {
 
   const { imageSource, name, price, rating, description, reviews, images } = data.product;
   const imageItems = images.map(({ image }: any) => {
-    console.log(image);
     return { original: image, thumbnail: image };
   });
   imageItems.push({ original: imageSource, thumbnail: imageSource });
@@ -103,7 +102,28 @@ const Product = ({ t, match }: ProductProps) => {
                 value={quantity}
                 onChange={e => setQuantity(parseInt(e.target.value, 10))}
               />
-              <Button onClick={() => addToCart()}>Add to cart</Button>
+              <Modal
+                centered={true}
+                basic
+                size="mini"
+                trigger={
+                  <Button
+                    color="green"
+                    onClick={() => {
+                      addToCart();
+                    }}
+                  >
+                    Add to cart
+                  </Button>
+                }
+              >
+                <Header icon="archive" content="Order was successful" />
+                <Modal.Actions>
+                  <Button color="green" >
+                    <Icon name="checkmark" /> Continue
+                  </Button>
+                </Modal.Actions>
+              </Modal>
             </div>
           </div>
           <h2>{t('description')}</h2>

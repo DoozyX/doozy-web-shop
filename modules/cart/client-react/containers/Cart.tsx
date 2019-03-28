@@ -61,7 +61,7 @@ const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }:
         </Item.Meta>
         <Item.Description>{size} kg</Item.Description>
         <Item.Extra>
-          <Button floated="right" onClick={() => removeItem()}>
+          <Button secondary floated="right" onClick={() => removeItem()}>
             Remove
           </Button>
         </Item.Extra>
@@ -108,6 +108,7 @@ const Cart = ({ t, history }: CartProps) => {
             onClick={() => {
               history.push('/shipping');
             }}
+            primary
           >
             Buy All
           </Button>

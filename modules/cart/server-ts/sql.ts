@@ -1,4 +1,4 @@
-import { knex } from '@gqlapp/database-server-ts';
+import { knex, returnId } from '@gqlapp/database-server-ts';
 
 export interface CartItem {
   productId: number;
@@ -6,7 +6,7 @@ export interface CartItem {
   quantity: number;
 }
 
-export default class Cart {
+export class Cart {
   public insert({ productId, userId, quantity }: CartItem) {
     return knex('cart_items').insert({ product_id: productId, user_id: userId, quantity });
   }
@@ -37,3 +37,30 @@ export default class Cart {
       .del();
   }
 }
+
+export class Order {
+  public insert({ userId, price }: any) {
+    return returnId(knex('order')).insert({ userId, price });
+  }
+
+  public getForUser(userId: number) {
+    return knex
+      .select('*')
+      .from('order')
+      .where('userId', '=', userId);
+  }
+}
+
+export class OrderItem {
+  public insert({ orderId, productId, quantity }: any) {
+    return knex('order_item').insert({ orderId, productId, quantity });
+  }
+
+  public getForOrder(orderId: number) {
+    return knex
+      .select('*')
+      .from('order_item')
+      .where('orderId', '=', orderId);
+  }
+}
+
