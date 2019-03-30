@@ -32,8 +32,7 @@ const SplashScreen = () => {
             <animated.div
               key={key}
               style={{
-                backgroundImage:
-                  'url("https://previews.dropbox.com/p/thumb/AAYMO8Rfv_FKDsoGONDZyu7kOGuUY3tRlLHLkAzri2BRlnihQ_bD06BWw9oxc2o40pt7hmhsz8LYkqKBwFozQ_tiIRqDMKn2QFhXDtWfTgT8Y2QFBfPBy5leDR88gWlr9JcuMG8STUUZkfEs7RzYWVam7GGnb6YQw_Pg9EiiEZS76nJgn6nYFy27bxBJ7AuAP0xLYfs1u45BBryX48Bv60DFrRh4KDgerhp81oCSMSIS8zeA9X3nz_2Gskx5QG3xCf2dvSVtamWHfwpJiqzYb1rscrMSY8uqMglnFDB-R8uahXyWGTmmYIN_Y1NLwyCjIPvNJ2xEF0abLeNTCkqJ2QJEGwLktnKlp-Ef2QKv9sWZUjH0tIk7yAcpxlPqtI1dZOEZWRupzYv3acwEZ-YVN8Bx/p.jpeg?size_mode=5")',
+                backgroundImage: 'url("http://b.webpurr.com/9JNk.webp")',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',

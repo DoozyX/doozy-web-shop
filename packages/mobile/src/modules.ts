@@ -9,16 +9,14 @@ import authentication from '@gqlapp/authentication-client-react';
 
 import ClientModule from '@gqlapp/module-client-react-native';
 
+const upload = require('@gqlapp/upload-client-react').default;
 const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
   validation,
   defaultRouter,
-  counter,
-  post,
   upload,
   contact,
-  pagination,
   chat,
   payments,
   user,
