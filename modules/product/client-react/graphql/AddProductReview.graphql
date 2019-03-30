@@ -1,0 +1,3 @@
+mutation addReviewToProduct($productId: Int!, $content: String!){
+  addReviewToProduct(productId: $productId, content: $content)
+}

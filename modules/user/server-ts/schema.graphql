@@ -9,9 +9,11 @@ type User {
 }
 
 type UserProfile {
+  username: String
   firstName: String
   lastName: String
   fullName: String
+  avatar: String
 }
 
 # Additional authentication service info
@@ -58,7 +60,6 @@ extend type Query {
 
 type UserPayload {
   user: User
-  errors: [FieldError!]
 }
 
 extend type Mutation {

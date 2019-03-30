@@ -3,23 +3,20 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { withFormik } from 'formik';
-import { FieldAdapter as Field } from '@module/core-client-react';
-import { translate } from '@module/i18n-client-react';
-import { RenderField, Button, primary, FormView } from '@module/look-client-react-native';
-import { placeholderColor, submit } from '@module/look-client-react-native/styles';
-import { required, minLength, validate } from '@module/validation-common-react';
+import { isFormError, FieldAdapter as Field } from '@gqlapp/forms-client-react';
+import { translate } from '@gqlapp/i18n-client-react';
+import { RenderField, Button, primary, FormView } from '@gqlapp/look-client-react-native';
+import { placeholderColor, submit } from '@gqlapp/look-client-react-native/styles';
+import { required, minLength, validate } from '@gqlapp/validation-common-react';
+import { LinkedInButton, GoogleButton, GitHubButton, FacebookButton } from '@gqlapp/authentication-client-react';
 
-import FacebookButton from '../auth/facebook';
-import GoogleButton from '../auth/google';
-import GitHubButton from '../auth/github';
-import LinkedInButton from '../auth/linkedin';
 import settings from '../../../../settings';
 
 const loginFormSchema = {
   usernameOrEmail: [required, minLength(3)],
-  password: [required, minLength(settings.user.auth.password.minLength)]
+  password: [required, minLength(settings.auth.password.minLength)]
 };
-const { facebook, linkedin, google, github } = settings.user.auth;
+const { github, facebook, linkedin, google } = settings.auth.social;
 
 const renderSocialButtons = (buttonsLength, t) => {
   return buttonsLength > 2 ? (
@@ -155,7 +152,11 @@ const LoginFormWithFormik = withFormik({
     }
   ) {
     onSubmit(values).catch(e => {
-      setErrors(e);
+      if (isFormError(e)) {
+        setErrors(e.errors);
+      } else {
+        throw e;
+      }
     });
   },
   validate: values => validate(values, loginFormSchema),

@@ -4,9 +4,9 @@ import chaiHttp from 'chai-http';
 import { ApolloClient } from 'apollo-client';
 import WebSocket from 'ws';
 
-import { serverPromise } from '@module/core-server-ts';
-import { createApolloClient } from '@module/core-common';
-import { populateTestDb } from '@module/database-server-ts';
+import { serverPromise } from '@gqlapp/core-server-ts';
+import { createApolloClient } from '@gqlapp/core-common';
+import { populateTestDb } from '@gqlapp/database-server-ts';
 
 chai.use(chaiHttp);
 chai.should();
@@ -15,9 +15,11 @@ let server: Server;
 let apollo: ApolloClient<any>;
 
 before(async () => {
-  // tslint:disable-next-line
-  require('@babel/register')({ cwd: __dirname + '/../../..', extensions: ['.js', '.ts'] });
-  require('@babel/polyfill');
+  if (!global._babelPolyfill) {
+    // tslint:disable-next-line
+    require('@babel/register')({ cwd: __dirname + '/../../..', extensions: ['.js', '.ts'], ignore: [ /build\/main.js/ ] });
+    require('@babel/polyfill');
+  }
   await populateTestDb();
 
   server = await serverPromise;

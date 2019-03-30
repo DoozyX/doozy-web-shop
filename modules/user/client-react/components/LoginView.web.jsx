@@ -1,68 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { translate } from '@module/i18n-client-react';
-import { LayoutCenter, PageLayout, Card, CardGroup, CardTitle, CardText } from '@module/look-client-react';
+
+import { LayoutCenter, PageLayout, Card, CardGroup, CardTitle, CardText, Button } from '@gqlapp/look-client-react';
 
 import LoginForm from './LoginForm';
 import settings from '../../../../settings';
 
-class LoginView extends React.PureComponent {
-  static propTypes = {
-    error: PropTypes.string,
-    login: PropTypes.func.isRequired,
-    t: PropTypes.func
-  };
+const LoginView = ({ onSubmit, t, isRegistered, hideModal }) => {
+  const renderMetaData = () => (
+    <Helmet
+      title={`${settings.app.name} - ${t('login.title')}`}
+      meta={[
+        {
+          name: 'description',
+          content: `${settings.app.name} - ${t('login.meta')}`
+        }
+      ]}
+    />
+  );
 
-  onSubmit = login => async values => {
-    const res = await login(values);
-    const { errors } = res;
-    const { t } = this.props;
+  const renderConfirmationModal = () => (
+    <Card>
+      <CardGroup style={{ textAlign: 'center' }}>
+        <CardTitle>{t('reg.successRegTitle')}</CardTitle>
+        <CardText>{t('reg.successRegBody')}</CardText>
+        <CardText>
+          <Button style={{ minWidth: '320px' }} color="primary" onClick={hideModal}>
+            {t('login.form.btnSubmit')}
+          </Button>
+        </CardText>
+      </CardGroup>
+    </Card>
+  );
 
-    if (errors && errors.length) {
-      throw errors.reduce(
-        (res, error) => {
-          res[error.field] = error.message;
-          return res;
-        },
-        { _error: t('login.errorMsg') }
-      );
-    }
-  };
+  return (
+    <PageLayout>
+      {renderMetaData()}
+      <LayoutCenter>
+        {isRegistered ? (
+          renderConfirmationModal()
+        ) : (
+          <React.Fragment>
+            <h1 className="text-center">{t('login.form.title')}</h1>
+            <LoginForm onSubmit={onSubmit} />
+            <hr />
+            <Card>
+              <CardGroup>
+                <CardTitle>{t('login.cardTitle')}:</CardTitle>
+                <CardText>admin@example.com:admin123</CardText>
+                <CardText>user@example.com:user1234</CardText>
+              </CardGroup>
+            </Card>
+          </React.Fragment>
+        )}
+      </LayoutCenter>
+    </PageLayout>
+  );
+};
 
-  render() {
-    const { login, t } = this.props;
+LoginView.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  t: PropTypes.func,
+  isRegistered: PropTypes.bool,
+  hideModal: PropTypes.func
+};
 
-    const renderMetaData = () => (
-      <Helmet
-        title={`${settings.app.name} - ${t('login.title')}`}
-        meta={[
-          {
-            name: 'description',
-            content: `${settings.app.name} - ${t('login.meta')}`
-          }
-        ]}
-      />
-    );
-
-    return (
-      <PageLayout>
-        {renderMetaData()}
-        <LayoutCenter>
-          <h1 className="text-center">{t('login.form.title')}</h1>
-          <LoginForm onSubmit={this.onSubmit(login)} />
-          <hr />
-          <Card>
-            <CardGroup>
-              <CardTitle>{t('login.cardTitle')}:</CardTitle>
-              <CardText>admin@example.com:admin123</CardText>
-              <CardText>user@example.com:user1234</CardText>
-            </CardGroup>
-          </Card>
-        </LayoutCenter>
-      </PageLayout>
-    );
-  }
-}
-
-export default translate('user')(LoginView);
+export default LoginView;

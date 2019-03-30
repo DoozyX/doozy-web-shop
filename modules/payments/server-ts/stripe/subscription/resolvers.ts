@@ -1,8 +1,7 @@
 import Stripe from 'stripe';
 import withAuth from 'graphql-auth';
-import { log } from '@module/core-common';
-import { FieldError } from '@module/validation-common-react';
-
+import { log } from '@gqlapp/core-common';
+import { ApolloError } from 'apollo-server-errors';
 import settings from '../../../../../settings';
 
 const { plan } = settings.stripe.subscription;
@@ -29,13 +28,13 @@ export default () => ({
         : null;
     }),
     stripeSubscriptionCard: withAuth(['stripe:view:self'], (obj: any, args: any, context: any) => {
-      return context.StripeSubscription.getCreditCard(context.user.id);
+      return context.StripeSubscription.getCreditCard(context.identity.id);
     })
   },
   Mutation: {
     addStripeSubscription: withAuth(['stripe:update:self'], async (obj: any, { input }: CreditCard, context: any) => {
       try {
-        const { user, stripeSubscription, StripeSubscription } = context;
+        const { identity, stripeSubscription, StripeSubscription } = context;
         const { token, expiryMonth, expiryYear, last4, brand } = input;
         let stripeCustomerId;
         let stripeSourceId;
@@ -46,13 +45,13 @@ export default () => ({
           stripeCustomerId = stripeSubscription.stripeCustomerId;
           stripeSourceId = id;
         } else {
-          const { id, default_source } = await stripe.customers.create({ email: user.email, source: token });
+          const { id, default_source } = await stripe.customers.create({ email: identity.email, source: token });
           stripeCustomerId = id;
           stripeSourceId = default_source;
         }
 
         await StripeSubscription.editSubscription({
-          userId: user.id,
+          userId: identity.id,
           active: false,
           stripeCustomerId,
           stripeSourceId,
@@ -68,27 +67,30 @@ export default () => ({
         });
 
         await StripeSubscription.editSubscription({
-          userId: user.id,
+          userId: identity.id,
           active: true,
           stripeSubscriptionId: newSubscriber.id
         });
 
-        return { active: true, errors: null };
+        return { active: true };
       } catch (e) {
         log.error(e);
-        return { active: false, errors: e };
+        if (e.code === 'resource_missing') {
+          throw new ApolloError(e.message, e.code);
+        }
+        throw new Error(e.message);
       }
     }),
     updateStripeSubscriptionCard: withAuth(['stripe:update:self'], async (obj: any, args: CreditCard, context: any) => {
       try {
         const { token, expiryMonth, expiryYear, last4, brand } = args.input;
-        const { StripeSubscription, user, stripeSubscription } = context;
+        const { StripeSubscription, identity, stripeSubscription } = context;
 
         await stripe.customers.deleteSource(stripeSubscription.stripeCustomerId, stripeSubscription.stripeSourceId);
         const source = await stripe.customers.createSource(stripeSubscription.stripeCustomerId, { source: token });
 
         await StripeSubscription.editSubscription({
-          userId: user.id,
+          userId: identity.id,
           stripeSourceId: source.id,
           expiryMonth,
           expiryYear,
@@ -99,26 +101,25 @@ export default () => ({
         return true;
       } catch (e) {
         log.error(e);
-        return false;
+        if (e.code === 'resource_missing') {
+          throw new ApolloError(e.message, e.code);
+        }
+        throw new Error(e.message);
       }
     }),
     cancelStripeSubscription: withAuth(['stripe:update:self'], async (obj: any, args: any, context: any) => {
-      try {
-        const { user, stripeSubscription, StripeSubscription, req } = context;
-        const { stripeSubscriptionId, stripeCustomerId, stripeSourceId } = stripeSubscription;
+      const {
+        identity,
+        stripeSubscription: { stripeSubscriptionId, stripeCustomerId, stripeSourceId },
+        StripeSubscription
+      } = context;
 
-        try {
-          await stripe.subscriptions.del(stripeSubscriptionId);
-          await stripe.customers.deleteSource(stripeCustomerId, stripeSourceId);
-        } catch (err) {
-          log.error(err);
-          const e = new FieldError();
-          e.setError('cancelSubscription', req.t('stripeSubscription:cancelError'));
-          e.throwIf();
-        }
+      try {
+        await stripe.subscriptions.del(stripeSubscriptionId);
+        await stripe.customers.deleteSource(stripeCustomerId, stripeSourceId);
 
         await StripeSubscription.editSubscription({
-          userId: user.id,
+          userId: identity.id,
           active: false,
           stripeSourceId: null,
           stripeSubscriptionId: null,
@@ -128,10 +129,13 @@ export default () => ({
           brand: null
         });
 
-        return { active: false, errors: null };
+        return { active: false };
       } catch (e) {
         log.error(e);
-        return { active: true, errors: e };
+        if (e.code === 'resource_missing') {
+          throw new ApolloError(e.message, e.code);
+        }
+        throw new Error(e.message);
       }
     })
   },

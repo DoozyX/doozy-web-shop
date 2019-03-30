@@ -1,8 +1,21 @@
 {
-  "navLinkHome": "Home",
-  "navLinkBrands": "Brands",
-  "navLinkProducts": "Products",
-  "title": "Product module",
-  "meta": "Product example",
-  "welcomeText": "Hello, This is the Product module"
+  "navLink": {
+    "home": "Home",
+    "brands": "Brands",
+    "products": "Products",
+    "seeds": "Seeds",
+    "tools": "Tools",
+    "fruits": "Fruits",
+    "vegetables": "Vegetables",
+    "dairyProducts": "Dairy Products",
+    "addProduct": "Add Product",
+    "plantProtection": "Plant Protection"
+  },
+  "title": "Product",
+  "meta": "Product",
+  "welcomeText": "Hello, This is the Product module",
+  "sortByPriceAscending": "Sort by Price (Ascending)",
+  "sortByPriceDescending": "Sort by Price (Descending)",
+  "products": "Products",
+  "description": "Description"
 }

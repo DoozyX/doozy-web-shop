@@ -1,0 +1,34 @@
+query GetProduct($id: Int!) {
+  product(id: $id) {
+    id
+    name
+    description
+    size
+    type
+    rating
+    brand {
+      id
+      name
+    }
+    price
+    imageSource
+    category {
+      id
+      name
+    }
+    reviews {
+      id
+      content
+      user {
+        avatar
+        username
+        fullName
+      }
+      created_at
+    }
+    images {
+      id
+      image
+    }
+  }
+}

@@ -1,0 +1,35 @@
+# Entity
+type CartItem {
+  product: Product!
+  quantity: Int!
+}
+
+type OrderItem {
+  id: Int!
+  product: Product!
+  quantity: Int!
+}
+
+type Order {
+  id: Int!
+  price: Int!
+  created_at: String!
+  items:  [OrderItem]
+}
+
+extend type Query {
+  getCartItems: [CartItem]
+  getOrders: [Order]
+}
+
+extend type Mutation {
+  addProductToCart(productId: Int!, quantity: Int!): Boolean
+  changeCartItemQuantity(productId: Int!, quantity: Int!): Boolean
+  removeCartItem(productId: Int!): Boolean
+  makeOrder(input: OrderInput!): Boolean
+}
+
+input OrderInput {
+  products: [Int]
+  quantities: [Int]
+}

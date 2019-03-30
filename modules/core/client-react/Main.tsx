@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloClient } from 'apollo-client';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import ReactGA from 'react-ga';
-import { apiUrl } from '@module/core-common';
-import ClientModule from '@module/module-client-react';
+import { apiUrl } from '@gqlapp/core-common';
+import ClientModule from '@gqlapp/module-client-react';
+import 'semantic-ui-css/semantic.min.css';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 import RedBox from './RedBox';
 import createApolloClient from '../../../packages/common/createApolloClient';
 import createReduxStore, { getStoreReducer } from '../../../packages/common/createReduxStore';
 import log from '../../../packages/common/log';
 import settings from '../../../settings';
+import { Spinner } from 'reactstrap';
 
 log.info(`Connecting to GraphQL backend at: ${apiUrl}`);
 
@@ -28,7 +32,7 @@ export const onAppCreate = (modules: ClientModule, entryModule: NodeModule) => {
   ref.client = createApolloClient({
     apiUrl,
     createNetLink: ref.modules.createNetLink,
-    links: ref.modules.link,
+    createLink: ref.modules.createLink,
     connectionParams: ref.modules.connectionParams,
     clientResolvers: ref.modules.resolvers
   });
@@ -90,9 +94,13 @@ export class Main extends React.Component<any, MainState> {
     ) : (
       ref.modules.getWrappedRoot(
         <Provider store={ref.store}>
-          <ApolloProvider client={ref.client}>
-            {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
-          </ApolloProvider>
+          <ApolloHooksProvider client={ref.client}>
+            <ApolloProvider client={ref.client}>
+              <Suspense fallback={<Spinner />}>
+                {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
+              </Suspense>
+            </ApolloProvider>
+          </ApolloHooksProvider>
         </Provider>
       )
     );

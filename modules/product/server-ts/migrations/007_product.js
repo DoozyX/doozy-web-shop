@@ -4,11 +4,13 @@ export async function up(knex) {
       .createTable('category', table => {
         table.increments();
         table.string('name');
+        table.string('image');
         table.timestamps(false, true);
       })
       .createTable('brand', table => {
         table.increments();
         table.string('name');
+        table.string('image');
         table.timestamps(false, true);
       })
       .createTable('product', table => {
@@ -16,6 +18,9 @@ export async function up(knex) {
         table.string('name');
         table.string('type');
         table.string('size');
+        table.integer('price');
+        table.string('imageSource');
+        table.text('description');
         table.integer('rating');
         table
           .integer('categoryId')
@@ -25,9 +30,38 @@ export async function up(knex) {
           .onDelete('CASCADE');
         table
           .integer('brandId')
+          .nullable()
           .unsigned()
           .references('id')
           .inTable('brand')
+          .onDelete('CASCADE');
+        table.timestamps(false, true);
+      })
+      .createTable('review', table => {
+        table.increments();
+        table.string('content');
+        table
+          .integer('productId')
+          .unsigned()
+          .references('id')
+          .inTable('product')
+          .onDelete('CASCADE');
+        table
+          .integer('userId')
+          .unsigned()
+          .references('id')
+          .inTable('user')
+          .onDelete('CASCADE');
+        table.timestamps(false, true);
+      })
+      .createTable('product_image', table => {
+        table.increments();
+        table.string('image');
+        table
+          .integer('productId')
+          .unsigned()
+          .references('id')
+          .inTable('product')
           .onDelete('CASCADE');
         table.timestamps(false, true);
       })
@@ -37,6 +71,8 @@ export async function up(knex) {
 export async function down(knex) {
   return Promise.all([
     knex.schema
+      .dropTable('product_images')
+      .dropTable('review')
       .dropTable('product')
       .dropTable('brand')
       .dropTable('category')

@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { SchemaLink } from 'apollo-link-schema';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { ServerStyleSheet } from 'styled-components';
@@ -10,11 +11,11 @@ import path from 'path';
 import Helmet, { HelmetData } from 'react-helmet';
 import serialize from 'serialize-javascript';
 import { GraphQLSchema } from 'graphql';
-import { isApiExternal, apiUrl } from '@module/core-common';
-import ServerModule from '@module/module-server-ts';
-import ClientModule from '@module/module-client-react';
-import { createApolloClient, createReduxStore } from '@module/core-common';
-import { styles } from '@module/look-client-react';
+import { isApiExternal, apiUrl } from '@gqlapp/core-common';
+import ServerModule from '@gqlapp/module-server-ts';
+import ClientModule from '@gqlapp/module-client-react';
+import { createApolloClient, createReduxStore } from '@gqlapp/core-common';
+import { styles } from '@gqlapp/look-client-react';
 
 let assetMap: { [key: string]: string };
 
@@ -49,6 +50,7 @@ const Html = ({ content, state, css, helmet }: HtmlProps) => (
       <link rel="manifest" href={`${assetMap['manifest.xjson']}`} />
       <link rel="mask-icon" href={`${assetMap['safari-pinned-tab.svg']}`} color="#5bbad5" />
       <link rel="shortcut icon" href={`${assetMap['favicon.ico']}`} />
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
       <meta name="msapplication-config" content={`${assetMap['browserconfig.xml']}`} />
       <meta name="theme-color" content="#ffffff" />
       {!__DEV__ && <link rel="stylesheet" type="text/css" href={`${assetMap['index.css']}`} />}
@@ -90,7 +92,7 @@ const renderServerSide = async (req: any, res: any, schema: GraphQLSchema, modul
   const client = createApolloClient({
     apiUrl,
     createNetLink: !isApiExternal ? () => schemaLink : undefined,
-    links: clientModules.link,
+    createLink: clientModules.createLink,
     clientResolvers: clientModules.resolvers,
     connectionParams: null
   });
@@ -99,11 +101,13 @@ const renderServerSide = async (req: any, res: any, schema: GraphQLSchema, modul
   const App = clientModules.getWrappedRoot(
     <Provider store={store}>
       <ApolloProvider client={client}>
-        {clientModules.getDataRoot(
-          <StaticRouter location={req.url} context={context}>
-            {clientModules.router}
-          </StaticRouter>
-        )}
+        <ApolloHooksProvider client={client}>
+          {clientModules.getDataRoot(
+            <StaticRouter location={req.url} context={context}>
+              {clientModules.router}
+            </StaticRouter>
+          )}
+        </ApolloHooksProvider>
       </ApolloProvider>
     </Provider>,
     req

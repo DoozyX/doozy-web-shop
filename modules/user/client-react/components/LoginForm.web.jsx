@@ -2,15 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import { NavLink, Link } from 'react-router-dom';
-import { FieldAdapter as Field } from '@module/core-client-react';
-import { translate } from '@module/i18n-client-react';
-import { required, minLength, validate } from '@module/validation-common-react';
-import { Form, RenderField, Alert, Button } from '@module/look-client-react';
-
-import FacebookButton from '../auth/facebook';
-import GoogleButton from '../auth/google';
-import LinkedInButton from '../auth/linkedin';
-import GitHubButton from '../auth/github';
+import { isFormError, FieldAdapter as Field } from '@gqlapp/forms-client-react';
+import { translate } from '@gqlapp/i18n-client-react';
+import { required, minLength, validate } from '@gqlapp/validation-common-react';
+import { Form, RenderField, Alert, Button } from '@gqlapp/look-client-react';
+import { LinkedInButton, GoogleButton, GitHubButton, FacebookButton } from '@gqlapp/authentication-client-react';
 
 import settings from '../../../../settings';
 
@@ -18,27 +14,27 @@ const loginFormSchema = {
   usernameOrEmail: [required, minLength(3)],
   password: [required, minLength(8)]
 };
-const { facebook, linkedin, google, github } = settings.user.auth;
+const { github, facebook, linkedin, google } = settings.auth.social;
 
 const renderSocialButtons = (buttonsLength, t) => {
   return buttonsLength > 2 ? (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 200 }}>
-      {settings.user.auth.facebook.enabled && (
+      {facebook.enabled && (
         <div className="text-center">
           <FacebookButton text={t('login.fbBtn')} type={'icon'} />
         </div>
       )}
-      {settings.user.auth.google.enabled && (
+      {google.enabled && (
         <div className="text-center">
           <GoogleButton text={t('login.googleBtn')} type={'icon'} />
         </div>
       )}
-      {settings.user.auth.github.enabled && (
+      {github.enabled && (
         <div className="text-center">
           <GitHubButton text={t('login.githubBtn')} type={'icon'} />
         </div>
       )}
-      {settings.user.auth.linkedin.enabled && (
+      {linkedin.enabled && (
         <div className="text-center">
           <LinkedInButton text={t('login.linkedinBtn')} type={'icon'} />
         </div>
@@ -46,22 +42,22 @@ const renderSocialButtons = (buttonsLength, t) => {
     </div>
   ) : (
     <div>
-      {settings.user.auth.facebook.enabled && (
+      {facebook.enabled && (
         <div className="text-center">
           <FacebookButton text={t('login.fbBtn')} type={'button'} />
         </div>
       )}
-      {settings.user.auth.google.enabled && (
+      {google.enabled && (
         <div className="text-center">
           <GoogleButton text={t('login.googleBtn')} type={'button'} />
         </div>
       )}
-      {settings.user.auth.github.enabled && (
+      {github.enabled && (
         <div className="text-center">
           <GitHubButton text={t('login.githubBtn')} type={'button'} />
         </div>
       )}
-      {settings.user.auth.linkedin.enabled && (
+      {linkedin.enabled && (
         <div className="text-center">
           <LinkedInButton text={t('login.linkedinBtn')} type={'button'} />
         </div>
@@ -70,7 +66,7 @@ const renderSocialButtons = (buttonsLength, t) => {
   );
 };
 
-const LoginForm = ({ handleSubmit, submitting, error, values, t }) => {
+const LoginForm = ({ handleSubmit, submitting, errors, values, t }) => {
   const buttonsLength = [facebook.enabled, linkedin.enabled, google.enabled, github.enabled].filter(button => button)
     .length;
   return (
@@ -89,7 +85,7 @@ const LoginForm = ({ handleSubmit, submitting, error, values, t }) => {
         label={t('login.form.field.pass')}
         value={values.password}
       />
-      <div className="text-center">{error && <Alert color="error">{error}</Alert>}</div>
+      <div className="text-center">{errors && errors.errorMsg && <Alert color="error">{errors.errorMsg}</Alert>}</div>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <div className="text-center">
           <Button size="lg" style={{ minWidth: '320px' }} color="primary" type="submit" disabled={submitting}>
@@ -116,7 +112,7 @@ LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
   onSubmit: PropTypes.func,
   submitting: PropTypes.bool,
-  error: PropTypes.string,
+  errors: PropTypes.object,
   values: PropTypes.object,
   t: PropTypes.func
 };
@@ -133,8 +129,11 @@ const LoginFormWithFormik = withFormik({
     }
   ) {
     onSubmit(values).catch(e => {
-      console.log(e);
-      setErrors(e);
+      if (isFormError(e)) {
+        setErrors(e.errors);
+      } else {
+        throw e;
+      }
     });
   },
   validate: values => validate(values, loginFormSchema),

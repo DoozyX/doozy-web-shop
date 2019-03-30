@@ -1,38 +1,75 @@
+import withAuth from 'graphql-auth';
+
 import { BrandType, CategoryType, Identifier, ProductType } from './sql';
 import { ProductContext } from './index';
 // import { createBatchResolver } from 'graphql-resolve-batch'; TODO: refactor subtypes with batch resolver
 
 export default () => ({
   Query: {
-    product(obj: any, { id }: Identifier, context: ProductContext) {
+    product(_obj: any, { id }: Identifier, context: ProductContext) {
       return context.Product.get(id);
     },
-    products(obj: any, args: any, context: ProductContext) {
+    products(_obj: any, _args: any, context: ProductContext) {
       return context.Product.getAll();
     },
-    categories(obj: any, args: any, context: ProductContext) {
+    topProducts(_obj: any, _args: any, context: ProductContext) {
+      return context.Product.getTop();
+    },
+    newProducts(_obj: any, _args: any, context: ProductContext) {
+      return context.Product.getNew();
+    },
+    categories(_obj: any, _args: any, context: ProductContext) {
       return context.Category.getAll();
     },
-    brands(obj: any, args: any, context: ProductContext) {
+    topCategories(_obj: any, _args: any, context: ProductContext) {
+      return context.Category.getTop(5);
+    },
+    brands(_obj: any, _args: any, context: ProductContext) {
       return context.Brand.getAll();
+    },
+    searchProductsWithCategory(_obj: any, { search }: any, context: ProductContext) {
+      return context.Category.searchForProduct(search);
+    }
+  },
+  ProductSearchWithCategory: {
+    results(obj: BrandType, _args: any, { Product }: ProductContext, info: any) {
+      return Product.getAllForBrand(obj.id);
     }
   },
   Product: {
-    brand(obj: ProductType, args: any, context: ProductContext) {
-      return context.Brand.get(obj.brandId);
+    brand(obj: ProductType, _args: any, { Brand }: ProductContext) {
+      return Brand.get(obj.brandId);
     },
-    category(obj: ProductType, args: any, context: ProductContext) {
-      return context.Category.get(obj.categoryId);
+    category(obj: ProductType, _args: any, { Category }: ProductContext) {
+      return Category.get(obj.categoryId);
+    },
+    reviews(obj: ProductType, _args: any, { Review }: ProductContext) {
+      return Review.getForProduct(obj.id);
+    },
+    images(obj: ProductType, _args: any, { ProductImage }: ProductContext) {
+      return ProductImage.getForProduct(obj.id);
     }
   },
   Brand: {
-    products(obj: BrandType, args: any, context: ProductContext) {
-      return context.Product.getAllForBrand(obj.id);
+    products(obj: BrandType, _args: any, { Product }: ProductContext) {
+      return Product.getAllForBrand(obj.id);
     }
   },
   Category: {
-    products(obj: CategoryType, args: any, context: ProductContext) {
-      return context.Product.getAllForCategory(obj.id);
+    products(obj: CategoryType, _args: any, { Product }: ProductContext) {
+      return Product.getAllForCategory(obj.id);
     }
+  },
+  Review: {
+    user(obj: any, _args: any, { User }: ProductContext) {
+      return User.getUserPublicInfoById(obj.userId);
+    }
+  },
+  Mutation: {
+    addReviewToProduct: withAuth(
+      async (_obj: any, { productId, content }: any, { Review, identity }: ProductContext) => {
+        return !!(await Review.insert(content, productId, identity.id));
+      }
+    )
   }
 });

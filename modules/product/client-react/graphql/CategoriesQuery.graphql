@@ -1,5 +1,7 @@
 query categoriesQuery {
   categories {
+    id
     name
+    image
   }
 }

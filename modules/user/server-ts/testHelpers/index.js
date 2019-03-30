@@ -1,7 +1,6 @@
-import LOGIN from '@module/user-client-react/graphql/Login.graphql';
-import LOGOUT from '@module/user-client-react/access/session/graphql/Logout.graphql';
-
-import { getApollo } from '@module/testing-server-ts';
+import { LOGIN } from '@gqlapp/user-client-react';
+import { LOGOUT } from '@gqlapp/authentication-client-react';
+import { getApollo } from '@gqlapp/testing-server-ts';
 
 export const login = async (usernameOrEmail = 'admin', password = 'admin123') =>
   await getApollo().mutate({

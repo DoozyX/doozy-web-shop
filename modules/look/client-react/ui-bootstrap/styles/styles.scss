@@ -37,3 +37,24 @@
   width: 30%;
   margin-bottom: 20px;
 }
+
+.carousel-item {
+  height: 500px;
+}
+
+.carousel {
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+.modal {
+  margin-top: 20% !important;
+  margin-left: 40% !important;
+}

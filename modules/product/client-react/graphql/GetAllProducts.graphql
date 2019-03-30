@@ -1,0 +1,17 @@
+query GetAllProducts {
+  products {
+    id
+    name
+    rating
+    size
+    imageSource
+    price
+    brand {
+      id
+    }
+    category {
+      id
+      name
+    }
+  }
+}

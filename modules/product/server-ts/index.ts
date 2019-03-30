@@ -1,13 +1,17 @@
-import ServerModule from '@module/module-server-ts';
+import ServerModule from '@gqlapp/module-server-ts';
 
 import schema from './schema.graphql';
 import createResolvers from './resolvers';
-import { Product, Category, Brand } from './sql';
+import { Product, Category, Brand, Review, ProductImage } from './sql';
 
 export interface ProductContext {
   Product: Product;
   Category: Category;
   Brand: Brand;
+  Review: Review;
+  User: any;
+  ProductImage: ProductImage;
+  identity: any;
 }
 
 export default new ServerModule({
@@ -17,7 +21,9 @@ export default new ServerModule({
     () => ({
       Product: new Product(),
       Category: new Category(),
-      Brand: new Brand()
+      Brand: new Brand(),
+      Review: new Review(),
+      ProductImage: new ProductImage()
     })
   ]
 });

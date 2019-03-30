@@ -24,7 +24,7 @@
   "add": {
     "title": "Subscription",
     "btn": "Subscribe",
-    "description": "Apollo Universal Starter Kit provides a basic example of Stripe-based subscription. The starter kit also implements the payment functionality to imitate a real production payment service in development mode.",
+    "description": "Subscription example",
     "product": "To get a magic number, you need to subscribe.",
     "price": "Monthly subscription price: $",
     "creditCard": "Credit Card",

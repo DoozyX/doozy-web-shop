@@ -3,6 +3,9 @@ type Post {
   id: Int!
   title: String!
   content: String!
+  imageSource: String!
+  user: UserProfile!
+  created_at: String!
   comments: [Comment]
 }
 
@@ -10,6 +13,8 @@ type Post {
 type Comment {
   id: Int!
   content: String!
+  created_at: String!
+  user: UserProfile!
 }
 
 # Edges for Posts

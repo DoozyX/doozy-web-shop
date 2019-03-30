@@ -1,5 +1,5 @@
 export default {
-  name: 'Doozy Web Shop',
+  name: 'AgriStore',
   logging: {
     level: ['production'].indexOf(process.env.NODE_ENV) < 0 ? 'debug' : 'info',
     debugSQL: false,

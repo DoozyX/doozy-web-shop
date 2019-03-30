@@ -1,0 +1,13 @@
+# GraphQL queries
+query getCartItems {
+  getCartItems {
+    quantity
+    product {
+      id
+      name
+      size
+      price
+      imageSource
+    }
+  }
+}

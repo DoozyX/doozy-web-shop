@@ -2,28 +2,59 @@
 type Product {
   id: Int!
   name: String!
+  description: String!
   rating: Int!
   size: String!
   type: String!
-  brand: Brand!
+  brand: Brand
+  price: Int!
+  imageSource: String!
   category: Category!
+  reviews: [Review]
+  images: [Image]
+}
+
+type Image {
+  id: Int!
+  image: String!
+}
+
+type Review {
+  id: Int!
+  content: String!
+  user: UserProfile!
+  created_at: String!
 }
 
 type Brand {
   id: Int!
   name: String!
+  image: String!
   products: [Product]
 }
 
 type Category {
   id: Int!
   name: String!
+  image: String!
   products: [Product]
+}
+
+type ProductSearchWithCategory {
+  name: String!
+  results: [Product]
 }
 
 extend type Query {
   product(id: Int!): Product
   products: [Product] # TODO: refactor with pagination
+  topProducts: [Product]
+  newProducts: [Product]
   categories: [Category]
+  topCategories: [Category]
   brands: [Brand]
+  searchProductsWithCategory(search: String!): [ProductSearchWithCategory]
+}
+extend type Mutation {
+  addReviewToProduct(productId: Int!, content: String!): Boolean!
 }

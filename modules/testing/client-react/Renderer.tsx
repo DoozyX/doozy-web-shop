@@ -1,5 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, Suspense } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloLink, Observable, Operation } from 'apollo-link';
 import { addTypenameToDocument } from 'apollo-utilities';
 import { Router, Switch } from 'react-router-dom';
@@ -11,8 +12,10 @@ import { graphql, print, getOperationAST, DocumentNode, GraphQLSchema } from 'gr
 import { Provider } from 'react-redux';
 import { ApolloClient } from 'apollo-client';
 
-import { createApolloClient } from '@module/core-common';
-import ClientModule from '@module/module-client-react';
+import { createApolloClient } from '@gqlapp/core-common';
+import ClientModule from '@gqlapp/module-client-react';
+import { Spinner } from 'reactstrap';
+import 'semantic-ui-css/semantic.min.css';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></html>');
 (global as any).document = dom.window.document;
@@ -20,6 +23,7 @@ const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></h
 // Needed by Formik >= 1.x
 (global as any).HTMLButtonElement = dom.window.HTMLButtonElement;
 (global as any).navigator = dom.window.navigator;
+(global as any).HTMLElement = typeof window === 'undefined' ? Object : (window as any).HTMLElement;
 
 // tslint:disable-next-line
 const { render } = require('./testUtils');
@@ -111,7 +115,7 @@ class MockLink extends ApolloLink {
     }
   }
 
-  public _getSubscriptions(query: DocumentNode, variables: any) {
+  public _getSubscriptions(query: DocumentNode, variables?: any) {
     if (!query) {
       return this.subscriptionQueries;
     }
@@ -155,7 +159,7 @@ export class Renderer {
 
     const client = createApolloClient({
       createNetLink: () => schemaLink,
-      links: ref.clientModules.link,
+      createLink: ref.clientModules.createLink,
       clientResolvers: resolvers || ref.clientModules.resolvers
     });
 
@@ -177,12 +181,16 @@ export class Renderer {
   public withApollo(component: ReactElement<any>) {
     return ref.clientModules.getWrappedRoot(
       <Provider store={this.store}>
-        <ApolloProvider client={this.client}>{component}</ApolloProvider>
+        <ApolloProvider client={this.client}>
+          <ApolloHooksProvider client={this.client}>
+            <Suspense fallback={<Spinner />}>{component}</Suspense>
+          </ApolloHooksProvider>
+        </ApolloProvider>
       </Provider>
     );
   }
 
-  public getSubscriptions(query: DocumentNode, variables: any) {
+  public getSubscriptions(query: DocumentNode, variables?: any) {
     return this.mockLink._getSubscriptions(query, variables);
   }
 

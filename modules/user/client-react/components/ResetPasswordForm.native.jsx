@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import { View, StyleSheet } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { FieldAdapter as Field } from '@module/core-client-react';
-import { translate } from '@module/i18n-client-react';
+import { isFormError, FieldAdapter as Field } from '@gqlapp/forms-client-react';
+import { translate } from '@gqlapp/i18n-client-react';
 
-import { RenderField, Button, primary } from '@module/look-client-react-native';
-import { placeholderColor, submit } from '@module/look-client-react-native/styles';
-import { required, minLength, validate, match } from '@module/validation-common-react';
+import { RenderField, Button, primary } from '@gqlapp/look-client-react-native';
+import { placeholderColor, submit } from '@gqlapp/look-client-react-native/styles';
+import { required, minLength, validate, match } from '@gqlapp/validation-common-react';
 import settings from '../../../../settings';
 
 const resetPasswordFormSchema = {
-  password: [required, minLength(settings.user.auth.password.minLength)],
-  passwordConfirmation: [match('password'), required, minLength(settings.user.auth.password.minLength)]
+  password: [required, minLength(settings.auth.password.minLength)],
+  passwordConfirmation: [match('password'), required, minLength(settings.auth.password.minLength)]
 };
 
 const ResetPasswordForm = ({ values, handleSubmit, t }) => {
@@ -68,7 +68,13 @@ const ResetPasswordFormWithFormik = withFormik({
   ) {
     await onSubmit(values)
       .then(() => resetForm())
-      .catch(e => setErrors(e));
+      .catch(e => {
+        if (isFormError(e)) {
+          setErrors(e.errors);
+        } else {
+          throw e;
+        }
+      });
   },
   validate: values => validate(values, resetPasswordFormSchema),
   displayName: 'LoginForm' // helps with React DevTools

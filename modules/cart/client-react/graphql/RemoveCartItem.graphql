@@ -1,0 +1,3 @@
+mutation removeCartItem($productId: Int!) {
+	removeCartItem(productId: $productId)
+}

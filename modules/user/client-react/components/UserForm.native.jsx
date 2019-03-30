@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import { View, StyleSheet } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { FieldAdapter as Field } from '@module/core-client-react';
-import { translate } from '@module/i18n-client-react';
+import { isFormError, FieldAdapter as Field } from '@gqlapp/forms-client-react';
+import { translate } from '@gqlapp/i18n-client-react';
 
-import { RenderField, Button, RenderSelect, RenderSwitch, FormView, primary } from '@module/look-client-react-native';
-import { placeholderColor, submit } from '@module/look-client-react-native/styles';
-import { email, minLength, required, match, validate } from '@module/validation-common-react';
+import { RenderField, Button, RenderSelect, RenderSwitch, FormView, primary } from '@gqlapp/look-client-react-native';
+import { placeholderColor, submit } from '@gqlapp/look-client-react-native/styles';
+import { email, minLength, required, match, validate } from '@gqlapp/validation-common-react';
 import settings from '../../../../settings';
 
 const userFormSchema = {
   username: [required, minLength(3)],
   email: [required, email],
-  password: [required, minLength(settings.user.auth.password.minLength)],
-  passwordConfirmation: [match('password'), required, minLength(settings.user.auth.password.minLength)]
+  password: [required, minLength(settings.auth.password.minLength)],
+  passwordConfirmation: [match('password'), required, minLength(settings.auth.password.minLength)]
 };
 
 const handleRoleChange = (type, value, setFieldValue) => {
@@ -96,7 +96,7 @@ const UserForm = ({ values, handleSubmit, setFieldValue, t, shouldDisplayRole, s
           value={profile.lastName}
           onChange={value => setFieldValue('profile', { ...profile, lastName: value })}
         />
-        {settings.user.auth.certificate.enabled && (
+        {settings.auth.certificate.enabled && (
           <Field
             name="serial"
             component={RenderField}
@@ -178,7 +178,13 @@ const UserFormWithFormik = withFormik({
       props: { onSubmit }
     }
   ) {
-    onSubmit(values).catch(e => setErrors(e));
+    onSubmit(values).catch(e => {
+      if (isFormError(e)) {
+        setErrors(e.errors);
+      } else {
+        throw e;
+      }
+    });
   },
   displayName: 'SignUpForm ', // helps with React DevTools
   validate: values => validate(values, userFormSchema)

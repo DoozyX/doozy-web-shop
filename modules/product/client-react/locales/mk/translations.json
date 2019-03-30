@@ -1,0 +1,21 @@
+{
+  "navLink": {
+    "home": "Дома",
+    "brands": "Производители",
+    "products": "Продукти",
+    "seeds": "Семиња",
+    "tools": "Алатки",
+    "fruits": "Овошје",
+    "vegetables": "Зеленчук",
+    "dairyProducts": "Млечни производи",
+    "addProduct": "Нов производ",
+    "plantProtection": "Заштита на производи"
+  },
+  "title": "Продукти",
+  "meta": "Продукти",
+  "welcomeText": "Продукти",
+  "sortByPriceAscending": "Сортирај по цена (Растечки)",
+  "sortByPriceDescending": "Сортирај по цена (Опаѓачки)",
+  "products": "Продукти",
+  "description": "Description"
+}

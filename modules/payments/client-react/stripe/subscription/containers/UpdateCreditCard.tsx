@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import { StripeProvider } from 'react-stripe-elements';
-import { translate, TranslateFunction } from '@module/i18n-client-react';
-import { PLATFORM } from '@module/core-common';
-
+import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
+import { PLATFORM } from '@gqlapp/core-common';
+import { FormError } from '@gqlapp/forms-client-react';
+import { isApolloError } from 'apollo-client';
 import UpdateCreditCardView from '../components/UpdateCreditCardView';
 
 import UPDATE_CREDIT_CARD from '../graphql/UpdateCreditCard.graphql';
@@ -20,78 +21,53 @@ interface UpdateCreditCardProps {
 }
 
 // react-stripe-elements will not render on the server.
-class UpdateCreditCard extends React.Component<UpdateCreditCardProps, { [key: string]: any }> {
-  constructor(props: UpdateCreditCardProps) {
-    super(props);
-    this.state = {
-      submitting: false,
-      error: null
-    };
-  }
+const UpdateCreditCard = ({ t, history, navigation }: UpdateCreditCardProps) => {
+  const [submitting, setSubmitting] = useState(false);
 
-  public onSubmit = (updateCard: any) => async (creditCardInput: CreditCardInput, stripe?: any) => {
-    this.setState({ submitting: true });
-    const { t, history, navigation } = this.props;
+  const onSubmit = (updateCard: any) => async (creditCardInput: CreditCardInput, stripe?: any) => {
+    setSubmitting(true);
     let preparedCreditCard;
 
     try {
       // create credit card token
-      try {
-        preparedCreditCard = await createCreditCardToken(creditCardInput, stripe);
-        if (preparedCreditCard.error) {
-          this.setState({ submitting: false, error: t('stripeError') });
-          return;
-        }
-      } catch (e) {
-        this.setState({ submitting: false, error: t('creditCardError') });
-        return;
-      }
+      preparedCreditCard = await createCreditCardToken(creditCardInput, stripe);
 
-      const { data } = await updateCard({ variables: { input: preparedCreditCard } });
-      const { updateStripeSubscriptionCard } = data;
+      await updateCard({ variables: { input: preparedCreditCard } });
 
-      if (!updateStripeSubscriptionCard) {
-        this.setState({ submitting: false, error: t('serverError') });
-        return;
-      }
-
-      this.setState({ submitting: false });
+      setSubmitting(false);
       history ? history.push('/profile') : navigation.navigate('Profile');
     } catch (e) {
-      this.setState({ submitting: false, error: t('serverError') });
+      setSubmitting(false);
+
+      if (isApolloError(e)) {
+        if (e.graphQLErrors[0].extensions.code === 'resource_missing') {
+          throw new FormError(t('stripeError'), e);
+        } else {
+          throw new FormError(t('serverError'), e);
+        }
+      } else {
+        throw new FormError(t('creditCardError'));
+      }
     }
   };
 
-  public render() {
-    const { t } = this.props;
-    return (
-      <Mutation mutation={UPDATE_CREDIT_CARD} refetchQueries={[{ query: CREDIT_CARD_QUERY }]}>
-        {updateCard => {
-          return (
-            <Fragment>
-              {__CLIENT__ && PLATFORM === 'web' ? (
-                <StripeProvider apiKey={settings.stripe.subscription.publicKey}>
-                  <UpdateCreditCardView
-                    error={this.state.error}
-                    submitting={this.state.submitting}
-                    onSubmit={this.onSubmit(updateCard)}
-                    t={t}
-                  />
-                </StripeProvider>
-              ) : (
-                <UpdateCreditCardView
-                  error={this.state.error}
-                  submitting={this.state.submitting}
-                  onSubmit={this.onSubmit(updateCard)}
-                  t={t}
-                />
-              )}
-            </Fragment>
-          );
-        }}
-      </Mutation>
-    );
-  }
-}
+  return (
+    <Mutation mutation={UPDATE_CREDIT_CARD} refetchQueries={[{ query: CREDIT_CARD_QUERY }]}>
+      {updateCard => {
+        return (
+          <Fragment>
+            {__CLIENT__ && PLATFORM === 'web' ? (
+              <StripeProvider apiKey={settings.stripe.subscription.publicKey}>
+                <UpdateCreditCardView submitting={submitting} onSubmit={onSubmit(updateCard)} t={t} />
+              </StripeProvider>
+            ) : (
+              <UpdateCreditCardView submitting={submitting} onSubmit={onSubmit(updateCard)} t={t} />
+            )}
+          </Fragment>
+        );
+      }}
+    </Mutation>
+  );
+};
 
 export default translate('stripeSubscription')(UpdateCreditCard);

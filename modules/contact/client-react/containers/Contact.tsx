@@ -1,32 +1,39 @@
 import React from 'react';
-import { Mutation, MutationFn, FetchResult } from 'react-apollo';
-
-import { translate, TranslateFunction } from '@module/i18n-client-react';
+import { Mutation, FetchResult } from 'react-apollo';
+import { FormError } from '@gqlapp/forms-client-react';
+import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import ContactView from '../components/ContactView';
 import CONTACT from '../graphql/Contact.graphql';
 import { ContactForm } from '../types';
 
-class Contact extends React.Component<{ t: TranslateFunction }> {
-  public onSubmit = (contactMutate: MutationFn) => async (values: ContactForm) => {
-    const { t } = this.props;
+interface ContctProps {
+  t: TranslateFunction;
+}
+
+const Contact = (props: ContctProps): any => {
+  const onSubmit = (sendContact: any) => async (values: ContactForm) => {
+    const { t } = props;
 
     try {
-      const {
-        data: { contact }
-      } = (await contactMutate({ variables: { input: values } })) as FetchResult;
-      return { errors: contact.errors ? contact.errors : undefined };
+      await sendContact(values);
     } catch (e) {
-      return { errors: { serverError: t('serverError') } };
+      throw new FormError(t('serverError'), e);
     }
   };
 
-  public render() {
-    return (
-      <Mutation mutation={CONTACT}>
-        {mutate => <ContactView {...this.props} onSubmit={this.onSubmit(mutate)} />}
-      </Mutation>
-    );
-  }
-}
+  return (
+    <Mutation mutation={CONTACT}>
+      {mutate => {
+        const sendContact = async (values: ContactForm) => {
+          const {
+            data: { contact }
+          } = (await mutate({ variables: { input: values } })) as FetchResult;
+          return contact;
+        };
+        return <ContactView {...props} onSubmit={onSubmit(sendContact)} />;
+      }}
+    </Mutation>
+  );
+};
 
 export default translate('contact')(Contact);

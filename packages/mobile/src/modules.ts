@@ -1,16 +1,15 @@
-import core from '@module/core-client-react-native';
-import i18n from '@module/i18n-client-react';
-import chat from '@module/chat-client-react';
-import contact from '@module/contact-client-react';
-import validation from '@module/validation-common-react';
-import defaultRouter from '@module/router-client-react-native';
-import payments from '@module/payments-client-react';
+import core from '@gqlapp/core-client-react-native';
+import i18n from '@gqlapp/i18n-client-react';
+import chat from '@gqlapp/chat-client-react';
+import contact from '@gqlapp/contact-client-react';
+import validation from '@gqlapp/validation-common-react';
+import defaultRouter from '@gqlapp/router-client-react-native';
+import payments from '@gqlapp/payments-client-react';
+import authentication from '@gqlapp/authentication-client-react';
 
-import ClientModule from '@module/module-client-react-native';
+import ClientModule from '@gqlapp/module-client-react-native';
 
-const upload = require('@module/upload-client-react').default;
-const pagination = require('@module/pagination-client-react').default;
-const user = require('@module/user-client-react').default;
+const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
   validation,
@@ -22,7 +21,8 @@ const modules = new ClientModule(
   payments,
   user,
   i18n,
-  core
+  core,
+  authentication
 );
 
 export default modules;
