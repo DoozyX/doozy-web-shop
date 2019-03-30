@@ -15,6 +15,7 @@ import cart from '@gqlapp/cart-client-react';
 import '@gqlapp/favicon-common';
 
 const pageNotFound = require('@gqlapp/page-not-found-client-react').default;
+import '@gqlapp/favicon-common';
 const user = require('@gqlapp/user-client-react').default;
 
 const modules = new ClientModule(
