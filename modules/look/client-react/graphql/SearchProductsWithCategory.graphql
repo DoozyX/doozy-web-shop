@@ -1,14 +1,16 @@
 query searchProductsWithCategory($search: String!) {
-    searchProductsWithCategory(search: $search) {
+  searchProductsWithCategory(search: $search) {
+    id
+    name
+    results {
+      id
+      name
+      price
+      imageSource
+      brand {
+        id
         name
-        results {
-            id
-            name
-            price
-            imageSource
-            brand {
-                name
-            }
-        }
+      }
     }
+  }
 }
