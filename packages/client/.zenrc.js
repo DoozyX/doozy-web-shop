@@ -16,7 +16,7 @@ const config = {
   },
   options: {
     cache: '../../.cache',
-    ssr: false,
+    ssr: true,
     webpackDll: true,
     defines: {
       __DEV__: process.env.NODE_ENV !== 'production',
