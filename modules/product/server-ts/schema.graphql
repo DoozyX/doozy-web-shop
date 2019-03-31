@@ -41,6 +41,7 @@ type Category {
 }
 
 type ProductSearchWithCategory {
+  id: Int!
   name: String!
   results: [Product]
 }
