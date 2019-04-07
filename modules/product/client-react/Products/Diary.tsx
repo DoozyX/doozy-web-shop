@@ -72,7 +72,7 @@ const Products = ({ t, history }: ProductProps) => {
       <Suspense fallback={<Loader />}>
         <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
           <Header as="h1" dividing>
-            Seeds
+            Diary products
           </Header>
           <UncontrolledDropdown>
             <DropdownToggle caret>{t(sortBy)}</DropdownToggle>
