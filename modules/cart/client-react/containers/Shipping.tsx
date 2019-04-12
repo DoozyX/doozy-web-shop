@@ -69,11 +69,11 @@ const Shipping = ({ t, history }: any) => {
       {step === 0 && (
         <div>
           <Form>
-            <Form.Input placeholder="City" name="City" value="Skopje" fluid />
-            <Form.Input placeholder="Address" name="Address" value="Gjorce Petrov" fluid />
-            <Form.Input placeholder="Address2" name="Address" value="Boris Sarafov" fluid />
-            <Form.Input placeholder="Zip code" name="Zip" fluid value="1000" />
-            <Form.Input placeholder="Phone" name="Phone" fluid value="+38971287398" />
+            <Form.Input placeholder="City" name="City" fluid />
+            <Form.Input placeholder="Address" name="Address" fluid />
+            <Form.Input placeholder="Address2" name="Address" fluid />
+            <Form.Input placeholder="Zip code" name="Zip" fluid />
+            <Form.Input placeholder="Phone" name="Phone" fluid />
 
             <Button onClick={() => setStep(1)}>Continue</Button>
           </Form>
