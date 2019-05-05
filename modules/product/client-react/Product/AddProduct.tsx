@@ -41,14 +41,14 @@ const renderMetaData = (t: TranslateFunction) => (
 
 const Product = ({ t, history }: any) => {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ accept: 'image/*' });
-  const [state, setState] = useState({ name: '', description: '', price: '', size: '' });
+  const [state, setState] = useState({ title: '', description: '', price: '', size: '' });
   const options = [{ key: 'm', text: 'Male', value: 'male' }, { key: 'f', text: 'Female', value: 'female' }];
 
-  const handleChange = (e: any, { name, value }: { name: string; value: string }) => {
+  const handleChange = (e: any, { name, value }: any) => {
     (setState as any)({ ...state, [name]: value });
   };
 
-  const { name, description, price, size } = state;
+  const { title, description, price, size } = state;
   const handleSubmit = () => {
     history.push('/products');
   };
@@ -60,7 +60,7 @@ const Product = ({ t, history }: any) => {
         <div style={{ marginTop: '10px' }}>
           <Header as="h2">New product</Header>
           <Form onSubmit={handleSubmit}>
-            <Form.Input placeholder="Name" name="name" value={name} onChange={handleChange} fluid />
+            <Form.Input placeholder="Name" name="title" value={title} onChange={handleChange} fluid />
             <Form.Input
               placeholder="Description"
               name="description"

@@ -3,8 +3,9 @@ import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { Container, Grid, Header, Icon, List, Segment } from 'semantic-ui-react';
 
+import settings from '@gqlapp/config';
+
 import NavBar from './NavBar';
-import settings from '../../../../../settings';
 import SearchBar from './SearchBar';
 
 class PageLayout extends React.Component {

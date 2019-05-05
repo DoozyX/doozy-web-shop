@@ -119,7 +119,7 @@ const Product = ({ t, match }: ProductProps) => {
               >
                 <Header icon="archive" content="Order was successful" />
                 <Modal.Actions>
-                  <Button color="green" >
+                  <Button color="green">
                     <Icon name="checkmark" /> Continue
                   </Button>
                 </Modal.Actions>

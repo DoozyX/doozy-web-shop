@@ -38,6 +38,12 @@
   margin-bottom: 20px;
 }
 
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
 .carousel-item {
   height: 500px;
 }
@@ -46,12 +52,6 @@
   position: absolute;
   width: 100%;
   left: 0;
-}
-
-@media print {
-  .no-print {
-    display: none;
-  }
 }
 
 .modal {

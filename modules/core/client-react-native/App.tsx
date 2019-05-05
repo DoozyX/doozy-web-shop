@@ -1,13 +1,11 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import url from 'url';
 
 import ClientModule from '@gqlapp/module-client-react-native';
-import log from '../../../packages/common/log';
-import createApolloClient from '../../../packages/common/createApolloClient';
+import { createApolloClient, log } from '@gqlapp/core-common';
 
 const { protocol, pathname, port } = url.parse(__API_URL__);
 
@@ -45,11 +43,7 @@ export default class Main extends React.Component<MainProps> {
 
     return modules.getWrappedRoot(
       <Provider store={store}>
-        <ApolloProvider client={client}>
-          <ApolloHooksProvider client={client}>
-            <Suspense fallback={<div>Main Loading...</div>}>{modules.getDataRoot(modules.router)} </Suspense>
-          </ApolloHooksProvider>
-        </ApolloProvider>
+        <ApolloProvider client={client}>{modules.getDataRoot(modules.router)}</ApolloProvider>
       </Provider>
     );
   }
