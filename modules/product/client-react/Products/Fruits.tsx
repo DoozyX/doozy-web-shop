@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import { useQuery } from 'react-apollo-hooks';
@@ -10,7 +10,7 @@ import GET_ALL_PRODUCTS from '../graphql/GetAllProducts.graphql';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 import { RouteComponentProps } from 'react-router-dom';
-import { Card, Image, Rating, Loader, Header } from 'semantic-ui-react';
+import { Card, Image, Rating, Header } from 'semantic-ui-react';
 
 interface ProductProps extends RouteComponentProps {
   t: TranslateFunction;
@@ -64,60 +64,58 @@ const Products = ({ t, history }: ProductProps) => {
   const [sortBy, setSortBy] = useState(SortTypes.PRICE_ASCENDING);
   const {
     data: { products }
-  } = useQuery(GET_ALL_PRODUCTS, { suspend: true });
+  } = useQuery(GET_ALL_PRODUCTS);
 
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Loader />}>
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-          <Header as="h1" dividing>
-            Frtuits
-          </Header>
-          <UncontrolledDropdown>
-            <DropdownToggle caret>{t(sortBy)}</DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem
-                onClick={() => {
-                  setSortBy(SortTypes.PRICE_ASCENDING);
-                }}
-              >
-                {t('sortByPriceAscending')}
-              </DropdownItem>
-              <DropdownItem
-                onClick={() => {
-                  setSortBy(SortTypes.PRICE_DESCENDING);
-                }}
-              >
-                {t('sortByPriceDescending')}
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </div>
-        <div>
-          <Card.Group itemsPerRow={5}>
-            {products
-              .filter(({ category }: any) => {
-                return category.name === 'Fruits';
-              })
-              .sort((a: { price: number }, b: { price: number }) =>
-                sortBy === SortTypes.PRICE_ASCENDING ? a.price - b.price : b.price - a.price
-              )
-              .map(({ id, name, rating, size, price, imageSource }: ProductType) => (
-                <ProductCard
-                  key={id}
-                  id={id}
-                  name={name}
-                  rating={rating}
-                  size={size}
-                  price={price}
-                  imageSource={imageSource}
-                  onView={() => history.push(`/product/${id}`)}
-                />
-              ))}
-          </Card.Group>
-        </div>
-      </Suspense>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+        <Header as="h1" dividing>
+          Frtuits
+        </Header>
+        <UncontrolledDropdown>
+          <DropdownToggle caret>{t(sortBy)}</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem
+              onClick={() => {
+                setSortBy(SortTypes.PRICE_ASCENDING);
+              }}
+            >
+              {t('sortByPriceAscending')}
+            </DropdownItem>
+            <DropdownItem
+              onClick={() => {
+                setSortBy(SortTypes.PRICE_DESCENDING);
+              }}
+            >
+              {t('sortByPriceDescending')}
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </div>
+      <div>
+        <Card.Group itemsPerRow={5}>
+          {products
+            .filter(({ category }: any) => {
+              return category.name === 'Fruits';
+            })
+            .sort((a: { price: number }, b: { price: number }) =>
+              sortBy === SortTypes.PRICE_ASCENDING ? a.price - b.price : b.price - a.price
+            )
+            .map(({ id, name, rating, size, price, imageSource }: ProductType) => (
+              <ProductCard
+                key={id}
+                id={id}
+                name={name}
+                rating={rating}
+                size={size}
+                price={price}
+                imageSource={imageSource}
+                onView={() => history.push(`/product/${id}`)}
+              />
+            ))}
+        </Card.Group>
+      </div>
     </PageLayout>
   );
 };

@@ -1,11 +1,11 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 
 import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Button, Comment, Form, Header, Loader, Rating, Modal, Icon } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Rating, Modal, Icon, Loader } from 'semantic-ui-react';
 import moment from 'moment';
 import ImageGallery from 'react-image-gallery';
 
@@ -54,7 +54,7 @@ const ProductReview = ({ user, content, created_at }: any) => {
 const Product = ({ t, match }: ProductProps) => {
   const [quantity, setQuantity] = useState(1);
   const [reviewMessage, setReviewMessage] = useState('');
-  const { data } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) }, suspend: true });
+  const { data, loading } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) } });
   const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
@@ -73,15 +73,19 @@ const Product = ({ t, match }: ProductProps) => {
     }
   });
 
-  const { imageSource, name, price, rating, description, reviews, images } = data.product;
-  const imageItems = images.map(({ image }: any) => {
-    return { original: image, thumbnail: image };
-  });
-  imageItems.push({ original: imageSource, thumbnail: imageSource });
+  if (!loading) {
+    const { imageSource, name, price, rating, description, reviews, images } = data.product;
+    const imageItems = images.map(({ image }: any) => {
+      return { original: image, thumbnail: image };
+    });
+    imageItems.push({ original: imageSource, thumbnail: imageSource });
+  }
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Loader />}>
+      {loading ? (
+        <Loader />
+      ) : (
         <div style={{ padding: '5%' }}>
           <div>
             <div style={{ width: '50%', display: 'inline-block' }}>
@@ -147,7 +151,7 @@ const Product = ({ t, match }: ProductProps) => {
             </Form>
           </Comment.Group>
         </div>
-      </Suspense>
+      )}
     </PageLayout>
   );
 };

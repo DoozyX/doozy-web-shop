@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import { useQuery } from 'react-apollo-hooks';
@@ -65,110 +65,116 @@ const Products = ({ t, history }: ProductProps) => {
   const [sortBy, setSortBy] = useState(SortTypes.PRICE_ASCENDING);
   const [brandFilters, setBrandFilters] = useState([]);
   const {
-    data: { products }
-  } = useQuery(GET_ALL_PRODUCTS, { suspend: true });
+    data: { products },
+    loading
+  } = useQuery(GET_ALL_PRODUCTS);
   const {
-    data: { brands }
-  } = useQuery(BRANDS_QUERY, { suspend: true });
+    data: { brands },
+    loading: loading2
+  } = useQuery(BRANDS_QUERY);
 
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Loader />}>
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-          <Header as="h1" dividing>
-            {t('products')}
-          </Header>
-          <UncontrolledDropdown>
-            <DropdownToggle caret>{t(sortBy)}</DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem
-                onClick={() => {
-                  setSortBy(SortTypes.PRICE_ASCENDING);
-                }}
-              >
-                {t('sortByPriceAscending')}
-              </DropdownItem>
-              <DropdownItem
-                onClick={() => {
-                  setSortBy(SortTypes.PRICE_DESCENDING);
-                }}
-              >
-                {t('sortByPriceDescending')}
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </div>
-
-        <div
-          style={{
-            width: '15%',
-            display: 'inline-table'
-          }}
-        >
-          <Header as="h3" dividing>
-            Brands filter
-          </Header>
-          <List>
-            {brands.map((brand: any) => (
-              <List.Item key={'b' + brand.id}>
-                <Checkbox
-                  label={brand.name}
-                  id={brand.id}
-                  onChange={(_e, data) => {
-                    if (data.checked) {
-                      let filters = brandFilters;
-                      filters = filters.concat(data.id);
-                      setBrandFilters(filters);
-                    } else {
-                      let filters = brandFilters;
-                      filters = filters.filter(item => item !== data.id);
-                      setBrandFilters(filters);
-                    }
+      {loading || loading2 ? (
+        <Loader />
+      ) : (
+        <React.Fragment>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+            <Header as="h1" dividing>
+              {t('products')}
+            </Header>
+            <UncontrolledDropdown>
+              <DropdownToggle caret>{t(sortBy)}</DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem
+                  onClick={() => {
+                    setSortBy(SortTypes.PRICE_ASCENDING);
                   }}
-                />
-              </List.Item>
-            ))}
-          </List>
-        </div>
-        <div
-          style={{
-            width: '85%',
-            display: 'inline-block',
-            paddingLeft: '2em'
-          }}
-        >
-          <Card.Group itemsPerRow={5}>
-            {products
-              .filter(({ brand }: any) => {
-                if (!brand) {
-                  return false;
-                }
-                let valid = true;
-                if (brandFilters.length > 0) {
-                  const brandIndex = brandFilters.indexOf(brand.id);
-                  valid = brandIndex > -1;
-                }
-                return valid;
-              })
-              .sort((a: { price: number }, b: { price: number }) =>
-                sortBy === SortTypes.PRICE_ASCENDING ? a.price - b.price : b.price - a.price
-              )
-              .map(({ id, name, rating, size, price, imageSource }: ProductType) => (
-                <ProductCard
-                  key={id}
-                  id={id}
-                  name={name}
-                  rating={rating}
-                  size={size}
-                  price={price}
-                  imageSource={imageSource}
-                  onView={() => history.push(`/product/${id}`)}
-                />
+                >
+                  {t('sortByPriceAscending')}
+                </DropdownItem>
+                <DropdownItem
+                  onClick={() => {
+                    setSortBy(SortTypes.PRICE_DESCENDING);
+                  }}
+                >
+                  {t('sortByPriceDescending')}
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+
+          <div
+            style={{
+              width: '15%',
+              display: 'inline-table'
+            }}
+          >
+            <Header as="h3" dividing>
+              Brands filter
+            </Header>
+            <List>
+              {brands.map((brand: any) => (
+                <List.Item key={'b' + brand.id}>
+                  <Checkbox
+                    label={brand.name}
+                    id={brand.id}
+                    onChange={(_e, data) => {
+                      if (data.checked) {
+                        let filters = brandFilters;
+                        filters = filters.concat(data.id);
+                        setBrandFilters(filters);
+                      } else {
+                        let filters = brandFilters;
+                        filters = filters.filter(item => item !== data.id);
+                        setBrandFilters(filters);
+                      }
+                    }}
+                  />
+                </List.Item>
               ))}
-          </Card.Group>
-        </div>
-      </Suspense>
+            </List>
+          </div>
+          <div
+            style={{
+              width: '85%',
+              display: 'inline-block',
+              paddingLeft: '2em'
+            }}
+          >
+            <Card.Group itemsPerRow={5}>
+              {products
+                .filter(({ brand }: any) => {
+                  if (!brand) {
+                    return false;
+                  }
+                  let valid = true;
+                  if (brandFilters.length > 0) {
+                    const brandIndex = brandFilters.indexOf(brand.id);
+                    valid = brandIndex > -1;
+                  }
+                  return valid;
+                })
+                .sort((a: { price: number }, b: { price: number }) =>
+                  sortBy === SortTypes.PRICE_ASCENDING ? a.price - b.price : b.price - a.price
+                )
+                .map(({ id, name, rating, size, price, imageSource }: ProductType) => (
+                  <ProductCard
+                    key={id}
+                    id={id}
+                    name={name}
+                    rating={rating}
+                    size={size}
+                    price={price}
+                    imageSource={imageSource}
+                    onView={() => history.push(`/product/${id}`)}
+                  />
+                ))}
+            </Card.Group>
+          </div>
+        </React.Fragment>
+      )}
     </PageLayout>
   );
 };

@@ -16098,10 +16098,10 @@ react-addons-test-utils@^16.0.0-alpha.3:
     fbjs "^0.8.9"
     object-assign "^4.1.0"
 
-react-apollo-hooks@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/react-apollo-hooks/-/react-apollo-hooks-0.3.1.tgz#6049d5883b809d28ba24277e584a099d49697c7b"
-  integrity sha512-HF519dUBOmpS1DTtbPnd6EO/2nHUV7OtJYyoHlX3wdKWwV06CnwJp88Kmp1aUD0Gkg623znQjGsXwHAb8AtYTA==
+react-apollo-hooks@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/react-apollo-hooks/-/react-apollo-hooks-0.4.5.tgz#7fe6a8ddfdc92df2da664d399ea77a0da4a10bad"
+  integrity sha512-fq04h88hg4ONtlzxYInmv7Okqqstzk3UCp55jHWOlIO2lFKoZPhQrtCz7A+TrcRu8GGwtG1SsioRKN8kIQaAOQ==
   dependencies:
     lodash "^4.17.11"
 
