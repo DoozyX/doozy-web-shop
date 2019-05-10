@@ -1,11 +1,11 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 
 import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Button, Comment, Form, Header, Loader, Rating, Modal, Icon } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Rating, Modal, Icon, Loader } from 'semantic-ui-react';
 import moment from 'moment';
 import ImageGallery from 'react-image-gallery';
 
@@ -54,7 +54,7 @@ const ProductReview = ({ user, content, created_at }: any) => {
 const Product = ({ t, match }: ProductProps) => {
   const [quantity, setQuantity] = useState(1);
   const [reviewMessage, setReviewMessage] = useState('');
-  const { data } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) }, suspend: true });
+  const { data, loading } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) } });
   const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
@@ -73,6 +73,15 @@ const Product = ({ t, match }: ProductProps) => {
     }
   });
 
+  if (loading) {
+    return (
+      <PageLayout>
+        {renderMetaData(t)}
+        <Loader />
+      </PageLayout>
+    );
+  }
+
   const { imageSource, name, price, rating, description, reviews, images } = data.product;
   const imageItems = images.map(({ image }: any) => {
     return { original: image, thumbnail: image };
@@ -81,73 +90,71 @@ const Product = ({ t, match }: ProductProps) => {
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Loader />}>
-        <div style={{ padding: '5%' }}>
-          <div>
-            <div style={{ width: '50%', display: 'inline-block' }}>
-              <ImageGallery items={imageItems} />
-            </div>
-            <div style={{ display: 'inline-block', marginLeft: '5%', paddingTop: '5%', verticalAlign: 'top' }}>
-              <h1>{name}</h1>
-              <h2>{price} MKD</h2>
-              <div>
-                <Rating icon="star" defaultRating={rating} maxRating={5} />
-              </div>
-              <Label for="quantity">Quantity: </Label>
-              <Input
-                type="number"
-                name="quantity"
-                id="quantity"
-                min={1}
-                value={quantity}
-                onChange={e => setQuantity(parseInt(e.target.value, 10))}
-              />
-              <Modal
-                centered={true}
-                basic
-                size="mini"
-                trigger={
-                  <Button
-                    color="green"
-                    onClick={() => {
-                      addToCart();
-                    }}
-                  >
-                    Add to cart
-                  </Button>
-                }
-              >
-                <Header icon="archive" content="Order was successful" />
-                <Modal.Actions>
-                  <Button color="green">
-                    <Icon name="checkmark" /> Continue
-                  </Button>
-                </Modal.Actions>
-              </Modal>
-            </div>
+      <div style={{ padding: '5%' }}>
+        <div>
+          <div style={{ width: '50%', display: 'inline-block' }}>
+            <ImageGallery items={imageItems} />
           </div>
-          <h2>{t('description')}</h2>
-          <ReactMarkdown source={description} />
-
-          <Comment.Group>
-            <Header as="h3" dividing>
-              Reviews
-            </Header>
-
-            {reviews.map((review: any) => (
-              <ProductReview key={review.id} {...review} />
-            ))}
-
-            <Form reply>
-              <Form.TextArea
-                value={reviewMessage}
-                onChange={(_event, dataValue) => setReviewMessage(dataValue.value.toString())}
-              />
-              <Button content="Add Reply" labelPosition="left" icon="edit" primary onClick={() => addReview()} />
-            </Form>
-          </Comment.Group>
+          <div style={{ display: 'inline-block', marginLeft: '5%', paddingTop: '5%', verticalAlign: 'top' }}>
+            <h1>{name}</h1>
+            <h2>{price} MKD</h2>
+            <div>
+              <Rating icon="star" defaultRating={rating} maxRating={5} />
+            </div>
+            <Label for="quantity">Quantity: </Label>
+            <Input
+              type="number"
+              name="quantity"
+              id="quantity"
+              min={1}
+              value={quantity}
+              onChange={e => setQuantity(parseInt(e.target.value, 10))}
+            />
+            <Modal
+              centered={true}
+              basic
+              size="mini"
+              trigger={
+                <Button
+                  color="green"
+                  onClick={() => {
+                    addToCart();
+                  }}
+                >
+                  Add to cart
+                </Button>
+              }
+            >
+              <Header icon="archive" content="Order was successful" />
+              <Modal.Actions>
+                <Button color="green">
+                  <Icon name="checkmark" /> Continue
+                </Button>
+              </Modal.Actions>
+            </Modal>
+          </div>
         </div>
-      </Suspense>
+        <h2>{t('description')}</h2>
+        <ReactMarkdown source={description} />
+
+        <Comment.Group>
+          <Header as="h3" dividing>
+            Reviews
+          </Header>
+
+          {reviews.map((review: any) => (
+            <ProductReview key={review.id} {...review} />
+          ))}
+
+          <Form reply>
+            <Form.TextArea
+              value={reviewMessage}
+              onChange={(_event, dataValue) => setReviewMessage(dataValue.value.toString())}
+            />
+            <Button content="Add Reply" labelPosition="left" icon="edit" primary onClick={() => addReview()} />
+          </Form>
+        </Comment.Group>
+      </div>
     </PageLayout>
   );
 };

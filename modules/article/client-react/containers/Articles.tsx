@@ -1,9 +1,9 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { Card, CardBody, CardTitle, CardText, Button, Spinner } from 'reactstrap';
+import { Card, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { PageLayout } from '@gqlapp/look-client-react';
@@ -65,41 +65,39 @@ const ArticleCard = ({
 };
 
 const Articles = ({ t, history }: ArticleViewProps) => {
-  const { data } = useQuery(GET_ALL_POSTS, { suspend: true });
+  const { data } = useQuery(GET_ALL_POSTS);
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Spinner />}>
-        <div>
-          {data.allPosts.map(
-            ({
-              id,
-              title,
-              content,
-              created_at,
-              imageSource,
-              user
-            }: {
-              id: number;
-              title: string;
-              content: string;
-              created_at: number;
-              imageSource: string;
-              user: { fullName: string };
-            }) => (
-              <ArticleCard
-                key={id}
-                title={title}
-                description={content}
-                createdAt={created_at}
-                imageSource={imageSource}
-                fullName={user.fullName}
-                handleClick={() => history.push(`/article/${id}`)}
-              />
-            )
-          )}
-        </div>
-      </Suspense>
+      <div>
+        {data.allPosts.map(
+          ({
+            id,
+            title,
+            content,
+            created_at,
+            imageSource,
+            user
+          }: {
+            id: number;
+            title: string;
+            content: string;
+            created_at: number;
+            imageSource: string;
+            user: { fullName: string };
+          }) => (
+            <ArticleCard
+              key={id}
+              title={title}
+              description={content}
+              createdAt={created_at}
+              imageSource={imageSource}
+              fullName={user.fullName}
+              handleClick={() => history.push(`/article/${id}`)}
+            />
+          )
+        )}
+      </div>
     </PageLayout>
   );
 };
