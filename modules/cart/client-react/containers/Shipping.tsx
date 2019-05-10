@@ -37,7 +37,7 @@ const Shipping = ({ t, history }: any) => {
   const [step, setStep] = useState(0);
   const [payMode, setPayMode] = useState(0);
 
-  const { data } = useQuery(GET_CART_ITEMS, { suspend: true });
+  const { data } = useQuery(GET_CART_ITEMS);
 
   return (
     <PageLayout>

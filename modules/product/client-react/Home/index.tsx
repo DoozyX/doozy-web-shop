@@ -76,7 +76,7 @@ class Home extends React.Component<ProductProps> {
         </Divider>
         <div>
           <Query query={GET_TOP_CATEGORIES_QUERY}>
-            {({ loading, error, data: { topCategories } }) => {
+            {({ loading, error, data: { topCategories } }: any) => {
               if (error) {
                 throw new Error(String(error));
               }
@@ -105,7 +105,7 @@ class Home extends React.Component<ProductProps> {
         </Divider>
         <div>
           <Query query={BRANDS_QUERY}>
-            {({ loading, error, data: { brands } }) => {
+            {({ loading, error, data: { brands } }: any) => {
               if (error) {
                 throw new Error(String(error));
               }
@@ -129,7 +129,7 @@ class Home extends React.Component<ProductProps> {
         </Divider>
         <div>
           <Query query={GET_TOP_PRODUCTS_QUERY}>
-            {({ loading, error, data: { topProducts } }) => {
+            {({ loading, error, data: { topProducts } }: any) => {
               if (error) {
                 throw new Error(String(error));
               }
@@ -167,7 +167,7 @@ class Home extends React.Component<ProductProps> {
         </Divider>
         <div>
           <Query query={GET_NEW_PRODUCTS_QUERY}>
-            {({ loading, error, data: { newProducts } }) => {
+            {({ loading, error, data: { newProducts } }: any) => {
               if (error) {
                 throw new Error(String(error));
               }

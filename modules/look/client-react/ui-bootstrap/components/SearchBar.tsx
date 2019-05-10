@@ -11,7 +11,7 @@ const SearchBar = ({ history }: any) => {
 
   return (
     <Query query={SEARCH_PRODUCT_WITH_CATEGORY} variables={{ search: value }}>
-      {({ loading, data, refetch }) => {
+      {({ loading, data, refetch }: any) => {
         const handleResultSelect = (e: any, { result }: any) => {
           setState({ value: result.title });
           history.push(`/product/${result.id}`);

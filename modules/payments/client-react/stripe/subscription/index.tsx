@@ -1,7 +1,7 @@
 import React from 'react';
-import ClientModule from '@gqlapp/module-client-react';
 
-import settings from '../../../../../settings';
+import ClientModule from '@gqlapp/module-client-react';
+import settings from '@gqlapp/config';
 
 import SubscriptionAuthRouter from './containers/Auth';
 import resources from './locales';
@@ -14,7 +14,7 @@ const { AuthRoute } = require('@gqlapp/user-client-react');
 export default (settings.stripe.subscription.enabled && settings.stripe.subscription.publicKey
   ? new ClientModule({
       route: [
-        <AuthRoute exact role="user" path="/add-subscription" component={AddSubscription} />,
+        <AuthRoute exact path="/add-subscription" component={AddSubscription} />,
         <AuthRoute
           exact
           role="user"

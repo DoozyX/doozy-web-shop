@@ -23,7 +23,7 @@ export async function seed(knex, Promise) {
     first_name: 'Doozy',
     last_name: 'Admin',
     avatar: 'https://i.imgur.com/6XN24Lg.png',
-    user_id: id
+    user_id: id[0]
   });
 
   await returnId(

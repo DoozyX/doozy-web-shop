@@ -63,4 +63,3 @@ export class OrderItem {
       .where('orderId', '=', orderId);
   }
 }
-

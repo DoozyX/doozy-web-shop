@@ -1,7 +1,7 @@
 export default {
-  enabled: true,
+  enabled: false,
   webhookUrl: '/stripe/webhook',
-  publicKey: 'pk_test_hG10sgzpJX3NjSUMM3QpIHaW',
+  publicKey: process.env.STRIPE_PUBLIC_KEY,
   // Default Stripe product object
   product: {
     name: 'Magic number',

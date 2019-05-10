@@ -17,7 +17,7 @@ import GET_CART_ITEMS from './graphql/GetCartItems.graphql';
 
 const MenuItemWithI18n = translate('cart')(({ t, text, children, ...rest }: any) => (
   <Query query={GET_CART_ITEMS}>
-    {({ loading, error, data }) => {
+    {({ loading, error, data }: any) => {
       if (loading) {
         return (
           <Icon name="cart">

@@ -4,7 +4,7 @@ import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloLink, Observable, Operation } from 'apollo-link';
 import { addTypenameToDocument } from 'apollo-utilities';
 import { Router, Switch } from 'react-router-dom';
-import createHistory, { MemoryHistory } from 'history/createMemoryHistory';
+import { createMemoryHistory, MemoryHistory } from 'history';
 import { JSDOM } from 'jsdom';
 import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import { combineReducers, createStore, Store } from 'redux';
@@ -20,9 +20,18 @@ import 'semantic-ui-css/semantic.min.css';
 const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
+(global as any).window.requestAnimationFrame = (callback: any) => {
+  const currTime = Date.now();
+  const timeToCall = Math.max(0, 16 - (currTime - (global as any).lastTime));
+  const id = setTimeout(() => callback(currTime + timeToCall), timeToCall);
+
+  (global as any).lastTime = currTime + timeToCall;
+  return id;
+};
 // Needed by Formik >= 1.x
 (global as any).HTMLButtonElement = dom.window.HTMLButtonElement;
 (global as any).navigator = dom.window.navigator;
+(global as any).CustomEvent = dom.window.CustomEvent;
 (global as any).HTMLElement = typeof window === 'undefined' ? Object : (window as any).HTMLElement;
 
 // tslint:disable-next-line
@@ -170,7 +179,7 @@ export class Renderer {
       reduxState || {}
     );
 
-    const history = createHistory();
+    const history = createMemoryHistory();
 
     this.client = client;
     this.store = store;

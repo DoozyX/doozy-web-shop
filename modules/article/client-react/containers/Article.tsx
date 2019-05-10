@@ -1,9 +1,8 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import { useQuery, useMutation } from 'react-apollo-hooks';
 import { RouteComponentProps } from 'react-router-dom';
-import { Spinner } from 'reactstrap';
 import ReactMarkdown from 'react-markdown';
 import { Button, Comment, Form, Header } from 'semantic-ui-react';
 
@@ -82,35 +81,33 @@ const Article = ({ t, match }: ArticleViewProps) => {
   return (
     <PageLayout>
       {renderMetaData(t)}
-      <Suspense fallback={<Spinner />}>
+      <div>
         <div>
-          <div>
-            <h1>{title}</h1>
-            <small className="text-muted">
-              {moment(parseInt(created_at, 10)).fromNow()} by {user.fullName}
-            </small>
-          </div>
-          <img src={imageSource} alt="description" />
-          <ReactMarkdown source={content} />
-          <Comment.Group>
-            <Header as="h3" dividing>
-              Comments
-            </Header>
-
-            {comments.map((comment: Comment) => (
-              <ArticleComment key={comment.id} {...comment} />
-            ))}
-
-            <Form reply>
-              <Form.TextArea
-                value={commentMessage}
-                onChange={(_event, dataValue) => setCommentMessage(dataValue.value.toString())}
-              />
-              <Button content="Add Reply" labelPosition="left" icon="edit" primary onClick={() => addComment()} />
-            </Form>
-          </Comment.Group>
+          <h1>{title}</h1>
+          <small className="text-muted">
+            {moment(parseInt(created_at, 10)).fromNow()} by {user.fullName}
+          </small>
         </div>
-      </Suspense>
+        <img src={imageSource} alt="description" />
+        <ReactMarkdown source={content} />
+        <Comment.Group>
+          <Header as="h3" dividing>
+            Comments
+          </Header>
+
+          {comments.map((comment: Comment) => (
+            <ArticleComment key={comment.id} {...comment} />
+          ))}
+
+          <Form reply>
+            <Form.TextArea
+              value={commentMessage}
+              onChange={(_event, dataValue) => setCommentMessage(dataValue.value.toString())}
+            />
+            <Button content="Add Reply" labelPosition="left" icon="edit" primary onClick={() => addComment()} />
+          </Form>
+        </Comment.Group>
+      </div>
     </PageLayout>
   );
 };

@@ -1,10 +1,10 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import { PageLayout } from '@gqlapp/look-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Item, Button, Input, Header, Divider, Loader, Segment, Icon } from 'semantic-ui-react';
+import { Item, Button, Input, Header, Divider, Segment, Icon } from 'semantic-ui-react';
 
 import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
 import REMOVE_CART_ITEM from '../graphql/RemoveCartItem.graphql';
@@ -71,7 +71,7 @@ const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }:
 };
 
 const Cart = ({ t, history }: CartProps) => {
-  const { data } = useQuery(GET_CART_ITEMS, { suspend: true });
+  const { data } = useQuery(GET_CART_ITEMS);
 
   return (
     <PageLayout>
@@ -79,50 +79,48 @@ const Cart = ({ t, history }: CartProps) => {
       <Divider />
       <Header as="h1">{t('cartTitle')} </Header>
       <Divider />
-      <Suspense fallback={<Loader />}>
-        <Item.Group relaxed divided>
-          {!!data.getCartItems && data.getCartItems.length > 0 ? (
-            data.getCartItems.map(({ product, quantity }: any) => <CartItem product={product} quantity={quantity} />)
-          ) : (
-            <Segment placeholder>
-              <Header icon>
-                <Icon name="cart" />
-                No Cart Items
-              </Header>
-              <Button
-                primary
-                onClick={() => {
-                  history.push('/products');
-                }}
-              >
-                Go shopping
-              </Button>
-            </Segment>
-          )}
-        </Item.Group>
-        <Divider />
-        <div>
-          <Button
-            floated="right"
-            disabled={!(!!data.getCartItems && data.getCartItems.length > 0)}
-            onClick={() => {
-              history.push('/shipping');
-            }}
-            primary
-          >
-            Buy All
-          </Button>
-          <span style={{ float: 'right' }}>
-            <Header as="h2">
-              Total:
-              {data.getCartItems.reduce((total: any, { product, quantity }: any) => {
-                return (total += product.price * quantity);
-              }, 0)}{' '}
-              MKD
+      <Item.Group relaxed divided>
+        {!!data.getCartItems && data.getCartItems.length > 0 ? (
+          data.getCartItems.map(({ product, quantity }: any) => <CartItem product={product} quantity={quantity} />)
+        ) : (
+          <Segment placeholder>
+            <Header icon>
+              <Icon name="cart" />
+              No Cart Items
             </Header>
-          </span>
-        </div>
-      </Suspense>
+            <Button
+              primary
+              onClick={() => {
+                history.push('/products');
+              }}
+            >
+              Go shopping
+            </Button>
+          </Segment>
+        )}
+      </Item.Group>
+      <Divider />
+      <div>
+        <Button
+          floated="right"
+          disabled={!(!!data.getCartItems && data.getCartItems.length > 0)}
+          onClick={() => {
+            history.push('/shipping');
+          }}
+          primary
+        >
+          Buy All
+        </Button>
+        <span style={{ float: 'right' }}>
+          <Header as="h2">
+            Total:
+            {data.getCartItems.reduce((total: any, { product, quantity }: any) => {
+              return (total += product.price * quantity);
+            }, 0)}{' '}
+            MKD
+          </Header>
+        </span>
+      </div>
     </PageLayout>
   );
 };
