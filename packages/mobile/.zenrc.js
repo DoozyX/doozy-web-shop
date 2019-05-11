@@ -31,8 +31,8 @@ const config = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  config.builders.android.enabled = true;
-  config.builders.ios.enabled = true;
+  config.builders.android.enabled = false;
+  config.builders.ios.enabled = false;
 config.options.defines.__API_URL__ = '"https://doozy-web-shop.herokuapp.com/graphql"';
   config.options.defines.__WEBSITE_URL__ = '"https://doozy-web-shop.herokuapp.com"';
 }
