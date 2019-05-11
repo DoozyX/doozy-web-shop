@@ -73,85 +73,88 @@ const Product = ({ t, match }: ProductProps) => {
     }
   });
 
-  if (!loading) {
-    const { imageSource, name, price, rating, description, reviews, images } = data.product;
-    const imageItems = images.map(({ image }: any) => {
-      return { original: image, thumbnail: image };
-    });
-    imageItems.push({ original: imageSource, thumbnail: imageSource });
+  if (loading) {
+    return (
+      <PageLayout>
+        {renderMetaData(t)}
+        <Loader />
+      </PageLayout>
+    );
   }
+
+  const { imageSource, name, price, rating, description, reviews, images } = data.product;
+  const imageItems = images.map(({ image }: any) => {
+    return { original: image, thumbnail: image };
+  });
+  imageItems.push({ original: imageSource, thumbnail: imageSource });
   return (
     <PageLayout>
       {renderMetaData(t)}
-      {loading ? (
-        <Loader />
-      ) : (
-        <div style={{ padding: '5%' }}>
-          <div>
-            <div style={{ width: '50%', display: 'inline-block' }}>
-              <ImageGallery items={imageItems} />
-            </div>
-            <div style={{ display: 'inline-block', marginLeft: '5%', paddingTop: '5%', verticalAlign: 'top' }}>
-              <h1>{name}</h1>
-              <h2>{price} MKD</h2>
-              <div>
-                <Rating icon="star" defaultRating={rating} maxRating={5} />
-              </div>
-              <Label for="quantity">Quantity: </Label>
-              <Input
-                type="number"
-                name="quantity"
-                id="quantity"
-                min={1}
-                value={quantity}
-                onChange={e => setQuantity(parseInt(e.target.value, 10))}
-              />
-              <Modal
-                centered={true}
-                basic
-                size="mini"
-                trigger={
-                  <Button
-                    color="green"
-                    onClick={() => {
-                      addToCart();
-                    }}
-                  >
-                    Add to cart
-                  </Button>
-                }
-              >
-                <Header icon="archive" content="Order was successful" />
-                <Modal.Actions>
-                  <Button color="green">
-                    <Icon name="checkmark" /> Continue
-                  </Button>
-                </Modal.Actions>
-              </Modal>
-            </div>
+      <div style={{ padding: '5%' }}>
+        <div>
+          <div style={{ width: '50%', display: 'inline-block' }}>
+            <ImageGallery items={imageItems} />
           </div>
-          <h2>{t('description')}</h2>
-          <ReactMarkdown source={description} />
-
-          <Comment.Group>
-            <Header as="h3" dividing>
-              Reviews
-            </Header>
-
-            {reviews.map((review: any) => (
-              <ProductReview key={review.id} {...review} />
-            ))}
-
-            <Form reply>
-              <Form.TextArea
-                value={reviewMessage}
-                onChange={(_event, dataValue) => setReviewMessage(dataValue.value.toString())}
-              />
-              <Button content="Add Reply" labelPosition="left" icon="edit" primary onClick={() => addReview()} />
-            </Form>
-          </Comment.Group>
+          <div style={{ display: 'inline-block', marginLeft: '5%', paddingTop: '5%', verticalAlign: 'top' }}>
+            <h1>{name}</h1>
+            <h2>{price} MKD</h2>
+            <div>
+              <Rating icon="star" defaultRating={rating} maxRating={5} />
+            </div>
+            <Label for="quantity">Quantity: </Label>
+            <Input
+              type="number"
+              name="quantity"
+              id="quantity"
+              min={1}
+              value={quantity}
+              onChange={e => setQuantity(parseInt(e.target.value, 10))}
+            />
+            <Modal
+              centered={true}
+              basic
+              size="mini"
+              trigger={
+                <Button
+                  color="green"
+                  onClick={() => {
+                    addToCart();
+                  }}
+                >
+                  Add to cart
+                </Button>
+              }
+            >
+              <Header icon="archive" content="Order was successful" />
+              <Modal.Actions>
+                <Button color="green">
+                  <Icon name="checkmark" /> Continue
+                </Button>
+              </Modal.Actions>
+            </Modal>
+          </div>
         </div>
-      )}
+        <h2>{t('description')}</h2>
+        <ReactMarkdown source={description} />
+
+        <Comment.Group>
+          <Header as="h3" dividing>
+            Reviews
+          </Header>
+
+          {reviews.map((review: any) => (
+            <ProductReview key={review.id} {...review} />
+          ))}
+
+          <Form reply>
+            <Form.TextArea
+              value={reviewMessage}
+              onChange={(_event, dataValue) => setReviewMessage(dataValue.value.toString())}
+            />
+            <Button content="Add Reply" labelPosition="left" icon="edit" primary onClick={() => addReview()} />
+          </Form>
+        </Comment.Group>
+      </div>
     </PageLayout>
   );
 };
