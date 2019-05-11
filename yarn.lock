@@ -16731,6 +16731,13 @@ react-stripe-elements@^1.2.1:
   dependencies:
     prop-types "^15.5.10"
 
+react-structured-data@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/react-structured-data/-/react-structured-data-0.0.13.tgz#ce648231ff5ed8b53e07080a61d37909f745846b"
+  integrity sha512-4hHw2yxLt9xaqaIcrmGc0/u8vjXL2rzILRuTpx2i34e2nTUTjmTEQQItHMSA/bywLK88w97vssUYU3EMe1V8nw==
+  dependencies:
+    prop-types "^15.6.0"
+
 react-swipeable@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-4.3.2.tgz#8bacfd17f74bd24bdd770fc522739dbdc9a9d493"
