@@ -5,7 +5,7 @@ import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
 import { useQuery, useMutation } from 'react-apollo-hooks';
-import { Button, Comment, Form, Header, Rating, Modal, Icon, Loader } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Loader, Rating as RatingStars, Modal, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import ImageGallery from 'react-image-gallery';
 
@@ -16,6 +16,15 @@ import ADD_PRODUCT_REVIEW from '../graphql/AddProductReview.graphql';
 import { RouteComponentProps } from 'react-router-dom';
 import { Label, Input } from 'reactstrap';
 import ReactMarkdown from 'react-markdown';
+const {
+  JSONLD,
+  Product: LDProduct,
+  Review,
+  Author,
+  Rating,
+  AggregateRating,
+  GenericCollection
+} = require('react-structured-data');
 
 interface MatchParams {
   id: string;
@@ -82,7 +91,7 @@ const Product = ({ t, match }: ProductProps) => {
     );
   }
 
-  const { imageSource, name, price, rating, description, reviews, images } = data.product;
+  const { imageSource, name, price, rating, description, reviews, images, brand } = data.product;
   const imageItems = images.map(({ image }: any) => {
     return { original: image, thumbnail: image };
   });
@@ -90,6 +99,19 @@ const Product = ({ t, match }: ProductProps) => {
   return (
     <PageLayout>
       {renderMetaData(t)}
+      <JSONLD>
+        <LDProduct name={name} brand={brand ? brand.name : name} description={description} image={imageSource}>
+          <AggregateRating ratingValue={rating} reviewCount={111} />
+          <GenericCollection type="review">
+            {reviews.map(({ user, content, created_at }: any) => (
+              <Review name={content} reviewBody={content} datePublished={created_at}>
+                <Author name={user.fullName} />
+                <Rating ratingValue={5} />
+              </Review>
+            ))}
+          </GenericCollection>
+        </LDProduct>
+      </JSONLD>
       <div style={{ padding: '5%' }}>
         <div>
           <div style={{ width: '50%', display: 'inline-block' }}>
@@ -99,7 +121,7 @@ const Product = ({ t, match }: ProductProps) => {
             <h1>{name}</h1>
             <h2>{price} MKD</h2>
             <div>
-              <Rating icon="star" defaultRating={rating} maxRating={5} />
+              <RatingStars icon="star" defaultRating={rating} maxRating={5} />
             </div>
             <Label for="quantity">Quantity: </Label>
             <Input

@@ -11,6 +11,7 @@ import settings from '../../../../settings';
 import { useQuery } from 'react-apollo-hooks';
 
 import GET_ALL_POSTS from '../graphql/GetAllPosts.graphql';
+import { Loader } from 'semantic-ui-react';
 
 interface ArticleViewProps extends RouteComponentProps {
   t: TranslateFunction;
@@ -65,7 +66,15 @@ const ArticleCard = ({
 };
 
 const Articles = ({ t, history }: ArticleViewProps) => {
-  const { data } = useQuery(GET_ALL_POSTS);
+  const { data, loading } = useQuery(GET_ALL_POSTS);
+  if (loading) {
+    return (
+      <PageLayout>
+        {renderMetaData(t)}
+        <Loader />
+      </PageLayout>
+    );
+  }
   return (
     <PageLayout>
       {renderMetaData(t)}

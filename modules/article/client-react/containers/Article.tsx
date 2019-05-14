@@ -4,11 +4,13 @@ import moment from 'moment';
 import { useQuery, useMutation } from 'react-apollo-hooks';
 import { RouteComponentProps } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { Button, Comment, Form, Header } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Loader } from 'semantic-ui-react';
 
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import { PageLayout } from '@gqlapp/look-client-react';
 import settings from '../../../../settings';
+
+const { JSONLD, Generic } = require('react-structured-data');
 
 import GET_POST from '../graphql/GetPost.graphql';
 import ADD_COMMENT from '../graphql/AddComment.graphql';
@@ -63,7 +65,7 @@ const ArticleComment = ({ user, content, created_at }: Comment) => {
 const Article = ({ t, match }: ArticleViewProps) => {
   const [commentMessage, setCommentMessage] = useState('');
   // const [articleData, articleData] = useState({});
-  const { data } = useQuery(GET_POST, { variables: { id: parseInt(match.params.id, 10) } });
+  const { data, loading } = useQuery(GET_POST, { variables: { id: parseInt(match.params.id, 10) } });
   const addComment = useMutation(ADD_COMMENT, {
     refetchQueries: [{ query: GET_POST, variables: { id: parseInt(match.params.id, 10) } }],
     update: () => {
@@ -76,11 +78,34 @@ const Article = ({ t, match }: ArticleViewProps) => {
       }
     }
   });
+  if (loading) {
+    return (
+      <PageLayout>
+        {renderMetaData(t)}
+        <Loader />
+      </PageLayout>
+    );
+  }
   // setCommentsData(data.post)
   const { created_at, title, imageSource, content, user, comments } = data.post;
   return (
     <PageLayout>
       {renderMetaData(t)}
+      <JSONLD>
+        <Generic
+          type="NewsArticle"
+          jsonldtype="NewsArticle"
+          schema={{
+            headline: title,
+            image: [imageSource],
+            datePublished: new Date(parseInt(created_at, 10)).toISOString(),
+            description: content
+          }}
+        >
+          <Generic type="author" jsonldtype="Person" schema={{ name: user.fullName }} />
+          <Generic type="publisher" jsonldtype="Person" schema={{ name: user.fullName }} />
+        </Generic>
+      </JSONLD>
       <div>
         <div>
           <h1>{title}</h1>
