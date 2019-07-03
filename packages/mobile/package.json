@@ -23,7 +23,9 @@
     "watch:android": "zen -e android -d ios watch",
     "watch:ios": "zen -e ios -d android watch",
     "heroku-postbuild": "yarn build && yarn exp-publish",
-    "cli": "node ../../tools/cli"
+    "cli": "node ../../tools/cli",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -83,7 +85,8 @@
     "react-redux": "^5.0.0",
     "redux": "^4.0.1",
     "subscriptions-transport-ws": "^0.9.4",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@types/expo": "^30.0.0",
@@ -155,5 +158,6 @@
         "tsConfig": "tsconfig.jest.json"
       }
     }
-  }
+  },
+  "snyk": true
 }
