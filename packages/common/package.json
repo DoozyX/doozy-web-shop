@@ -7,7 +7,9 @@
     "tslint": "tslint --fix -p tsconfig.json -c ../../tslint.json",
     "lint": "yarn eslint && yarn tslint",
     "tests": "cross-env NODE_ENV=test PORT=7070 zen test -t 10000 --full-trace \"../../modules/**/common-react/**/*.spec.*\"",
-    "tests:watch": "cross-env NODE_ENV=test PORT=7070 zen test -t 10000 --full-trace --watch \"../../modules/**/common-react/**/*.spec.*\""
+    "tests:watch": "cross-env NODE_ENV=test PORT=7070 zen test -t 10000 --full-trace --watch \"../../modules/**/common-react/**/*.spec.*\"",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "apollo-cache-inmemory": "1.4.2",
@@ -28,7 +30,8 @@
     "react-i18next": "^7.6.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.2",
-    "subscriptions-transport-ws": "^0.9.4"
+    "subscriptions-transport-ws": "^0.9.4",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@types/i18next-browser-languagedetector": "^2.0.1",
@@ -40,5 +43,6 @@
   },
   "peerDependencies": {
     "eslint": "*"
-  }
+  },
+  "snyk": true
 }
