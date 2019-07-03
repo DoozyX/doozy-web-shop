@@ -34,7 +34,9 @@
     "tslint": "tslint --fix -p tsconfig.json -c tslint.json",
     "heroku-postbuild": "lerna run heroku-postbuild --stream",
     "precommit": "lint-staged",
-    "postinstall": "opencollective postinstall"
+    "postinstall": "opencollective postinstall",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "lint-staged": {
     "*.{js,jsx,json}": [
@@ -172,7 +174,8 @@
     "whatwg-fetch": "^2.0.4"
   },
   "dependencies": {
-    "opencollective": "^1.0.3"
+    "opencollective": "^1.0.3",
+    "snyk": "^1.189.0"
   },
   "resolutions": {
     "fbjs": "^1.0.0",
@@ -183,5 +186,6 @@
     "iterall": "^1.2.2",
     "upath": "^1.1.0",
     "watchpack": "https://github.com/Globegitter/watchpack"
-  }
+  },
+  "snyk": true
 }
