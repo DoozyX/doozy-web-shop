@@ -23,7 +23,9 @@
     "watch": "zen watch",
     "heroku-postbuild": "yarn build && yarn seed && yarn stripe:setup",
     "cli": "node ../../tools/cli",
-    "stripe:setup": "node ../../modules/payments/server-ts/stripe/subscription/cli/stripeSetup"
+    "stripe:setup": "node ../../modules/payments/server-ts/stripe/subscription/cli/stripeSetup",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "lint-staged": {
     "*.{js,jsx,json}": [
@@ -137,7 +139,8 @@
     "subscriptions-transport-ws": "^0.9.4",
     "tslint-config-prettier": "^1.5.0",
     "universal-cookie-express": "^3.1.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "snyk": "^1.192.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
@@ -180,5 +183,6 @@
   },
   "resolutions": {
     "graphql-resolve-batch/graphql": "14.1.1"
-  }
+  },
+  "snyk": true
 }
