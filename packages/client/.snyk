@@ -1,0 +1,40 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-450202:
+    - antd > rc-steps > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - formik > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - react-apollo-hooks > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - react-hot-loader > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - semantic-ui-react > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - styled-components > babel-plugin-styled-components > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - antd > rc-form > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - antd > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - antd > rc-table > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - antd > rc-tabs > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - styled-components > @babel/traverse > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - styled-components > @babel/traverse > @babel/types > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - antd > rc-editor-mention > rc-editor-core > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - styled-components > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - styled-components > babel-plugin-styled-components > @babel/helper-annotate-as-pure > @babel/types > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
+    - styled-components > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T02:17:03.265Z'
