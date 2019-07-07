@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloClient } from 'apollo-client';
@@ -11,13 +11,15 @@ import ReactGA from 'react-ga';
 import { apiUrl, createApolloClient, createReduxStore, getStoreReducer, log } from '@gqlapp/core-common';
 import ClientModule from '@gqlapp/module-client-react';
 import settings from '@gqlapp/config';
+
 import 'semantic-ui-css/semantic.min.css';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
 import RedBox from './RedBox';
-import { Spinner } from 'reactstrap';
 
-log.info(`Connecting to GraphQL backend at: ${apiUrl}`);
+if (!__TEST__ || settings.app.logging.level === 'debug') {
+  log.info(`Connecting to GraphQL backend at: ${apiUrl}`);
+}
 
 const ref: { modules: ClientModule; client: ApolloClient<any>; store: Store } = {
   modules: null,
@@ -27,7 +29,7 @@ const ref: { modules: ClientModule; client: ApolloClient<any>; store: Store } = 
 
 const history = createBrowserHistory();
 
-export const onAppCreate = (modules: ClientModule, entryModule: NodeModule) => {
+export const onAppCreate = async (modules: ClientModule, entryModule: NodeModule) => {
   ref.modules = modules;
   ref.client = createApolloClient({
     apiUrl,
@@ -49,9 +51,11 @@ const logPageView = (location: any) => {
   ReactGA.pageview(location.pathname);
 };
 
-// Initialize Google Analytics and send events on each location change
-ReactGA.initialize(settings.analytics.ga.trackingId);
-logPageView(window.location);
+if (!__TEST__) {
+  // Initialize Google Analytics and send events on each location change
+  ReactGA.initialize(settings.analytics.ga.trackingId);
+  logPageView(window.location);
+}
 
 history.listen(location => logPageView(location));
 
@@ -95,9 +99,7 @@ export class Main extends React.Component<any, MainState> {
         <Provider store={ref.store}>
           <ApolloHooksProvider client={ref.client}>
             <ApolloProvider client={ref.client}>
-              <Suspense fallback={<Spinner />}>
-                {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
-              </Suspense>
+              {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
             </ApolloProvider>
           </ApolloHooksProvider>
         </Provider>

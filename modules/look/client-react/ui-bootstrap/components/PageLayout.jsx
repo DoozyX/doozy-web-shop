@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { Container, Grid, Header, Icon, List, Segment } from 'semantic-ui-react';
 
 import settings from '@gqlapp/config';
 
 import NavBar from './NavBar';
+import styles from '../styles/styles.scss';
 import SearchBar from './SearchBar';
 
 class PageLayout extends React.Component {
@@ -13,6 +15,11 @@ class PageLayout extends React.Component {
     const { children, navBar, history } = this.props;
     return (
       <section className="d-flex flex-column flex-grow-1">
+        {__SERVER__ && __DEV__ && (
+          <Helmet>
+            <style type="text/css">{styles._getCss()}</style>
+          </Helmet>
+        )}
         <section className="d-flex flex-column flex-grow-1 flex-shrink-0">
           <section className="d-flex flex-row no-print" style={{ marginTop: '10px' }}>
             <Container className="d-flex flex-row no-print">

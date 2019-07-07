@@ -1,4 +1,4 @@
-import React, { ReactElement, Suspense } from 'react';
+import React, { ReactElement } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloLink, Observable, Operation } from 'apollo-link';
@@ -14,32 +14,32 @@ import { ApolloClient } from 'apollo-client';
 
 import { createApolloClient } from '@gqlapp/core-common';
 import ClientModule from '@gqlapp/module-client-react';
-import { Spinner } from 'reactstrap';
 import 'semantic-ui-css/semantic.min.css';
 
-const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></html>');
-(global as any).document = dom.window.document;
-(global as any).window = dom.window;
-(global as any).window.requestAnimationFrame = (callback: any) => {
-  const currTime = Date.now();
-  const timeToCall = Math.max(0, 16 - (currTime - (global as any).lastTime));
-  const id = setTimeout(() => callback(currTime + timeToCall), timeToCall);
+if (!process.env.JEST_WORKER_ID) {
+  const dom = new JSDOM('<!doctype html><html><body><div id="root"><div></body></html>');
+  (global as any).document = dom.window.document;
+  (global as any).window = dom.window;
+  // Needed by Formik >= 1.x
+  (global as any).HTMLButtonElement = dom.window.HTMLButtonElement;
+  (global as any).navigator = dom.window.navigator;
+  process.on('uncaughtException', ex => {
+    console.error('Uncaught error', ex.stack);
+  });
+  (global as any).window.requestAnimationFrame = (callback: any) => {
+    const currTime = Date.now();
+    const timeToCall = Math.max(0, 16 - (currTime - (global as any).lastTime));
+    const id = setTimeout(() => callback(currTime + timeToCall), timeToCall);
+    (global as any).lastTime = currTime + timeToCall;
+    return id;
+  };
 
-  (global as any).lastTime = currTime + timeToCall;
-  return id;
-};
-// Needed by Formik >= 1.x
-(global as any).HTMLButtonElement = dom.window.HTMLButtonElement;
-(global as any).navigator = dom.window.navigator;
-(global as any).CustomEvent = dom.window.CustomEvent;
-(global as any).HTMLElement = typeof window === 'undefined' ? Object : (window as any).HTMLElement;
+  (global as any).CustomEvent = dom.window.CustomEvent;
+  (global as any).HTMLElement = typeof window === 'undefined' ? Object : (window as any).HTMLElement;
+}
 
 // tslint:disable-next-line
 const { render } = require('./testUtils');
-
-process.on('uncaughtException', ex => {
-  console.error('Uncaught error', ex.stack);
-});
 
 const ref: { clientModules: ClientModule; typeDefs: DocumentNode[] } = { clientModules: null, typeDefs: null };
 
@@ -190,11 +190,9 @@ export class Renderer {
   public withApollo(component: ReactElement<any>) {
     return ref.clientModules.getWrappedRoot(
       <Provider store={this.store}>
-        <ApolloProvider client={this.client}>
-          <ApolloHooksProvider client={this.client}>
-            <Suspense fallback={<Spinner />}>{component}</Suspense>
-          </ApolloHooksProvider>
-        </ApolloProvider>
+        <ApolloHooksProvider client={this.client}>
+          <ApolloProvider client={this.client}>{component}</ApolloProvider>
+        </ApolloHooksProvider>
       </Provider>
     );
   }

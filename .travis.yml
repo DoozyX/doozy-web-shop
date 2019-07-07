@@ -1,11 +1,8 @@
 language: node_js
 node_js:
-- '9'
-cache:
-  directories:
-  - "$HOME/.cache/yarn"
-  - ".cache"
-dist: trusty
+- '10'
+cache: yarn
+dist: xenial
 os:
 - linux
 script:
