@@ -1,0 +1,53 @@
+---
+- hosts: webserver
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Install pip
+      apt: name=python-pip state=present
+    - name: install docker-py package
+      pip: name=docker-py
+
+    - name: docker | Start db container
+      docker_container:
+        name: postgresdb1
+        image:  postgres
+        env:
+          POSTGRES_DB: "doozy-web-shop"
+
+    - name: docker | Start server container
+      docker_container:
+        name: server-doozy-web-shop1
+        image: doozy/web-shop
+        env:
+          NODE_ENV: development
+        command: sh -c "yarn && (test -f dev-db.sqlite3 || yarn seed) && exec yarn watch-server"
+        volumes:
+          - ./:/usr/src/app
+          - /usr/src/app/build
+          - /usr/src/app/node_modules
+        ports: 
+          - 8080:8080
+          - 19000:19000
+          - 19001:19001
+        links:
+          - postgresdb1    
+                    
+    - name: docker | Start client container
+      docker_container:
+        name: client-doozy-web-shop1
+        image: doozy/web-shop
+        env:
+          NODE_ENV: development
+          BACKEND_API_URL: 'https://server-doozy-web-shop:8080/graphql'
+          API_URL: 'https://server-doozy-web-shop:8080/graphql'
+        command: sh -c "yarn && exec yarn watch-client"
+        volumes:
+          - ./:/usr/src/app:cached
+          - /usr/src/app/build
+          - /usr/src/app/node_modules
+        ports: 
+          - 3000:3000
+          - 3010:3010
+          - 3020:3020 
+
