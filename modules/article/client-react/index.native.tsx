@@ -5,7 +5,7 @@ import { translate } from '@gqlapp/i18n-client-react';
 import ClientModule from '@gqlapp/module-client-react-native';
 
 import { HeaderTitle, IconButton } from '../../../packages/client/src/modules/common/components/native';
-import Article from './containers/Article';
+import Articles from './containers/Articles';
 import resources from './locales';
 
 const HeaderTitleWithI18n = translate('article')(HeaderTitle);
@@ -13,10 +13,10 @@ const HeaderTitleWithI18n = translate('article')(HeaderTitle);
 export default new ClientModule({
   drawerItem: [
     {
-      Article: {
+      Articles: {
         screen: createStackNavigator({
-          Article: {
-            screen: Article,
+          Articles: {
+            screen: Articles,
             navigationOptions: ({ navigation }: any) => ({
               headerTitle: <HeaderTitleWithI18n style="subTitle" />,
               headerLeft: (
