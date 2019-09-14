@@ -17,7 +17,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 
 import RedBox from './RedBox';
 
-if (!__TEST__ || settings.app.logging.level === 'debug') {
+if (!__TEST__) {
   log.info(`Connecting to GraphQL backend at: ${apiUrl}`);
 }
 
