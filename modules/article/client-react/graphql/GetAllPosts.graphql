@@ -9,6 +9,7 @@ query getAllPosts {
     user {
       firstName
       fullName
+      avatar
     }
   }
 }
