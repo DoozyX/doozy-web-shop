@@ -1,11 +1,9 @@
-// React
 import React from 'react';
+import { graphql } from 'react-apollo';
 
-// Apollo
-import { graphql, compose } from 'react-apollo';
+import { compose } from '@gqlapp/core-common';
 import { withRouter } from 'react-router';
 
-// Components
 import ProfileView from '../components/ProfileView';
 
 import CURRENT_USER_QUERY from '../graphql/CurrentUserQuery.graphql';

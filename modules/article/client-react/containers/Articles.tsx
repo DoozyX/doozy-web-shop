@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { PageLayout } from '@gqlapp/look-client-react';
 import settings from '../../../../settings';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery } from '@apollo/react-hooks';
 
 import GET_ALL_POSTS from '../graphql/GetAllPosts.graphql';
 import { Loader } from 'semantic-ui-react';

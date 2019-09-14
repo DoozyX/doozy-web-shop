@@ -11,10 +11,6 @@ export interface ClientModuleShape extends BaseModuleShape {
   navItem?: Array<React.ReactElement<any>>;
   // Top right navigation links
   navItemRight?: Array<React.ReactElement<any>>;
-  // URL list to 3rd party css styles
-  stylesInsert?: string[];
-  // URL list to 3rd party js scripts
-  scriptsInsert?: string[];
 }
 
 interface ClientModule extends ClientModuleShape {}
@@ -37,8 +33,9 @@ class ClientModule extends BaseModule {
    * @returns client-side React route components list
    */
   get routes() {
-    return this.route.map((component: React.ReactElement<any>, idx: number, items: Array<React.ReactElement<any>>) =>
-      React.cloneElement(component, { key: component.key || idx + items.length })
+    return (this.route || []).map(
+      (component: React.ReactElement<any>, idx: number, items: Array<React.ReactElement<any>>) =>
+        React.cloneElement(component, { key: component.key || idx + items.length })
     );
   }
 
@@ -46,18 +43,7 @@ class ClientModule extends BaseModule {
    * @returns client-side top left navbar link component list
    */
   get navItems() {
-    return this.navItem.map((component: React.ReactElement<any>, idx: number, items: Array<React.ReactElement<any>>) =>
-      React.cloneElement(component, {
-        key: component.key || idx + items.length
-      })
-    );
-  }
-
-  /**
-   * @returns client-side top right navbar link component list
-   */
-  get navItemsRight() {
-    return this.navItemRight.map(
+    return (this.navItem || []).map(
       (component: React.ReactElement<any>, idx: number, items: Array<React.ReactElement<any>>) =>
         React.cloneElement(component, {
           key: component.key || idx + items.length
@@ -66,17 +52,15 @@ class ClientModule extends BaseModule {
   }
 
   /**
-   * @returns URL list to 3rd party css styles
+   * @returns client-side top right navbar link component list
    */
-  get stylesInserts() {
-    return this.stylesInsert || [];
-  }
-
-  /**
-   * @returns URL list to 3rd party js scripts
-   */
-  get scriptsInserts() {
-    return this.scriptsInsert || [];
+  get navItemsRight() {
+    return (this.navItemRight || []).map(
+      (component: React.ReactElement<any>, idx: number, items: Array<React.ReactElement<any>>) =>
+        React.cloneElement(component, {
+          key: component.key || idx + items.length
+        })
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery } from '@apollo/react-hooks';
 
 import settings from '../../../../settings';
 import { PageLayout } from '@gqlapp/look-client-react';

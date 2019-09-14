@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { SchemaLink } from 'apollo-link-schema';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { ServerStyleSheet } from 'styled-components';
@@ -11,17 +10,19 @@ import path from 'path';
 import Helmet, { HelmetData } from 'react-helmet';
 import serialize from 'serialize-javascript';
 import { GraphQLSchema } from 'graphql';
+import { ChunkExtractor } from '@loadable/server';
+
 import { isApiExternal, apiUrl } from '@gqlapp/core-common';
 import ServerModule from '@gqlapp/module-server-ts';
 import ClientModule from '@gqlapp/module-client-react';
 import { createApolloClient, createReduxStore } from '@gqlapp/core-common';
-import { styles } from '@gqlapp/look-client-react';
 
 let assetMap: { [key: string]: string };
 
 interface HtmlProps {
   content: string;
   state: any;
+  headElements: Array<ReactElement<{}>>;
   css: Array<ReactElement<{}>>;
   helmet: HelmetData;
 }
@@ -36,12 +37,17 @@ if (__SSR__) {
   }
 }
 
-const Html = ({ content, state, css, helmet }: HtmlProps) => (
+const Html = ({ content, state, css, headElements, helmet }: HtmlProps) => (
   <html lang="en" {...helmet.htmlAttributes.toComponent()}>
     <head>
       {helmet.title.toComponent()}
       {helmet.meta.toComponent()}
       {helmet.link.toComponent()}
+      {helmet.style.toComponent()}
+      {helmet.script.toComponent()}
+      {helmet.noscript.toComponent()}
+      {assetMap['vendor.js'] && <script src={`${assetMap['vendor.js']}`} charSet="utf-8" />}
+      {headElements}
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       <link rel="apple-touch-icon" sizes="180x180" href={`${assetMap['apple-touch-icon.png']}`} />
@@ -53,20 +59,7 @@ const Html = ({ content, state, css, helmet }: HtmlProps) => (
       <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
       <meta name="msapplication-config" content={`${assetMap['browserconfig.xml']}`} />
       <meta name="theme-color" content="#ffffff" />
-      {!__DEV__ && <link rel="stylesheet" type="text/css" href={`${assetMap['index.css']}`} />}
-      {!!__DEV__ && (
-        <style
-          dangerouslySetInnerHTML={{
-            __html: styles._getCss() + clientModules.stylesInserts.map((style: any) => style._getCss()).join('')
-          }}
-        />
-      )}
       {!!css && css}
-      {clientModules.scriptsInserts.map((script: string, i: number) => {
-        if (script) {
-          return <script key={i} src={script} />;
-        }
-      })}
     </head>
     <body {...helmet.bodyAttributes.toComponent()}>
       <div id="root" dangerouslySetInnerHTML={{ __html: content || '' }} />
@@ -78,8 +71,6 @@ const Html = ({ content, state, css, helmet }: HtmlProps) => (
         }}
         charSet="UTF-8"
       />
-      {assetMap['vendor.js'] && <script src={`${assetMap['vendor.js']}`} charSet="utf-8" />}
-      <script src={`${assetMap['index.js']}`} charSet="utf-8" />
     </body>
   </html>
 );
@@ -101,13 +92,11 @@ const renderServerSide = async (req: any, res: any, schema: GraphQLSchema, modul
   const App = clientModules.getWrappedRoot(
     <Provider store={store}>
       <ApolloProvider client={client}>
-        <ApolloHooksProvider client={client}>
-          {clientModules.getDataRoot(
-            <StaticRouter location={req.url} context={context}>
-              {clientModules.router}
-            </StaticRouter>
-          )}
-        </ApolloHooksProvider>
+        {clientModules.getDataRoot(
+          <StaticRouter location={req.url} context={context}>
+            {clientModules.router}
+          </StaticRouter>
+        )}
       </ApolloProvider>
     </Provider>,
     req
@@ -123,13 +112,29 @@ const renderServerSide = async (req: any, res: any, schema: GraphQLSchema, modul
   } else {
     if (__DEV__ || !assetMap) {
       assetMap = JSON.parse(fs.readFileSync(path.join(__FRONTEND_BUILD_DIR__, 'assets.json')).toString());
+      if (!__DEV__ && __CDN_URL__) {
+        for (const key of Object.keys(assetMap)) {
+          assetMap[key] = __CDN_URL__ + assetMap[key];
+        }
+      }
     }
 
+    const extractor = new ChunkExtractor({
+      statsFile: path.resolve(__FRONTEND_BUILD_DIR__, 'loadable-stats.json'),
+      entrypoints: ['index'],
+      publicPath: !__DEV__ && __CDN_URL__ ? __CDN_URL__ : '/'
+    });
     const sheet = new ServerStyleSheet();
+    const JSX = extractor.collectChunks(sheet.collectStyles(App));
+
+    const content = ReactDOMServer.renderToString(JSX);
+    const helmet = Helmet.renderStatic(); // Avoid memory leak while tracking mounted instances
+
     const htmlProps: HtmlProps = {
-      content: ReactDOMServer.renderToString(sheet.collectStyles(App)),
+      content,
+      headElements: [...extractor.getScriptElements(), ...extractor.getLinkElements(), ...extractor.getStyleElements()],
       css: sheet.getStyleElement().map((el, idx) => (el ? React.cloneElement(el, { key: idx }) : el)),
-      helmet: Helmet.renderStatic(), // Avoid memory leak while tracking mounted instances
+      helmet,
       state: { ...client.cache.extract() }
     };
 

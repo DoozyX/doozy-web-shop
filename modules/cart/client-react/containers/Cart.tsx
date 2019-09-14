@@ -3,7 +3,7 @@ import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import { PageLayout } from '@gqlapp/look-client-react';
 import settings from '../../../../settings';
-import { useQuery, useMutation } from 'react-apollo-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Item, Button, Input, Header, Divider, Segment, Icon } from 'semantic-ui-react';
 
 import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
