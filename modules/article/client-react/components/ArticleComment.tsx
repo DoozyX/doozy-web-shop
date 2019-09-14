@@ -2,20 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Comment } from 'semantic-ui-react';
 
-interface Comment {
-  id: number;
-  content: string;
-  created_at: string;
-  user: User;
-}
-
-interface User {
-  fullName: string;
-  username: string;
-  avatar: string;
-}
-
-const ArticleComment = ({ user, content, created_at }: Comment) => {
+const ArticleComment = ({ user, content, created_at }: any) => {
   const { avatar, fullName } = user;
   return (
     <Comment>

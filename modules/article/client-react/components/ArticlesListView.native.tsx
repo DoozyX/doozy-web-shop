@@ -16,12 +16,14 @@ import {
 
 import ArticleCard from './ArticleCard';
 
-const ArticlesListView = ({ t, loading, data, history }: any) => {
+const ArticlesListView = ({ t, loading, data, navigation }: any) => {
   if (loading) {
     return (
-      <Content>
-        <Spinner />
-      </Content>
+      <Container>
+        <Content>
+          <Spinner />
+        </Content>
+      </Container>
     );
   }
   return (
@@ -52,7 +54,7 @@ const ArticlesListView = ({ t, loading, data, history }: any) => {
                 imageSource={imageSource}
                 fullName={user.fullName}
                 avatar={user.avatar}
-                handleClick={() => history.push(`/article/${id}`)}
+                handleClick={() => navigation.push(`Article`, { id })}
               />
             )
           )}

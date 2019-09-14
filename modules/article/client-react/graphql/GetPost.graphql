@@ -12,6 +12,7 @@ query getPost($id: Int!) {
       avatar
     }
     comments {
+      id
       content
       created_at
       user {

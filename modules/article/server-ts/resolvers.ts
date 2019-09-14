@@ -139,7 +139,7 @@ export default (pubsub: PubSub) => ({
       return post;
     },
     addComment: withAuth(async (obj: any, { input }: CommentInput, context: any) => {
-      input.userId = context.identity.id;
+      input.userId = context.req.identity.id;
       const [id] = await context.Post.addComment(input);
       const comment = await context.Post.getComment(id);
       // publish for edit post page

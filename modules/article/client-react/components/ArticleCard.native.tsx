@@ -23,7 +23,7 @@ const ArticleCard = ({
 }) => {
   return (
     <Card>
-      <CardItem>
+      <CardItem button onPress={handleClick}>
         <Left>
           <Thumbnail source={{ uri: avatar }} />
           <Body>
@@ -32,7 +32,7 @@ const ArticleCard = ({
           </Body>
         </Left>
       </CardItem>
-      <CardItem cardBody>
+      <CardItem cardBody button onPress={handleClick}>
         <Image source={{ uri: imageSource }} style={{ height: 150, width: null, flex: 1 }} />
       </CardItem>
       <CardItem>
