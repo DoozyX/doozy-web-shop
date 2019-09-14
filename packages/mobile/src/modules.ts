@@ -5,7 +5,7 @@ import validation from '@gqlapp/validation-common-react';
 import defaultRouter from '@gqlapp/router-client-react-native';
 import payments from '@gqlapp/payments-client-react';
 import authentication from '@gqlapp/authentication-client-react';
-import articles from '@module/article-client-react';
+import articles from '@gqlapp/article-client-react';
 
 import ClientModule from '@gqlapp/module-client-react-native';
 
