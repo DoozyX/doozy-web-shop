@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloLink, Observable, Operation } from 'apollo-link';
 import { addTypenameToDocument } from 'apollo-utilities';
 import { Router, Switch } from 'react-router-dom';
@@ -188,9 +187,7 @@ export class Renderer {
   public withApollo(component: ReactElement<any>) {
     return ref.clientModules.getWrappedRoot(
       <Provider store={this.store}>
-        <ApolloHooksProvider client={this.client}>
-          <ApolloProvider client={this.client}>{component}</ApolloProvider>
-        </ApolloHooksProvider>
+        <ApolloProvider client={this.client}>{component}</ApolloProvider>
       </Provider>
     );
   }

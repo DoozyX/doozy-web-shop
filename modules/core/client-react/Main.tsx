@@ -1,6 +1,5 @@
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloClient } from 'apollo-client';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
@@ -97,11 +96,9 @@ export class Main extends React.Component<any, MainState> {
     ) : (
       ref.modules.getWrappedRoot(
         <Provider store={ref.store}>
-          <ApolloHooksProvider client={ref.client}>
-            <ApolloProvider client={ref.client}>
-              {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
-            </ApolloProvider>
-          </ApolloHooksProvider>
+          <ApolloProvider client={ref.client}>
+            {ref.modules.getDataRoot(<ConnectedRouter history={history}>{ref.modules.router}</ConnectedRouter>)}
+          </ApolloProvider>
         </Provider>
       )
     );

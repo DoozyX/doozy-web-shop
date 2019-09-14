@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import settings from '../../../../settings';
-import { useQuery, useMutation } from 'react-apollo-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, Comment, Form, Header, Loader, Rating as RatingStars, Modal, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import ImageGallery from 'react-image-gallery';

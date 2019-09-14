@@ -6,7 +6,7 @@ import settings from '../../../../settings';
 import { Step, Icon, Form, Divider, Segment, Item, Button, Header, Modal } from 'semantic-ui-react';
 
 import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery } from '@apollo/react-hooks';
 
 const renderMetaData = (t: TranslateFunction) => (
   <Helmet
