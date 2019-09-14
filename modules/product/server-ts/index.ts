@@ -11,7 +11,7 @@ export interface ProductContext {
   Review: Review;
   User: any;
   ProductImage: ProductImage;
-  identity: any;
+  req: any;
 }
 
 export default new ServerModule({

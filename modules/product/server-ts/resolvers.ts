@@ -67,7 +67,7 @@ export default () => ({
   },
   Mutation: {
     addReviewToProduct: withAuth(
-      async (_obj: any, { productId, content }: any, { Review, identity }: ProductContext) => {
+      async (_obj: any, { productId, content }: any, { Review, req: { identity } }: ProductContext) => {
         return !!(await Review.insert(content, productId, identity.id));
       }
     )
