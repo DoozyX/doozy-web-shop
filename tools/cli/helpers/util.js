@@ -122,7 +122,7 @@ function computeRootModulesPath(moduleName) {
  * @returns {string} - Return the computed path
  */
 function computeModulePackageName(moduleName, packageName, old) {
-  return old ? `./${moduleName}` : `@gqlapp/${decamelize(moduleName)}-${packageName}`;
+  return old ? `./${moduleName}` : `@gqlapp/${decamelize(moduleName, { separator: '-' })}-${packageName}`;
 }
 
 /**
@@ -144,7 +144,7 @@ function computePackagePath(packageName) {
 function addSymlink(packageName, modulePackageName) {
   fs.symlinkSync(
     `${BASE_PATH}/modules/${packageName}/${modulePackageName}`,
-    `${BASE_PATH}/node_modules/@gqlapp/${decamelize(packageName)}-${modulePackageName}`
+    `${BASE_PATH}/node_modules/@gqlapp/${decamelize(packageName, { separator: '-' })}-${modulePackageName}`
   );
 }
 
@@ -155,7 +155,9 @@ function addSymlink(packageName, modulePackageName) {
  * @param modulePackageName - The name of the package of a new module ([client-react|server-ts] etc.)
  */
 function removeSymlink(packageName, modulePackageName) {
-  fs.unlinkSync(`${BASE_PATH}/node_modules/@gqlapp/${decamelize(packageName)}-${modulePackageName}`);
+  fs.unlinkSync(
+    `${BASE_PATH}/node_modules/@gqlapp/${decamelize(packageName, { separator: '-' })}-${modulePackageName}`
+  );
 }
 
 /**
@@ -167,6 +169,65 @@ function runPrettier(pathToFile) {
   if (fs.existsSync(pathToFile)) {
     shell.exec(`prettier --print-width 120 --single-quote --loglevel error --write ${pathToFile}`);
   }
+}
+
+/**
+ * Takes to the directory using its name
+ *
+ * @param directory - The name of directory
+ * @returns {string} - The path to current directory
+ */
+function moveToDirectory(directory) {
+  shell.cd(`${BASE_PATH}/${directory}/`);
+  return shell.pwd().stdout;
+}
+
+/**
+ * Deletes the directory
+ *
+ * @param path - The path of the directory
+ */
+function deleteDir(path) {
+  try {
+    shell.rm('-rf', path);
+  } catch (e) {
+    console.error(`The directory ${path} for the stack was not found`);
+  }
+}
+
+/**
+ * Gets a list of subdirectory paths
+ *
+ * @param path - The path to the directory
+ * @returns {string} - List of directories paths
+ */
+function getPathsSubdir(path) {
+  const subdirPathList = [];
+  const subdirs = fs.readdirSync(path);
+
+  subdirs.forEach(subdir => {
+    if (!fs.statSync(`${path}/${subdir}`).isFile()) {
+      return subdirPathList.push(`${path}/${subdir}`);
+    }
+  });
+
+  return subdirPathList;
+}
+
+/**
+ * Deletes directories for unused stacks
+ *
+ * @param stackDirList - List of directories for unused stacks
+ */
+function deleteStackDir(stackDirList) {
+  const route = moveToDirectory('modules');
+  const subdirList = getPathsSubdir(route);
+  stackDirList.forEach(stack => {
+    deleteDir(`${BASE_PATH}/packages/${stack}`);
+    subdirList.forEach(dir => {
+      deleteDir(`${dir}/${stack}`);
+    });
+  });
 }
 
 module.exports = {
@@ -182,5 +243,9 @@ module.exports = {
   computeModulePackageName,
   addSymlink,
   removeSymlink,
-  runPrettier
+  runPrettier,
+  moveToDirectory,
+  deleteDir,
+  getPathsSubdir,
+  deleteStackDir
 };

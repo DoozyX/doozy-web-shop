@@ -8,13 +8,14 @@ const ref: { navigator: NavigationContainer } = { navigator: null };
 
 const MainScreenNavigator = () => {
   const Navigator = ref.navigator;
+
   return <Navigator />;
 };
 
 export default new ClientModule({
   router: <MainScreenNavigator />,
   onAppCreate: [
-    (modules: ClientModule) =>
+    async (modules: ClientModule) =>
       (ref.navigator = createDrawerNavigator(
         {
           ...modules.drawerItems

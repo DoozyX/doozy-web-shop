@@ -13,9 +13,9 @@ const Content = styled.div`
   width: 500px;
 `;
 
-const LayoutCenter = ({ children, ...rest }) => {
+const LayoutCenter = ({ children }) => {
   return (
-    <Section {...rest}>
+    <Section>
       <Content>{children}</Content>
     </Section>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { useQuery, useMutation } from 'react-apollo-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { RouteComponentProps } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Button, Comment, Form, Header, Loader } from 'semantic-ui-react';
