@@ -17,7 +17,9 @@
     "watch:android": "expo start --android",
     "watch:ios": "expo start --ios",
     "postinstall": "expo-yarn-workspaces postinstall",
-    "cli": "node ../../tools/cli"
+    "cli": "node ../../tools/cli",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -88,7 +90,8 @@
     "react-redux": "^7.1.0",
     "redux": "^4.0.1",
     "subscriptions-transport-ws": "^0.9.16",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "snyk": "^1.226.2"
   },
   "devDependencies": {
     "@bam.tech/react-native-graphql-transformer": "^0.1.4",
@@ -121,5 +124,6 @@
   },
   "peerDependencies": {
     "eslint": "*"
-  }
+  },
+  "snyk": true
 }
