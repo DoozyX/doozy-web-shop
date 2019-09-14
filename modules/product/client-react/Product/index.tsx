@@ -64,14 +64,14 @@ const Product = ({ t, match }: ProductProps) => {
   const [quantity, setQuantity] = useState(1);
   const [reviewMessage, setReviewMessage] = useState('');
   const { data, loading } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) } });
-  const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
+  const [addToCart] = useMutation(ADD_PRODUCT_TO_CART, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
       productId: parseInt(match.params.id, 10),
       quantity
     }
   });
-  const addReview = useMutation(ADD_PRODUCT_REVIEW, {
+  const [addReview] = useMutation(ADD_PRODUCT_REVIEW, {
     refetchQueries: [{ query: GET_PRODUCT, variables: { id: parseInt(match.params.id, 10) } }],
     update: () => {
       setReviewMessage('');

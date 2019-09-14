@@ -23,13 +23,13 @@ const renderMetaData = (t: TranslateFunction) => (
 );
 
 const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }: any) => {
-  const removeItem = useMutation(REMOVE_CART_ITEM, {
+  const [removeItem] = useMutation(REMOVE_CART_ITEM, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
       productId: id
     }
   });
-  const changeItemQuantity = useMutation(CHANGE_CART_ITEM_QUANTITY, {
+  const [changeItemQuantity] = useMutation(CHANGE_CART_ITEM_QUANTITY, {
     refetchQueries: [{ query: GET_CART_ITEMS }]
   });
 
