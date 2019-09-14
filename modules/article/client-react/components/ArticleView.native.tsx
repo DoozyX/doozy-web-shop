@@ -1,36 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TranslateFunction } from '@gqlapp/i18n-client-react';
 
-interface ArticleViewProps {
-  t: TranslateFunction;
-}
+import { Container, Header, Content, H1, H2, H3, Text } from 'native-base';
 
-const ArticleView = ({ t }: ArticleViewProps) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.element}>
-        <Text style={styles.box}>{t('welcomeText')}</Text>
-      </View>
-    </View>
-  );
+const ArticleView = ({ t, loading, data, addComment, commentMessage, setCommentMessage }: any) => {
+  return <Container></Container>;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  element: {
-    paddingTop: 30
-  },
-  box: {
-    textAlign: 'center',
-    marginLeft: 15,
-    marginRight: 15
-  }
-});
 
 export default ArticleView;
