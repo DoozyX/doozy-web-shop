@@ -1,22 +1,9 @@
 import React from 'react';
-import {
-  Container,
-  Header,
-  Content,
-  List,
-  ListItem,
-  Thumbnail,
-  Text,
-  Left,
-  Body,
-  Right,
-  Button,
-  Spinner
-} from 'native-base';
+import { Container, Content, List, Spinner } from 'native-base';
 
 import ArticleCard from './ArticleCard';
 
-const ArticlesListView = ({ t, loading, data, navigation }: any) => {
+const ArticlesListView = ({ loading, data, navigation }: any) => {
   if (loading) {
     return (
       <Container>

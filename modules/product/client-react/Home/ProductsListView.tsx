@@ -12,7 +12,7 @@ const Item = ({ name, size, imageSource, price, onClick }: any) => {
         <View style={styles.itemInfo}>
           <H3>{name}</H3>
           <H3>{price} MKD</H3>
-          <Text>{size}</Text>
+          <Text>{size} kg</Text>
         </View>
       </CardItem>
     </Card>
