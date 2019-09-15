@@ -4,20 +4,15 @@ import Helmet from 'react-helmet';
 import { UncontrolledCarousel } from 'reactstrap';
 import { Query } from 'react-apollo';
 
-import settings from '../../../../settings';
+import settings from '@gqlapp/config';
 
 import { PageLayout } from '@gqlapp/look-client-react';
-import { RouteComponentProps } from 'react-router-dom';
 import { Header, Icon, Divider, Loader, Card, Image, Rating } from 'semantic-ui-react';
 
 import BRANDS_QUERY from '../graphql/BrandsQuery.graphql';
 import GET_TOP_CATEGORIES_QUERY from '../graphql/GetTopCategoriesQuery.graphql';
 import GET_TOP_PRODUCTS_QUERY from '../graphql/GetTopProducts.graphql';
 import GET_NEW_PRODUCTS_QUERY from '../graphql/GetNewProducts.graphql';
-
-interface ProductProps extends RouteComponentProps {
-  t: TranslateFunction;
-}
 
 const items = [
   {
@@ -47,159 +42,155 @@ const renderMetaData = (t: TranslateFunction) => (
   />
 );
 
-class Home extends React.Component<ProductProps> {
-  public render() {
-    const t = this.props.t;
-    const history = this.props.history;
-    return (
-      <PageLayout>
-        {renderMetaData(t)}
+const Home = ({ t, history }: any) => {
+  return (
+    <PageLayout>
+      {renderMetaData(t)}
 
-        <UncontrolledCarousel
-          style={{
-            position: 'absolute',
-            width: '100%',
-            left: '0'
+      <UncontrolledCarousel
+        style={{
+          position: 'absolute',
+          width: '100%',
+          left: '0'
+        }}
+        items={items}
+      />
+      <Divider
+        horizontal
+        style={{
+          marginTop: '520px'
+        }}
+      >
+        <Header as="h4">
+          <Icon name="th" />
+          Categories
+        </Header>
+      </Divider>
+      <div>
+        <Query query={GET_TOP_CATEGORIES_QUERY}>
+          {({ loading, error, data: { topCategories } }: any) => {
+            if (error) {
+              throw new Error(String(error));
+            }
+            return loading ? (
+              <Loader />
+            ) : (
+              <Card.Group itemsPerRow={5}>
+                {topCategories.map((category: any, i: any) => (
+                  <Card
+                    key={i}
+                    image={category.image}
+                    header={category.name}
+                    onClick={() => history.push('/products')}
+                  />
+                ))}
+              </Card.Group>
+            );
           }}
-          items={items}
-        />
-        <Divider
-          horizontal
-          style={{
-            marginTop: '520px'
+        </Query>
+      </div>
+      <Divider horizontal>
+        <Header as="h4">
+          <Icon name="tag" />
+          Brands
+        </Header>
+      </Divider>
+      <div>
+        <Query query={BRANDS_QUERY}>
+          {({ loading, error, data: { brands } }: any) => {
+            if (error) {
+              throw new Error(String(error));
+            }
+            return loading ? (
+              <Loader />
+            ) : (
+              <Card.Group itemsPerRow={5}>
+                {brands.map((brand: any, i: any) => (
+                  <Card key={i} image={brand.image} header={brand.name} onClick={() => history.push('/products')} />
+                ))}
+              </Card.Group>
+            );
           }}
-        >
-          <Header as="h4">
-            <Icon name="th" />
-            Categories
-          </Header>
-        </Divider>
-        <div>
-          <Query query={GET_TOP_CATEGORIES_QUERY}>
-            {({ loading, error, data: { topCategories } }: any) => {
-              if (error) {
-                throw new Error(String(error));
-              }
-              return loading ? (
-                <Loader />
-              ) : (
-                <Card.Group itemsPerRow={5}>
-                  {topCategories.map((category: any, i: any) => (
-                    <Card
-                      key={i}
-                      image={category.image}
-                      header={category.name}
-                      onClick={() => history.push('/products')}
-                    />
-                  ))}
-                </Card.Group>
-              );
-            }}
-          </Query>
-        </div>
-        <Divider horizontal>
-          <Header as="h4">
-            <Icon name="tag" />
-            Brands
-          </Header>
-        </Divider>
-        <div>
-          <Query query={BRANDS_QUERY}>
-            {({ loading, error, data: { brands } }: any) => {
-              if (error) {
-                throw new Error(String(error));
-              }
-              return loading ? (
-                <Loader />
-              ) : (
-                <Card.Group itemsPerRow={5}>
-                  {brands.map((brand: any, i: any) => (
-                    <Card key={i} image={brand.image} header={brand.name} onClick={() => history.push('/products')} />
-                  ))}
-                </Card.Group>
-              );
-            }}
-          </Query>
-        </div>
-        <Divider horizontal>
-          <Header as="h4">
-            <Icon name="fire" />
-            Top Products
-          </Header>
-        </Divider>
-        <div>
-          <Query query={GET_TOP_PRODUCTS_QUERY}>
-            {({ loading, error, data: { topProducts } }: any) => {
-              if (error) {
-                throw new Error(String(error));
-              }
-              return loading ? (
-                <Loader />
-              ) : (
-                <Card.Group itemsPerRow={5}>
-                  {topProducts.map((product: any, i: any) => (
-                    <Card key={i} onClick={() => history.push(`/product/${product.id}`)}>
-                      <Image src={product.imageSource} />
-                      <Card.Content textAlign="center">
-                        <Card.Header>{product.name}</Card.Header>
-                        <Card.Meta>
-                          <span className="price">
-                            <b>{product.price} MKD</b>
-                          </span>
-                        </Card.Meta>
-                        <Card.Description>{product.size} kg</Card.Description>
-                      </Card.Content>
-                      <Card.Content extra textAlign="center">
-                        <Rating icon="star" defaultRating={product.rating} maxRating={5} />
-                      </Card.Content>
-                    </Card>
-                  ))}
-                </Card.Group>
-              );
-            }}
-          </Query>
-        </div>
-        <Divider horizontal>
-          <Header as="h4">
-            <Icon name="newspaper" />
-            New Products
-          </Header>
-        </Divider>
-        <div>
-          <Query query={GET_NEW_PRODUCTS_QUERY}>
-            {({ loading, error, data: { newProducts } }: any) => {
-              if (error) {
-                throw new Error(String(error));
-              }
-              return loading ? (
-                <Loader />
-              ) : (
-                <Card.Group itemsPerRow={5}>
-                  {newProducts.map((product: any, i: any) => (
-                    <Card key={i} onClick={() => history.push(`/product/${product.id}`)}>
-                      <Image src={product.imageSource} />
-                      <Card.Content textAlign="center">
-                        <Card.Header>{product.name}</Card.Header>
-                        <Card.Meta>
-                          <span className="price">
-                            <b>{product.price} MKD</b>
-                          </span>
-                        </Card.Meta>
-                        <Card.Description>{product.size} kg</Card.Description>
-                      </Card.Content>
-                      <Card.Content extra textAlign="center">
-                        <Rating icon="star" defaultRating={product.rating} maxRating={5} />
-                      </Card.Content>
-                    </Card>
-                  ))}
-                </Card.Group>
-              );
-            }}
-          </Query>
-        </div>
-      </PageLayout>
-    );
-  }
-}
+        </Query>
+      </div>
+      <Divider horizontal>
+        <Header as="h4">
+          <Icon name="fire" />
+          Top Products
+        </Header>
+      </Divider>
+      <div>
+        <Query query={GET_TOP_PRODUCTS_QUERY}>
+          {({ loading, error, data: { topProducts } }: any) => {
+            if (error) {
+              throw new Error(String(error));
+            }
+            return loading ? (
+              <Loader />
+            ) : (
+              <Card.Group itemsPerRow={5}>
+                {topProducts.map((product: any, i: any) => (
+                  <Card key={i} onClick={() => history.push(`/product/${product.id}`)}>
+                    <Image src={product.imageSource} />
+                    <Card.Content textAlign="center">
+                      <Card.Header>{product.name}</Card.Header>
+                      <Card.Meta>
+                        <span className="price">
+                          <b>{product.price} MKD</b>
+                        </span>
+                      </Card.Meta>
+                      <Card.Description>{product.size} kg</Card.Description>
+                    </Card.Content>
+                    <Card.Content extra textAlign="center">
+                      <Rating icon="star" defaultRating={product.rating} maxRating={5} />
+                    </Card.Content>
+                  </Card>
+                ))}
+              </Card.Group>
+            );
+          }}
+        </Query>
+      </div>
+      <Divider horizontal>
+        <Header as="h4">
+          <Icon name="newspaper" />
+          New Products
+        </Header>
+      </Divider>
+      <div>
+        <Query query={GET_NEW_PRODUCTS_QUERY}>
+          {({ loading, error, data: { newProducts } }: any) => {
+            if (error) {
+              throw new Error(String(error));
+            }
+            return loading ? (
+              <Loader />
+            ) : (
+              <Card.Group itemsPerRow={5}>
+                {newProducts.map((product: any, i: any) => (
+                  <Card key={i} onClick={() => history.push(`/product/${product.id}`)}>
+                    <Image src={product.imageSource} />
+                    <Card.Content textAlign="center">
+                      <Card.Header>{product.name}</Card.Header>
+                      <Card.Meta>
+                        <span className="price">
+                          <b>{product.price} MKD</b>
+                        </span>
+                      </Card.Meta>
+                      <Card.Description>{product.size} kg</Card.Description>
+                    </Card.Content>
+                    <Card.Content extra textAlign="center">
+                      <Rating icon="star" defaultRating={product.rating} maxRating={5} />
+                    </Card.Content>
+                  </Card>
+                ))}
+              </Card.Group>
+            );
+          }}
+        </Query>
+      </div>
+    </PageLayout>
+  );
+};
 
 export default translate('product')(Home);
