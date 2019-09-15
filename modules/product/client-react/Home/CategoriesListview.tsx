@@ -5,17 +5,19 @@ import { Card, CardItem, Text, Thumbnail, H1 } from 'native-base';
 const Item = ({ image, name, onClick }: any) => {
   return (
     <Card style={styles.item} transparent>
-      <CardItem header bordered onPress={onClick} style={styles.centerChildren}>
+      <CardItem header bordered button onPress={onClick} style={styles.centerChildren}>
         <Thumbnail source={{ uri: image }} />
       </CardItem>
-      <CardItem footer bordered onPress={onClick} style={styles.centerChildren}>
-        <Text>{name}</Text>
+      <CardItem footer bordered button onPress={onClick} style={styles.centerChildren}>
+        <Text adjustsFontSizeToFit numberOfLines={1}>
+          {name}
+        </Text>
       </CardItem>
     </Card>
   );
 };
 
-export default function CategoriesListView({ items, title }: any) {
+export default function CategoriesListView({ items, title, onClick }: any) {
   return (
     <View style={styles.centerChildren}>
       <H1>{title}</H1>
@@ -23,7 +25,7 @@ export default function CategoriesListView({ items, title }: any) {
         <FlatList
           horizontal={true}
           data={items}
-          renderItem={({ item }: any) => <Item name={item.name} image={item.image} />}
+          renderItem={({ item }: any) => <Item {...item} onClick={onClick} />}
           keyExtractor={(item: any) => String(item.id)}
         />
       </SafeAreaView>
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   item: {
-    width: 150,
+    width: 125,
     height: 130,
     marginHorizontal: 10
   },

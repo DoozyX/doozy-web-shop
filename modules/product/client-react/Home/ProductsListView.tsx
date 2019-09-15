@@ -2,15 +2,17 @@ import React from 'react';
 import { View, SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import { Card, CardItem, Thumbnail, H1, H3, Text } from 'native-base';
 
-const Item = ({ name, size, imageSource, price, onClick }: any) => {
+const Item = ({ id, name, size, imageSource, price, onClick }: any) => {
   return (
     <Card style={styles.item} transparent>
-      <CardItem header bordered onPress={onClick} style={styles.centerChildren}>
+      <CardItem header bordered button onPress={() => onClick(id)} style={styles.centerChildren}>
         <Thumbnail source={{ uri: imageSource }} />
       </CardItem>
-      <CardItem footer bordered onPress={onClick}>
+      <CardItem footer bordered button onPress={() => onClick(id)}>
         <View style={styles.itemInfo}>
-          <H3>{name}</H3>
+          <H3 adjustsFontSizeToFit numberOfLines={1}>
+            {name}
+          </H3>
           <H3>{price} MKD</H3>
           <Text>{size} kg</Text>
         </View>
@@ -19,7 +21,7 @@ const Item = ({ name, size, imageSource, price, onClick }: any) => {
   );
 };
 
-export default function CategoriesListView({ items, title }: any) {
+export default function CategoriesListView({ items, title, onClick }: any) {
   return (
     <View style={styles.centerChildren}>
       <H1>{title}</H1>
@@ -27,9 +29,7 @@ export default function CategoriesListView({ items, title }: any) {
         <FlatList
           horizontal={true}
           data={items}
-          renderItem={({ item: { name, size, imageSource, price } }: any) => (
-            <Item {...{ name, size, imageSource, price }} />
-          )}
+          renderItem={({ item }: any) => <Item {...item} onClick={onClick} />}
           keyExtractor={(item: any) => String(item.id)}
         />
       </SafeAreaView>

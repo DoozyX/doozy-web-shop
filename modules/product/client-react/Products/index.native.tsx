@@ -27,10 +27,10 @@ import CATEGORIES_QUERY from '../graphql/CategoriesQuery.graphql';
 const ProductCard = ({ id, name, size, price, imageSource, onView }: any) => {
   return (
     <Card style={styles.item} transparent>
-      <CardItem header bordered onPress={onView} style={styles.cardItem}>
+      <CardItem header bordered button onPress={onView} style={styles.cardItem}>
         <Thumbnail source={{ uri: imageSource }} />
       </CardItem>
-      <CardItem footer bordered onPress={onView} style={styles.cardItem}>
+      <CardItem footer bordered button onPress={onView} style={styles.cardItem}>
         <View style={styles.itemInfo}>
           <H3 adjustsFontSizeToFit numberOfLines={1}>
             {name}
@@ -48,7 +48,7 @@ const SortTypes = {
   PRICE_DESCENDING: 'sortByPriceDescending'
 };
 
-const Products = ({ history }: any) => {
+const Products = ({ navigation }: any) => {
   const [sortBy, setSortBy] = useState(SortTypes.PRICE_ASCENDING);
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const {
@@ -114,7 +114,9 @@ const Products = ({ history }: any) => {
             <FlatList
               numColumns={3}
               data={sortFilterProducts}
-              renderItem={({ item }: any) => <ProductCard {...item} />}
+              renderItem={({ item }: any) => (
+                <ProductCard {...item} onView={() => navigation.push('Product', { id: item.id })} />
+              )}
               keyExtractor={(item: any) => String(item.id)}
             />
           </SafeAreaView>

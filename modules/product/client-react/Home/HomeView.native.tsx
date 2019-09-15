@@ -21,8 +21,16 @@ const ProductView = ({ loading, t, items, topCategories, brands, topProducts, ne
         <CarouselView items={items} />
         <CategoriesListview items={topCategories} title={'Categories'} onClick={() => navigation.push('Products')} />
         <CategoriesListview items={brands} title={'Brands'} onClick={() => navigation.push('Products')} />
-        <ProductsListView items={topProducts} title={'Top Products'} onClick={() => navigation.push('Products')} />
-        <ProductsListView items={newProducts} title={'New Products'} onClick={() => navigation.push('Products')} />
+        <ProductsListView
+          items={topProducts}
+          title={'Top Products'}
+          onClick={(id: any) => navigation.push('Product', { id })}
+        />
+        <ProductsListView
+          items={newProducts}
+          title={'New Products'}
+          onClick={(id: any) => navigation.push('Product', { id })}
+        />
       </Content>
     </Container>
   );

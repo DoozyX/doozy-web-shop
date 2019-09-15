@@ -6,8 +6,7 @@ import ClientModule from '@gqlapp/module-client-react-native';
 
 import { HeaderTitle, IconButton } from '@gqlapp/look-client-react-native';
 import Home from './Home';
-import Product from './Home';
-// import Product from './Product';
+import Product from './Product';
 import Products from './Products';
 import resources from './locales';
 
