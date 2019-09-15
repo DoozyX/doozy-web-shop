@@ -41,7 +41,7 @@ const ArticleView = ({ t, loading, data, addComment, commentMessage, setCommentM
         <Card style={{ flex: 0 }} transparent>
           <CardItem>
             <Left>
-              <Thumbnail source={{ uri: 'Image URL' }} />
+              <Thumbnail source={{ uri: user.avatar }} />
               <Body>
                 <Text>{title}</Text>
                 <Text note>
