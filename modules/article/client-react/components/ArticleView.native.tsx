@@ -25,7 +25,7 @@ import {
 import ArticleComment from './ArticleComment';
 
 const ArticleView = ({ t, loading, data, addComment, commentMessage, setCommentMessage }: any) => {
-  if (loading) {
+  if (loading || !data) {
     return (
       <Container>
         <Content>

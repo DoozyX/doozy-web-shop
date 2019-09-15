@@ -14,7 +14,7 @@ type Order {
   id: Int!
   price: Int!
   created_at: String!
-  items:  [OrderItem]
+  items: [OrderItem]
 }
 
 extend type Query {

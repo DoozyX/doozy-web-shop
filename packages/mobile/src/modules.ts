@@ -7,6 +7,7 @@ import payments from '@gqlapp/payments-client-react';
 import authentication from '@gqlapp/authentication-client-react';
 import articles from '@gqlapp/article-client-react';
 import products from '@gqlapp/product-client-react';
+import cart from '@gqlapp/cart-client-react';
 
 import ClientModule from '@gqlapp/module-client-react-native';
 
@@ -17,6 +18,7 @@ const modules = new ClientModule(
   defaultRouter,
   products,
   articles,
+  cart,
   contact,
   payments,
   user,
