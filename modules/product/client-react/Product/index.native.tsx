@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Modal } from 'react-native';
 import moment from 'moment';
 import {
   Container,
@@ -50,6 +50,7 @@ const ArticleComment = ({ user, content, created_at }: any) => {
 
 const Product = ({ navigation }: any) => {
   const ID = navigation.getParam('id');
+  const [modalVisible, setmodalVisible] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [reviewMessage, setReviewMessage] = useState('');
   const { data, loading } = useQuery(GET_PRODUCT, { variables: { id: parseInt(ID, 10) } });
@@ -94,7 +95,13 @@ const Product = ({ navigation }: any) => {
           <Label>Quantity</Label>
           <Input value={String(quantity)} onChangeText={text => setQuantity(Number(text))} keyboardType="numeric" />
         </Item>
-        <Button block onPress={addToCart}>
+        <Button
+          block
+          onPress={() => {
+            addToCart();
+            setmodalVisible(true);
+          }}
+        >
           <Text>ADD TO CART</Text>
         </Button>
         <Text>{description}</Text>
@@ -113,6 +120,22 @@ const Product = ({ navigation }: any) => {
           </Form>
         </List>
       </View>
+
+      <Modal animationType="slide" transparent={false} visible={modalVisible}>
+        <View style={{ marginTop: 300 }}>
+          <View>
+            <Text>Added to Cart!</Text>
+
+            <Button
+              onPress={() => {
+                setmodalVisible(false);
+              }}
+            >
+              <Text>Close</Text>
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </Content>
   );
 };
