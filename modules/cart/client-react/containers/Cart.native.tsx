@@ -6,7 +6,6 @@ import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';
 import REMOVE_CART_ITEM from '../graphql/RemoveCartItem.graphql';
 import CHANGE_CART_ITEM_QUANTITY from '../graphql/ChangeCartItemQuantity.graphql';
 import {
-  Container,
   Content,
   Spinner,
   List,
@@ -24,7 +23,7 @@ import {
   H2
 } from 'native-base';
 
-const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }: any) => {
+const CartItem = ({ product: { id, name, price, imageSource }, quantity }: any) => {
   const [removeItem] = useMutation(REMOVE_CART_ITEM, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
@@ -70,8 +69,8 @@ const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }:
   );
 };
 
-const Cart = ({ navigation }: any) => {
-  const { data, loading, error } = useQuery(GET_CART_ITEMS);
+const Cart = () => {
+  const { data, loading } = useQuery(GET_CART_ITEMS);
   const { t } = useTranslation('cart');
 
   if (loading) {

@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { useTranslation } from '@gqlapp/i18n-client-react';
 import { useQuery } from '@apollo/react-hooks';
 import { View, SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import {
   Card,
   CardItem,
   Thumbnail,
-  H1,
   H3,
   Text,
   Content,
-  Container,
   Spinner,
   Form,
   Item,

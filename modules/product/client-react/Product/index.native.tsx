@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Modal } from 'react-native';
 import moment from 'moment';
 import {
-  Container,
   Content,
   Text,
   Button,
