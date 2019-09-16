@@ -76,57 +76,51 @@ const Cart = ({ navigation }: any) => {
 
   if (loading) {
     return (
-      <Container>
-        <Content>
-          <Spinner />
-        </Content>
-      </Container>
+      <Content>
+        <Spinner />
+      </Content>
     );
   }
 
   if (!!data && !!data.getCartItems && data.getCartItems.length > 0) {
     return (
-      <Container>
-        <Content style={{ margin: 10 }}>
-          <H1>{t('cartTitle')} </H1>
-          <List>
-            {data.getCartItems.map((cartItem: any) => (
-              <CartItem key={cartItem.id} {...cartItem} />
-            ))}
-          </List>
-
-          <Button
-            block
-            disabled={!(!!data.getCartItems && data.getCartItems.length > 0)}
-            onPress={() => {
-              // TODO: shipping
-            }}
-          >
-            <Text>Buy All</Text>
-          </Button>
-
-          <Right>
-            <H2>
-              Total:
-              {data.getCartItems.reduce((total: any, { product, quantity }: any) => {
-                return (total += product.price * quantity);
-              }, 0)}{' '}
-              MKD
-            </H2>
-          </Right>
-        </Content>
-      </Container>
-    );
-  }
-  return (
-    <Container>
       <Content style={{ margin: 10 }}>
         <H1>{t('cartTitle')} </H1>
         <List>
-          <Spinner />
+          {data.getCartItems.map((cartItem: any) => (
+            <CartItem key={cartItem.id} {...cartItem} />
+          ))}
         </List>
+
+        <Button
+          block
+          disabled={!(!!data.getCartItems && data.getCartItems.length > 0)}
+          onPress={() => {
+            // TODO: shipping
+          }}
+        >
+          <Text>Buy All</Text>
+        </Button>
+
+        <Right>
+          <H2>
+            Total:
+            {data.getCartItems.reduce((total: any, { product, quantity }: any) => {
+              return (total += product.price * quantity);
+            }, 0)}{' '}
+            MKD
+          </H2>
+        </Right>
       </Content>
-    </Container>
+    );
+  }
+  return (
+    <Content style={{ margin: 10 }}>
+      <H1>{t('cartTitle')} </H1>
+      <List>
+        <Spinner />
+      </List>
+    </Content>
   );
 };
 

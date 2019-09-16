@@ -73,11 +73,9 @@ const Product = ({ navigation }: any) => {
 
   if (loading) {
     return (
-      <Container>
-        <Content>
-          <Spinner />
-        </Content>
-      </Container>
+      <Content>
+        <Spinner />
+      </Content>
     );
   }
   const { name, price, description, reviews, images } = data.product;
@@ -85,39 +83,37 @@ const Product = ({ navigation }: any) => {
     return { title: '', thumbnail: image };
   });
   return (
-    <Container>
-      <Content>
-        <View style={{ flex: 1, margin: 10 }}>
-          <View style={{ height: 300 }}>
-            <CarouselView items={imageItems} />
-          </View>
-          <H2 style={{ textAlign: 'center' }}>{name}</H2>
-          <H1 style={{ textAlign: 'center' }}>{price} MKD </H1>
-          <Item floatingLabel>
-            <Label>Quantity</Label>
-            <Input value={String(quantity)} onChangeText={text => setQuantity(Number(text))} keyboardType="numeric" />
-          </Item>
-          <Button block onPress={addToCart}>
-            <Text>ADD TO CART</Text>
-          </Button>
-          <Text>{description}</Text>
-          <H1>Reviews</H1>
-          <List>
-            {reviews.map((comment: any) => (
-              <ArticleComment key={comment.id} {...comment} />
-            ))}
-            <Form>
-              <Item floatingLabel>
-                <Label>Review</Label>
-                <Input value={reviewMessage} onChangeText={(text: any) => setReviewMessage(text)} />
-                <Icon active name="arrow-up" onPress={() => addReview()} />
-              </Item>
-              <Item last></Item>
-            </Form>
-          </List>
+    <Content>
+      <View style={{ flex: 1, margin: 10 }}>
+        <View style={{ height: 300 }}>
+          <CarouselView items={imageItems} />
         </View>
-      </Content>
-    </Container>
+        <H2 style={{ textAlign: 'center' }}>{name}</H2>
+        <H1 style={{ textAlign: 'center' }}>{price} MKD </H1>
+        <Item floatingLabel>
+          <Label>Quantity</Label>
+          <Input value={String(quantity)} onChangeText={text => setQuantity(Number(text))} keyboardType="numeric" />
+        </Item>
+        <Button block onPress={addToCart}>
+          <Text>ADD TO CART</Text>
+        </Button>
+        <Text>{description}</Text>
+        <H1>Reviews</H1>
+        <List>
+          {reviews.map((comment: any) => (
+            <ArticleComment key={comment.id} {...comment} />
+          ))}
+          <Form>
+            <Item floatingLabel>
+              <Label>Review</Label>
+              <Input value={reviewMessage} onChangeText={(text: any) => setReviewMessage(text)} />
+              <Icon active name="arrow-up" onPress={() => addReview()} />
+            </Item>
+            <Item last></Item>
+          </Form>
+        </List>
+      </View>
+    </Content>
   );
 };
 

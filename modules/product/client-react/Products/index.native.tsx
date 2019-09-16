@@ -62,11 +62,9 @@ const Products = ({ navigation }: any) => {
 
   if (loading || loadingcat) {
     return (
-      <Container>
-        <Content>
-          <Spinner />
-        </Content>
-      </Container>
+      <Content>
+        <Spinner />
+      </Content>
     );
   }
 
@@ -79,50 +77,48 @@ const Products = ({ navigation }: any) => {
     );
 
   return (
-    <Container>
-      <Content>
-        <Tabs
-          renderTabBar={() => <ScrollableTab />}
-          onChangeTab={(value: any) => {
-            setCategoryFilter(value.ref.props.heading);
-          }}
-        >
-          <Tab heading="ALL"></Tab>
-          {categories.map((category: any) => (
-            <Tab key={category.id} heading={category.name}></Tab>
-          ))}
-        </Tabs>
-        <Form>
-          <Item picker>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: undefined }}
-              placeholder="Select sort order"
-              placeholderStyle={{ color: '#bfc6ea' }}
-              placeholderIconColor="#007aff"
-              selectedValue={sortBy}
-              onValueChange={value => setSortBy(value)}
-            >
-              <Picker.Item label="Sort by Price (Ascending)" value={SortTypes.PRICE_ASCENDING} />
-              <Picker.Item label="Sort by Price (Descending)" value={SortTypes.PRICE_DESCENDING} />
-            </Picker>
-          </Item>
-        </Form>
-        <View style={styles.container}>
-          <SafeAreaView style={styles.container}>
-            <FlatList
-              numColumns={3}
-              data={sortFilterProducts}
-              renderItem={({ item }: any) => (
-                <ProductCard {...item} onView={() => navigation.push('Product', { id: item.id })} />
-              )}
-              keyExtractor={(item: any) => String(item.id)}
-            />
-          </SafeAreaView>
-        </View>
-      </Content>
-    </Container>
+    <Content>
+      <Tabs
+        renderTabBar={() => <ScrollableTab />}
+        onChangeTab={(value: any) => {
+          setCategoryFilter(value.ref.props.heading);
+        }}
+      >
+        <Tab heading="ALL"></Tab>
+        {categories.map((category: any) => (
+          <Tab key={category.id} heading={category.name}></Tab>
+        ))}
+      </Tabs>
+      <Form>
+        <Item picker>
+          <Picker
+            mode="dropdown"
+            iosIcon={<Icon name="arrow-down" />}
+            style={{ width: undefined }}
+            placeholder="Select sort order"
+            placeholderStyle={{ color: '#bfc6ea' }}
+            placeholderIconColor="#007aff"
+            selectedValue={sortBy}
+            onValueChange={value => setSortBy(value)}
+          >
+            <Picker.Item label="Sort by Price (Ascending)" value={SortTypes.PRICE_ASCENDING} />
+            <Picker.Item label="Sort by Price (Descending)" value={SortTypes.PRICE_DESCENDING} />
+          </Picker>
+        </Item>
+      </Form>
+      <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            numColumns={3}
+            data={sortFilterProducts}
+            renderItem={({ item }: any) => (
+              <ProductCard {...item} onView={() => navigation.push('Product', { id: item.id })} />
+            )}
+            keyExtractor={(item: any) => String(item.id)}
+          />
+        </SafeAreaView>
+      </View>
+    </Content>
   );
 };
 
