@@ -9,10 +9,10 @@ interface CartItemInput {
 
 export default () => ({
   Query: {
-    getCartItems: withAuth((_obj: any, _args: any, { Cart, identity }: { Cart: CartDAO; identity: any }) => {
+    getCartItems: withAuth((_obj: any, _args: any, { Cart, req: { identity } }: { Cart: CartDAO; req: any }) => {
       return Cart.getForUser(identity.id);
     }),
-    getOrders: withAuth((_obj: any, _args: any, { Order, identity }: { Order: OrderDAO; identity: any }) => {
+    getOrders: withAuth((_obj: any, _args: any, { Order, req: { identity } }: { Order: OrderDAO; req: any }) => {
       return Order.getForUser(identity.id);
     })
   },
@@ -36,7 +36,7 @@ export default () => ({
       async (
         _obj: any,
         { productId, quantity }: CartItemInput,
-        { Cart, identity }: { Cart: CartDAO; identity: any }
+        { Cart, req: { identity } }: { Cart: CartDAO; req: any }
       ) => {
         try {
           return !!(await Cart.insert({ productId, userId: identity.id, quantity }));
@@ -49,13 +49,13 @@ export default () => ({
       async (
         _obj: any,
         { productId, quantity }: CartItemInput,
-        { Cart, identity }: { Cart: CartDAO; identity: any }
+        { Cart, req: { identity } }: { Cart: CartDAO; req: any }
       ) => {
         return !!(await Cart.updateQuantity({ productId, userId: identity.id, quantity }));
       }
     ),
     removeCartItem: withAuth(
-      async (_obj: any, { productId }: CartItemInput, { Cart, identity }: { Cart: CartDAO; identity: any }) => {
+      async (_obj: any, { productId }: CartItemInput, { Cart, req: { identity } }: { Cart: CartDAO; req: any }) => {
         return !!(await Cart.delete({ productId, userId: identity.id }));
       }
     ),
@@ -63,7 +63,7 @@ export default () => ({
       async (
         _obj: any,
         { input: { products, quantities } }: any,
-        { Order, OrderItem, identity }: { Order: OrderDAO; OrderItem: OrderItemDAO; identity: any }
+        { Order, OrderItem, req: { identity } }: { Order: OrderDAO; OrderItem: OrderItemDAO; req: any }
       ) => {
         const price = 500;
         const orderInsert = await Order.insert({ userId: identity.id, price });

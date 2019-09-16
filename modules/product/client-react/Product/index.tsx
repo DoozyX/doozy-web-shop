@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 
 import { PageLayout } from '@gqlapp/look-client-react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
-import settings from '../../../../settings';
+import settings from '@gqlapp/config';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, Comment, Form, Header, Loader, Rating as RatingStars, Modal, Icon } from 'semantic-ui-react';
 import moment from 'moment';
@@ -64,14 +64,14 @@ const Product = ({ t, match }: ProductProps) => {
   const [quantity, setQuantity] = useState(1);
   const [reviewMessage, setReviewMessage] = useState('');
   const { data, loading } = useQuery(GET_PRODUCT, { variables: { id: parseInt(match.params.id, 10) } });
-  const addToCart = useMutation(ADD_PRODUCT_TO_CART, {
+  const [addToCart] = useMutation(ADD_PRODUCT_TO_CART, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
       productId: parseInt(match.params.id, 10),
       quantity
     }
   });
-  const addReview = useMutation(ADD_PRODUCT_REVIEW, {
+  const [addReview] = useMutation(ADD_PRODUCT_REVIEW, {
     refetchQueries: [{ query: GET_PRODUCT, variables: { id: parseInt(match.params.id, 10) } }],
     update: () => {
       setReviewMessage('');

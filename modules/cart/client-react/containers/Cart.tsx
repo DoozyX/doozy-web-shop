@@ -2,7 +2,7 @@ import React from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import { PageLayout } from '@gqlapp/look-client-react';
-import settings from '../../../../settings';
+import settings from '@gqlapp/config';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Item, Button, Input, Header, Divider, Segment, Icon } from 'semantic-ui-react';
 
@@ -23,13 +23,13 @@ const renderMetaData = (t: TranslateFunction) => (
 );
 
 const CartItem = ({ product: { id, name, price, imageSource, size }, quantity }: any) => {
-  const removeItem = useMutation(REMOVE_CART_ITEM, {
+  const [removeItem] = useMutation(REMOVE_CART_ITEM, {
     refetchQueries: [{ query: GET_CART_ITEMS }],
     variables: {
       productId: id
     }
   });
-  const changeItemQuantity = useMutation(CHANGE_CART_ITEM_QUANTITY, {
+  const [changeItemQuantity] = useMutation(CHANGE_CART_ITEM_QUANTITY, {
     refetchQueries: [{ query: GET_CART_ITEMS }]
   });
 

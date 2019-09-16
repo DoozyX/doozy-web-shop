@@ -18,6 +18,7 @@ class PageLayout extends React.Component {
         {__SERVER__ && __DEV__ && (
           <Helmet>
             <style type="text/css">{styles._getCss()}</style>
+            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
           </Helmet>
         )}
         <section className="d-flex flex-column flex-grow-1 flex-shrink-0">

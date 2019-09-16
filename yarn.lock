@@ -3815,10 +3815,25 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-image-gallery@^0.8.4":
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/@types/react-image-gallery/-/react-image-gallery-0.8.4.tgz#b37f2461fc9ac01b485aaa91ef1ac8f40c711fdf"
+  integrity sha512-/C/XtlXiE8sdVCT7MuGuxw5JmMXCWLC6vgirefv+5q22KPdW4dS+GskywigJYZjgCF4GcXPxZzwlnICOOPglSw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-native-keyboard-spacer@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@types/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.4.1.tgz#2bc5bf42df1c99ddd99bd5be0f0815df3f28e938"
   integrity sha512-TEWvZjKiHDNFJ2zw+WGmrR84lIEaUw0WLj/Ory7zamFuMGK/Bqz7R+/u/H/ZgNJklw2svm/v7bJFdMvZhqefVA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/react-native-snap-carousel@^3.7.4":
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/@types/react-native-snap-carousel/-/react-native-snap-carousel-3.7.4.tgz#1e1ad5b5314715d538f6785b4f3a6590a036a6bd"
+  integrity sha512-Egwj264i8lQtp4O8+TXse2yagW5im8oPzPcfWzIEYspKspPE0NikqWFtpVrecgbd/uwhwEjLXLY5kEXOvpiJjA==
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
@@ -3903,12 +3918,13 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/reactstrap@5.0.23":
-  version "5.0.23"
-  resolved "https://registry.yarnpkg.com/@types/reactstrap/-/reactstrap-5.0.23.tgz#687ed94f7f28c9c05643ede1fba9b4a518dfae7d"
-  integrity sha512-u42ffP8nIpn6g7/jvfciGic8zSc2yQmI8XkOAo4iQ6B6m8lu0YbwbNln2gcyFIyltXeeEdo7JPqmrmE6ul6M+A==
+"@types/reactstrap@^8.0.4":
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/@types/reactstrap/-/reactstrap-8.0.4.tgz#1e45e57eaf9606b18241bc9719b60a5165baf8fa"
+  integrity sha512-USAvyYnZ75OA1CfFDkUW+3TBRuYfc2At9Ts+10RcyCFgGpIgWGVG7MZnCZSkcOACjjhD0D+8vPkMVgXcohMqrQ==
   dependencies:
     "@types/react" "*"
+    popper.js "^1.14.1"
 
 "@types/serialize-javascript@^1.3.2":
   version "1.5.0"
@@ -17884,7 +17900,7 @@ polished@^3.3.1:
   dependencies:
     "@babel/runtime" "^7.4.5"
 
-popper.js@^1.14.4, popper.js@^1.14.7:
+popper.js@^1.14.1, popper.js@^1.14.4, popper.js@^1.14.7:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
   integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
@@ -19362,6 +19378,14 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7, rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-addons-shallow-compare@15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+  integrity sha1-GYoAuR/DdiPbZKKP0XtZa6NicC8=
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
+
 react-addons-test-utils@^16.0.0-alpha.3:
   version "16.0.0-alpha.3"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-16.0.0-alpha.3.tgz#c17796f9b2c527b6be56f8d783b38020513fdb42"
@@ -19865,6 +19889,14 @@ react-native-simple-picker@^3.1.1:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-snap-carousel@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-3.8.0.tgz#9372222d61d37d0a8a3bec423d135d0caa1b7595"
+  integrity sha512-YtDZLv2Di77HfnH4yf+NyyYyISPNjrnjXDQLrzOkG9kkSlho/BROgHLQKGRLg3C2YSUMArFOePrb9CH3yeV5FA==
+  dependencies:
+    prop-types "^15.6.1"
+    react-addons-shallow-compare "15.6.2"
+
 react-native-svg@*:
   version "9.5.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.5.1.tgz#eb21fa7eb5d71649620541e6549c6ed425d80240"
@@ -20234,10 +20266,10 @@ react@^16.0.0, react@^16.4.0, react@^16.8.3:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
-reactstrap@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-8.0.0.tgz#db24d0127e58db89baa743dc660b65f611fe9b84"
-  integrity sha512-Rd7MyaFnZZXe1lbeBlgkxzyv+u7Z/ots0yYoO6ijT7/0uGsNwB1ch2h2t7Tf6u05jpbTFlLD+lyBEER0eibcQw==
+reactstrap@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-8.0.1.tgz#0b663c8195f540bc1d6d5dbcbcf73cab56fe7c79"
+  integrity sha512-GvUWEL+a2+3npK1OxTXcNBMHXX4x6uc1KQRzK7yAOl+8sAHTRWqjunvMUfny3oDh8yKVzgqpqQlWWvs1B2HR9A==
   dependencies:
     "@babel/runtime" "^7.2.0"
     classnames "^2.2.3"

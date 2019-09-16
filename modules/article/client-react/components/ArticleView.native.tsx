@@ -1,36 +1,91 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TranslateFunction } from '@gqlapp/i18n-client-react';
+import moment from 'moment';
+import { Image } from 'react-native';
+import {
+  Content,
+  Card,
+  CardItem,
+  Thumbnail,
+  Text,
+  Button,
+  Icon,
+  Left,
+  Right,
+  Body,
+  Spinner,
+  H1,
+  List,
+  Form,
+  Item,
+  Input,
+  Label
+} from 'native-base';
 
-interface ArticleViewProps {
-  t: TranslateFunction;
-}
+import ArticleComment from './ArticleComment';
 
-const ArticleView = ({ t }: ArticleViewProps) => {
+const ArticleView = ({ t, loading, data, addComment, commentMessage, setCommentMessage }: any) => {
+  if (loading || !data) {
+    return (
+      <Content>
+        <Spinner />
+      </Content>
+    );
+  }
+  const { created_at, title, imageSource, content, user, comments } = data.post;
   return (
-    <View style={styles.container}>
-      <View style={styles.element}>
-        <Text style={styles.box}>{t('welcomeText')}</Text>
-      </View>
-    </View>
+    <Content>
+      <Card style={{ flex: 0 }} transparent>
+        <CardItem>
+          <Left>
+            <Thumbnail source={{ uri: user.avatar }} />
+            <Body>
+              <Text>{title}</Text>
+              <Text note>
+                {moment(parseInt(created_at, 10)).fromNow()} by {user.fullName}
+              </Text>
+            </Body>
+          </Left>
+        </CardItem>
+        <CardItem>
+          <Body>
+            <Image source={{ uri: imageSource }} style={{ height: 200, width: 200, flex: 1 }} />
+            <Text>{content}</Text>
+          </Body>
+        </CardItem>
+        <CardItem>
+          <Left>
+            <Button transparent>
+              <Icon active name="thumbs-up" />
+              <Text>12 Likes</Text>
+            </Button>
+          </Left>
+          <Body>
+            <Button transparent>
+              <Icon active name="chatbubbles" />
+              <Text>{comments.length} Comments</Text>
+            </Button>
+          </Body>
+          <Right>
+            <Icon name="share" />
+          </Right>
+        </CardItem>
+      </Card>
+      <H1>Comments</H1>
+      <List>
+        {comments.map((comment: any) => (
+          <ArticleComment key={comment.id} {...comment} />
+        ))}
+        <Form>
+          <Item floatingLabel>
+            <Label>Comment</Label>
+            <Input value={commentMessage} onChangeText={text => setCommentMessage(text)} />
+            <Icon active name="arrow-up" onPress={() => addComment()} />
+          </Item>
+          <Item last></Item>
+        </Form>
+      </List>
+    </Content>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  element: {
-    paddingTop: 30
-  },
-  box: {
-    textAlign: 'center',
-    marginLeft: 15,
-    marginRight: 15
-  }
-});
 
 export default ArticleView;

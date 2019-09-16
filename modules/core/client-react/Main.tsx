@@ -11,9 +11,6 @@ import { apiUrl, createApolloClient, createReduxStore, getStoreReducer, log } fr
 import ClientModule from '@gqlapp/module-client-react';
 import settings from '@gqlapp/config';
 
-import 'semantic-ui-css/semantic.min.css';
-import 'react-image-gallery/styles/css/image-gallery.css';
-
 import RedBox from './RedBox';
 
 if (!__TEST__) {
