@@ -7,6 +7,7 @@ import url from 'url';
 import ClientModule from '@gqlapp/module-client-react-native';
 import { createApolloClient, log } from '@gqlapp/core-common';
 import settings from '@gqlapp/config';
+import { Container } from 'native-base';
 
 const { protocol, pathname, port } = url.parse(__API_URL__);
 
@@ -46,7 +47,9 @@ export default class Main extends React.Component<MainProps> {
 
     return modules.getWrappedRoot(
       <Provider store={store}>
-        <ApolloProvider client={client}>{modules.getDataRoot(modules.router)}</ApolloProvider>
+        <ApolloProvider client={client}>
+          <Container>{modules.getDataRoot(modules.router)}</Container>
+        </ApolloProvider>
       </Provider>
     );
   }

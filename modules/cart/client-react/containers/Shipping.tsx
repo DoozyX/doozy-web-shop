@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import { PageLayout } from '@gqlapp/look-client-react';
-import settings from '../../../../settings';
+import settings from '@gqlapp/config';
 import { Step, Icon, Form, Divider, Segment, Item, Button, Header, Modal } from 'semantic-ui-react';
 
 import GET_CART_ITEMS from '../graphql/GetCartItems.graphql';

@@ -22,10 +22,15 @@ export default new ClientModule({
               headerLeft: (
                 <IconButton iconName="menu" iconSize={32} iconColor="#0275d8" onPress={() => navigation.openDrawer()} />
               ),
-              headerStyle: { backgroundColor: '#fff' }
+              headerStyle: { backgroundColor: '#fff' },
+              headerForceInset: {}
             })
           }
         }),
+        userInfo: {
+          showOnLogin: true,
+          role: ['user', 'admin']
+        },
         navigationOptions: {
           drawerLabel: <HeaderTitleWithI18n />
         }

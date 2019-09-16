@@ -27,6 +27,9 @@ export default () => ({
     brands(_obj: any, _args: any, context: ProductContext) {
       return context.Brand.getAll();
     },
+    searchProducts(_obj: any, { search }: any, context: ProductContext) {
+      return context.Product.searchProduct(search);
+    },
     searchProductsWithCategory(_obj: any, { search }: any, context: ProductContext) {
       return context.Category.searchForProduct(search);
     }
@@ -67,7 +70,7 @@ export default () => ({
   },
   Mutation: {
     addReviewToProduct: withAuth(
-      async (_obj: any, { productId, content }: any, { Review, identity }: ProductContext) => {
+      async (_obj: any, { productId, content }: any, { Review, req: { identity } }: ProductContext) => {
         return !!(await Review.insert(content, productId, identity.id));
       }
     )

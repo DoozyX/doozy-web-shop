@@ -54,6 +54,7 @@ extend type Query {
   categories: [Category]
   topCategories: [Category]
   brands: [Brand]
+  searchProducts(search: String!): [Product]
   searchProductsWithCategory(search: String!): [ProductSearchWithCategory]
 }
 extend type Mutation {

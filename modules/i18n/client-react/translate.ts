@@ -16,4 +16,12 @@ export const translate = (ns: any) => {
   };
 };
 
+export const useTranslation = (namespace: string) => {
+  if (settings.i18n.enabled) {
+    return reactI18next.useTranslation(namespace, { useSuspense: false });
+  }
+
+  return { t: (text: string) => text };
+};
+
 export type TranslateFunction = (msg: string, ...params: any[]) => string;

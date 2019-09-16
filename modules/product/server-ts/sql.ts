@@ -45,6 +45,13 @@ export class Product {
       .first();
   }
 
+  public searchProduct(search: string) {
+    return knex
+      .select('*')
+      .from('product as p')
+      .where('p.name', 'like', search + '%');
+  }
+
   public getAllForBrand(id: number) {
     return knex
       .select('*')

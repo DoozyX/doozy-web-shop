@@ -4,8 +4,9 @@ import { createStackNavigator } from 'react-navigation';
 import { translate } from '@gqlapp/i18n-client-react';
 import ClientModule from '@gqlapp/module-client-react-native';
 
-import { HeaderTitle, IconButton } from '../../../packages/client/src/modules/common/components/native';
+import { HeaderTitle, IconButton } from '@gqlapp/look-client-react-native';
 import Articles from './containers/Articles';
+import Article from './containers/Article';
 import resources from './locales';
 
 const HeaderTitleWithI18n = translate('article')(HeaderTitle);
@@ -22,7 +23,19 @@ export default new ClientModule({
               headerLeft: (
                 <IconButton iconName="menu" iconSize={32} iconColor="#0275d8" onPress={() => navigation.openDrawer()} />
               ),
-              headerStyle: { backgroundColor: '#fff' }
+              headerStyle: { backgroundColor: '#fff' },
+              headerForceInset: {}
+            })
+          },
+          Article: {
+            screen: Article,
+            navigationOptions: ({ navigation }: any) => ({
+              headerTitle: <HeaderTitleWithI18n style="subTitle" />,
+              headerLeft: (
+                <IconButton iconName="menu" iconSize={32} iconColor="#0275d8" onPress={() => navigation.openDrawer()} />
+              ),
+              headerStyle: { backgroundColor: '#fff' },
+              headerForceInset: {}
             })
           }
         }),

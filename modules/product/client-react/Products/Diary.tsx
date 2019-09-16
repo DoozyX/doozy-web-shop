@@ -3,7 +3,7 @@ import { translate, TranslateFunction } from '@gqlapp/i18n-client-react';
 import Helmet from 'react-helmet';
 import { useQuery } from '@apollo/react-hooks';
 
-import settings from '../../../../settings';
+import settings from '@gqlapp/config';
 import { PageLayout } from '@gqlapp/look-client-react';
 
 import GET_ALL_PRODUCTS from '../graphql/GetAllProducts.graphql';
