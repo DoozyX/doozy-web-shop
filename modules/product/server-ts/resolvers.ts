@@ -27,6 +27,9 @@ export default () => ({
     brands(_obj: any, _args: any, context: ProductContext) {
       return context.Brand.getAll();
     },
+    searchProducts(_obj: any, { search }: any, context: ProductContext) {
+      return context.Product.searchProduct(search);
+    },
     searchProductsWithCategory(_obj: any, { search }: any, context: ProductContext) {
       return context.Category.searchForProduct(search);
     }
